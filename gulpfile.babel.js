@@ -1,4 +1,8 @@
 import gulp from 'gulp';
+import fs from 'fs';
 
-// Import all gulp tasks
-require('./gulp-tasks/db').default(gulp);
+
+const files = fs.readdirSync('./gulp-tasks');
+files.forEach(file =>
+  require(`./gulp-tasks/${file}`).default(gulp)
+);

@@ -1,5 +1,5 @@
 {
-  "extends": "doctolib",
+  "extends": "doctolib/react",
   "env": {
     "node": true
   }
