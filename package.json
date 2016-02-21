@@ -1,0 +1,18 @@
+{
+  "name": "springtik-www",
+  "version": "0.0.0",
+  "description": "Springtik website.",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Springtik/springtik-www.git"
+  },
+  "author": "Greg Bergé <berge.greg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Springtik/springtik-www/issues"
+  },
+  "homepage": "http://www.springtik.fr/"
+}
