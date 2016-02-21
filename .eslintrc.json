@@ -1,0 +1,6 @@
+{
+  "extends": "doctolib",
+  "env": {
+    "node": true
+  }
+}
