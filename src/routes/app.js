@@ -8,6 +8,7 @@ export default ({children}) => (
     </head>
     <body>
       {children}
+      <script src="/dist/bundle.js" />
     </body>
   </html>
 );

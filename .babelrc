@@ -1,1 +1,3 @@
-{"presets": ["doctolib"]}
+{
+  "presets": ["doctolib"]
+}

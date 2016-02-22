@@ -2,12 +2,39 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import express from 'express';
 import http from 'http';
-import routes from './routes';
 import {match, RouterContext} from 'react-router';
+import config from './config';
+import path from 'path';
 
 const app = express();
 
+
+if (config.get('env') === 'development') {
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const webpack = require('webpack');
+  const config = require('../webpack.config.babel');
+  const compiler = webpack(config);
+
+  compiler.plugin('done', () => {
+    console.log('Clearing module cache from server');
+    Object.keys(require.cache).forEach(id => {
+      delete require.cache[id];
+    });
+  });
+
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath,
+    stats: {colors: true}
+  }));
+  app.use(webpackHotMiddleware(compiler));
+}
+
+app.use(express.static(path.join(__dirname, '../public')));
 app.use((req, res, next) => {
+  const routes = require('./routes').default;
+
   match({routes, location: req.url}, (error, redirectLocation, props) => {
     if (error)
       return next(error);

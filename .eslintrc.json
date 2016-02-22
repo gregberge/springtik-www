@@ -2,5 +2,8 @@
   "extends": "doctolib/react",
   "env": {
     "node": true
+  },
+  "rules": {
+    "react/prop-types": 0
   }
 }

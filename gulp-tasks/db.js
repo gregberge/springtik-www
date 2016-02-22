@@ -6,4 +6,9 @@ export default gulp => {
     db.sync(argv)
       .then(() => db.close() || null)
   );
+
+  gulp.task('db:drop', () =>
+    db.drop(argv)
+      .then(() => db.close() || null)
+  );
 };
