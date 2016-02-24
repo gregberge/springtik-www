@@ -2,6 +2,6 @@ import React from 'react';
 
 export default () => (
   <header>
-    <div>kkk</div>
+    <div>zzz</div>
   </header>
 );

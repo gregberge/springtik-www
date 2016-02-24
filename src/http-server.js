@@ -10,6 +10,7 @@ import fs from 'fs';
 const app = express();
 
 if (config.get('env') === 'development') {
+  const serverPath = path.join(__dirname, '../public/dist/bundle.server.js');
   const createWpdm = require('webpack-dev-middleware');
   const createWphm = require('webpack-hot-middleware');
   const webpack = require('webpack');
@@ -17,9 +18,7 @@ if (config.get('env') === 'development') {
   const compiler = webpack(config);
 
   compiler.plugin('done', () => {
-    Object.keys(require.cache).forEach(id => {
-      delete require.cache[id];
-    });
+    delete require.cache[serverPath];
   });
 
   const wpdm = createWpdm(compiler, {
@@ -30,33 +29,32 @@ if (config.get('env') === 'development') {
   app.use(wpdm);
   app.use(createWphm(compiler));
 
+  app.use(express.static(path.join(__dirname, '../public')));
+
   app.use((req, res, next) => {
-    const serverPath = path.join(__dirname, '../public/dist/bundle.server.js');
-    fs.writeFileSync(
-      serverPath,
-      wpdm.fileSystem.readFileSync(serverPath, 'utf8')
-    );
+    fs.writeFile(serverPath, wpdm.fileSystem.readFileSync(serverPath), err => {
+      if (err)
+        return next(err);
 
-    const routes = require(serverPath).default;
+      const routes = require(serverPath).default;
 
-    match({routes, location: req.url}, (error, redirectLocation, props) => {
-      if (error)
-        return next(error);
+      match({routes, location: req.url}, (error, redirectLocation, props) => {
+        if (error)
+          return next(error);
 
-      if (redirectLocation)
-        return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        if (redirectLocation)
+          return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 
-      if (!props)
-        return res.status(404).send('Not found');
+        if (!props)
+          return res.status(404).send('Not found');
 
-      const react = ReactDOM.renderToString(
-        React.createElement(RouterContext, props)
-      );
-      res.send(`<!DOCTYPE html>${react}`);
+        const react = ReactDOM.renderToString(
+          React.createElement(RouterContext, props)
+        );
+        res.send(`<!DOCTYPE html>${react}`);
+      });
     });
   });
 }
-
-app.use(express.static(path.join(__dirname, '../public')));
 
 http.createServer(app).listen(8000);
