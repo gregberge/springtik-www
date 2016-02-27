@@ -1,3 +1,4 @@
 {
-  "presets": ["doctolib"]
+  "presets": ["doctolib"],
+  "ignore": ["public", "node_modules"]
 }

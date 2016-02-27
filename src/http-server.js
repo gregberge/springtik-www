@@ -5,7 +5,6 @@ import http from 'http';
 import {match, RouterContext} from 'react-router';
 import config from './config';
 import path from 'path';
-import fs from 'fs';
 
 const app = express();
 
@@ -15,44 +14,64 @@ if (config.get('env') === 'development') {
   const createWphm = require('webpack-hot-middleware');
   const webpack = require('webpack');
   const config = require('../webpack.config.babel').default;
-  const compiler = webpack(config);
+  const clientCompiler = webpack(config[0]);
+  const serverCompiler = webpack(config[1]);
 
-  compiler.plugin('done', () => {
+  serverCompiler.watch({}, err => {
+    if (err)
+      throw err;
+  });
+
+  clientCompiler.plugin('done', () => {
     delete require.cache[serverPath];
   });
 
-  const wpdm = createWpdm(compiler, {
+  const wpdm = createWpdm(clientCompiler, {
     noInfo: true,
     publicPath: config[0].output.publicPath,
     stats: {colors: true}
   });
   app.use(wpdm);
-  app.use(createWphm(compiler));
+  app.use(createWphm(clientCompiler));
 
   app.use(express.static(path.join(__dirname, '../public')));
 
   app.use((req, res, next) => {
-    fs.writeFile(serverPath, wpdm.fileSystem.readFileSync(serverPath), err => {
-      if (err)
-        return next(err);
+    const css = [];
 
-      const routes = require(serverPath).default;
+    class ContextInjector extends React.Component {
+      static childContextTypes = {
+        insertCss: React.PropTypes.func.isRequired
+      };
 
-      match({routes, location: req.url}, (error, redirectLocation, props) => {
-        if (error)
-          return next(error);
+      getChildContext() {
+        return {
+          insertCss: styles =>
+            css.push(styles._getCss())
+        };
+      }
 
-        if (redirectLocation)
-          return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      render() {
+        return React.createElement(RouterContext, this.props);
+      }
+    }
 
-        if (!props)
-          return res.status(404).send('Not found');
+    const routes = require(serverPath).default;
 
-        const react = ReactDOM.renderToString(
-          React.createElement(RouterContext, props)
-        );
-        res.send(`<!DOCTYPE html>${react}`);
-      });
+    match({routes, location: req.url}, (error, redirectLocation, props) => {
+      if (error)
+        return next(error);
+
+      if (redirectLocation)
+        return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+
+      if (!props)
+        return res.status(404).send('Not found');
+
+      const react = ReactDOM.renderToString(
+        React.createElement(ContextInjector, props)
+      );
+      res.send(`<!DOCTYPE html>${react.replace('// %CSS%', css.join(''))}`);
     });
   });
 }
