@@ -13,6 +13,13 @@ const config = convict({
       doc: 'The database uri',
       format: String
     }
+  },
+  server: {
+    port: {
+      doc: 'The server port number',
+      format: Number,
+      env: 'PORT'
+    }
   }
 });
 

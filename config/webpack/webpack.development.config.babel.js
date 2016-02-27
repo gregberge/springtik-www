@@ -1,7 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
 import autoprefixer from 'autoprefixer';
-// import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 const baseConfig = {
   debug: true,
@@ -48,19 +47,19 @@ export default [
     ...baseConfig,
     name: 'browser',
     output: {
-      path: path.join(__dirname, 'public/dist'),
+      path: path.join(__dirname, '../../public/dist'),
       publicPath: '/dist',
       filename: 'bundle.js'
     },
-    context: path.join(__dirname, 'src/client')
+    context: path.join(__dirname, '../../src/client')
   },
   {
     ...baseConfig,
     name: 'server',
     target: 'node',
-    context: path.join(__dirname, 'src/server'),
+    context: path.join(__dirname, '../../src/server'),
     output: {
-      path: path.join(__dirname, 'public/dist'),
+      path: path.join(__dirname, '../../public/dist'),
       publicPath: '/dist',
       filename: 'bundle.server.js',
       libraryTarget: 'commonjs2'

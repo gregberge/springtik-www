@@ -1,5 +1,8 @@
 {
   "database": {
     "uri": "postgres://springtik:springtik@localhost:5432/springtik"
+  },
+  "server": {
+    "port": 8000
   }
 }
