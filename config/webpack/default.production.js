@@ -1,5 +1,6 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
+import webpack from 'webpack';
 
 export default app => {
   const baseConfig = {
@@ -13,7 +14,7 @@ export default app => {
         },
         {
           test: /\.scss$/,
-          loader: 'isomorphic-style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss'
+          loader: 'isomorphic-style!css?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss'
         },
         {
           test: /\.svg$/,
@@ -28,7 +29,10 @@ export default app => {
     postcss: [
       autoprefixer
     ],
-    plugins: [],
+    plugins: [
+      new webpack.optimize.OccurrenceOrderPlugin(),
+      new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}})
+    ],
     resolve: {
       modulesDirectories: ['src', 'node_modules']
     }

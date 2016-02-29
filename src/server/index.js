@@ -4,8 +4,11 @@ import config from '../config';
 import subdomain from 'express-subdomain';
 import admin from './admin';
 import www from './www';
+import compress from 'compression';
 
 const app = express();
+
+app.use(compress());
 
 app.use(subdomain('admin', admin));
 app.use(subdomain('www', www));
