@@ -1,0 +1,10 @@
+@import "~normalize.css";
+@import "./variables";
+
+:global {
+  html, body {
+    background-color: $white-color;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+  }
+}

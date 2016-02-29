@@ -1,0 +1,28 @@
+@import "app/admin/styles/variables";
+
+.header {
+  position: relative;
+  background: $primary-color;
+  height: $header-height;
+  padding: 0 $padding-unit / 2;
+  color: $white-color;
+  font-size: 0.9rem;
+}
+
+.logo {
+  display: inline-block;
+  height: $header-height;
+  width: 130px;
+  background-size: auto 20px;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-image: url('./logo.svg');
+}
+
+.nav {
+  position: absolute;
+  right: $padding-unit / 2;
+  height: $header-height;
+  line-height: $header-height;
+  display: inline-block;
+}

@@ -4,6 +4,6 @@ import BaseComponent from 'components/base';
 
 export default class Home extends BaseComponent {
   render() {
-    return <div>dd azezeddd <Link to="/test">test</Link></div>;
+    return <div>ADMIN <Link to="/test">test</Link></div>;
   }
 }

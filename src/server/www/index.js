@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import express from 'express';
-import http from 'http';
 import {match, RouterContext} from 'react-router';
-import config from './config';
+import config from '../../config';
 import path from 'path';
 
-const app = express();
+const router = express.Router();
+const publicPath = path.join(__dirname, '../../../public');
+const serverPath = path.join(publicPath, 'www/dist/bundle.server.js');
 
-app.use(express.static(path.join(__dirname, '../public')));
+router.use(express.static(path.join(publicPath, 'www')));
 
 if (config.get('env') === 'development') {
-  const serverPath = path.join(__dirname, '../public/dist/bundle.server.js');
   const createWpdm = require('webpack-dev-middleware');
   const createWphm = require('webpack-hot-middleware');
   const webpack = require('webpack');
-  const config = require('../config/webpack/webpack.development.config.babel').default;
+  const config = require('../../../config/webpack/www.development.babel').default;
   const clientCompiler = webpack(config[0]);
   const serverCompiler = webpack(config[1]);
 
@@ -34,11 +34,11 @@ if (config.get('env') === 'development') {
     stats: {colors: true}
   });
 
-  app.use(wpdm);
-  app.use(createWphm(clientCompiler));
+  router.use(wpdm);
+  router.use(createWphm(clientCompiler));
 }
 
-app.use((req, res, next) => {
+router.use((req, res, next) => {
   const css = [];
 
   class ContextInjector extends React.Component {
@@ -58,7 +58,7 @@ app.use((req, res, next) => {
     }
   }
 
-  const routes = require('../public/dist/bundle.server').default;
+  const routes = require(serverPath).default;
 
   match({routes, location: req.url}, (error, redirectLocation, props) => {
     if (error)
@@ -77,4 +77,4 @@ app.use((req, res, next) => {
   });
 });
 
-http.createServer(app).listen(config.get('server.port'));
+export default router;

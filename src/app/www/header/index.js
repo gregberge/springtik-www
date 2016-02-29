@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './header.css';
+import styles from './header.scss';
 import BaseComponent from 'components/base';
 
 export default class Header extends BaseComponent {
