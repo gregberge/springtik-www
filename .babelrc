@@ -1,4 +1,11 @@
 {
   "presets": ["doctolib"],
-  "ignore": ["public", "node_modules"]
+  "plugins": [
+    "syntax-async-functions",
+    "transform-regenerator"
+  ],
+  "ignore": [
+    "public",
+    "node_modules/(?!rxjs-es)"
+  ]
 }

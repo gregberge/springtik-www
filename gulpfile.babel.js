@@ -1,3 +1,4 @@
+/* eslint no-sync: 0 */
 import gulp from 'gulp';
 import fs from 'fs';
 

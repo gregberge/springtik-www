@@ -9,7 +9,7 @@ export default app => {
       loaders: [
         {
           test: /\.js$/,
-          exclude: /node_modules/,
+          exclude: /node_modules\/(?!rxjs-es)/,
           loader: 'babel'
         },
         {
@@ -18,7 +18,7 @@ export default app => {
         },
         {
           test: /\.svg$/,
-          loader: 'url?limit=10000&mimetype=image/svg+xml'
+          loader: 'url?limit=5000&mimetype=image/svg+xml'
         }
       ]
     },

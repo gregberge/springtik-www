@@ -61,14 +61,20 @@ router.use((req, res, next) => {
   const routes = require(serverPath).default;
 
   match({routes, location: req.url}, (error, redirectLocation, props) => {
-    if (error)
-      return next(error);
+    if (error) {
+      next(error);
+      return;
+    }
 
-    if (redirectLocation)
-      return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      return;
+    }
 
-    if (!props)
-      return res.status(404).send('Not found');
+    if (!props) {
+      res.status(404).send('Not found');
+      return;
+    }
 
     const react = ReactDOM.renderToString(
       React.createElement(ContextInjector, props)

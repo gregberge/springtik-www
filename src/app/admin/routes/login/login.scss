@@ -1,0 +1,35 @@
+@import "styles/variables";
+
+.login {
+  height: 100%;
+  background: $primary-color;
+  position: relative;
+  overflow: auto;
+}
+
+.title {
+  color: $primary-color;
+  text-align: center;
+  margin: 40px 0 0;
+  font-size: 1.5em;
+}
+
+.panel {
+  background: $white-color;
+  border-radius: 4px;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow: auto;
+
+  form {
+    padding: 40px;
+  }
+}
+
+.logo {
+  margin: 40px 0;
+  height: 100px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-image: url('images/shield.svg');
+}

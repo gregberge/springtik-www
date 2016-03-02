@@ -1,0 +1,22 @@
+@import "styles/variables";
+
+:global {
+  html, body {
+    background-color: $white-color;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    height: 100%;
+  }
+
+  html {
+    visibility: hidden;
+
+    &.wf-active {
+      visibility: visible;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}

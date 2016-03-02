@@ -1,9 +1,6 @@
 {
-  "extends": "doctolib/react",
+  "extends": "springtik/react",
   "env": {
     "node": true
-  },
-  "rules": {
-    "react/prop-types": 0
   }
 }

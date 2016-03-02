@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './header.scss';
 import BaseComponent from 'components/base';
+import {Link} from 'react-router';
 
 export default class Header extends BaseComponent {
   styles = styles;
@@ -10,7 +11,9 @@ export default class Header extends BaseComponent {
       <header className={styles.header}>
         <div className={styles.logo} />
         <nav className={styles.nav}>
-          Se connecter
+          <Link to="/login">
+            <i className="fa fa-sign-in" /> Se connecter
+          </Link>
         </nav>
       </header>
     );
