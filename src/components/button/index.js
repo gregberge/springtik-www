@@ -1,13 +1,13 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import styles from './button.scss';
 import BaseComponent from 'components/base';
 import classnames from 'classnames';
 
 export default class Button extends BaseComponent {
-  static propTypes = {
-    block: PropTypes.bool,
-    large: PropTypes.bool
-  };
+  // static propTypes = {
+  //   block: PropTypes.bool,
+  //   large: PropTypes.bool
+  // };
 
   styles = styles;
 

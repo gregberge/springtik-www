@@ -1,12 +1,12 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import styles from './input.scss';
 import BaseComponent from 'components/base';
 import classnames from 'classnames';
 
 export default class Input extends BaseComponent {
-  static propTypes = {
-    icon: PropTypes.string
-  };
+  // static propTypes = {
+  //   icon: PropTypes.string
+  // };
 
   styles = styles;
 
