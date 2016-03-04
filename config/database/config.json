@@ -1,6 +1,0 @@
-{
-  "development": {
-    "url": "postgres://springtik:springtik@localhost:5432/springtik",
-    "dialect": "postgres"
-  }
-}

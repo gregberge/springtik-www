@@ -1,46 +1,39 @@
-import Sequelize from 'sequelize';
-import Promise from 'bluebird';
+import {Model} from 'objection';
 import bcrypt from 'bcryptjs';
 
-export default db => {
-  const User = db.define('user', {
-    email: {
-      type: Sequelize.STRING
-    },
-    password: {
-      type: Sequelize.STRING
-    }
-  }, {
-    paranoid: true,
-    underscored: true,
-    classMethods: {
-      comparePassword(password, hash) {
-        return Promise.promisify(bcrypt.compare.bind(bcrypt))(password, hash);
-      },
-      encryptPassword(password) {
-        return Promise.promisify(bcrypt.hash.bind(bcrypt))(password, 8);
-      }
-    },
-    instanceMethods: {
-      encryptPassword(password) {
-        return User.encryptPassword(password)
-          .then(hash => {
-            this.password = hash;
-          });
-      },
-      comparePassword(password) {
-        return User.comparePassword(password, this.password);
-      }
-    },
-    hooks: {
-      beforeCreate(user) {
-        return user.encryptPassword(user.password);
-      }
-    },
-    indexes: [
-      {fields: ['email'], unique: true}
-    ]
-  });
+export default class User extends Model {
+  static tableName = 'users';
 
-  return User;
-};
+  static jsonSchema = {
+    type: 'object',
+    required: ['email', 'password'],
+
+    properties: {
+      id: {type: 'integer'},
+      email: {type: 'string', minLength: 1, maxLength: 255},
+      password: {type: 'string', minLength: 1, maxLength: 255}
+    }
+  };
+
+  cryptPassword() {
+    return new Promise((resolve, reject) => {
+      bcrypt.hash(this.plainTextPassword, 8, (err, password) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(password);
+      });
+    });
+  }
+
+  $beforeInsert() {
+    this.createdAt = new Date().toISOString();
+    return this.cryptPassword();
+  }
+
+  $beforeUpdate() {
+    this.updatedAt = new Date().toISOString();
+  }
+}

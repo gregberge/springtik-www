@@ -8,12 +8,6 @@ const config = convict({
     default: 'development',
     env: 'NODE_ENV'
   },
-  database: {
-    uri: {
-      doc: 'The database uri',
-      format: String
-    }
-  },
   server: {
     port: {
       doc: 'The server port number',

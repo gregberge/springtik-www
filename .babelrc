@@ -2,7 +2,10 @@
   "presets": ["doctolib"],
   "plugins": [
     "syntax-async-functions",
-    "transform-regenerator"
+    "transform-regenerator",
+    ["babel-root-import", {
+      "rootPathSuffix": "src"
+    }]
   ],
   "ignore": [
     "public",

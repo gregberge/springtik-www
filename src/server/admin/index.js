@@ -2,12 +2,18 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import express from 'express';
 import {match, RouterContext} from 'react-router';
-import config from '../../config';
+import config from '~/config';
 import path from 'path';
+import api from './api';
 
 const router = express.Router();
+
+router.use('/api', api);
+
+
 const publicPath = path.join(__dirname, '../../../public');
 const serverPath = path.join(publicPath, 'admin/dist/bundle.server.js');
+
 
 if (config.get('env') === 'development') {
   const createWpdm = require('webpack-dev-middleware');

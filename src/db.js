@@ -1,15 +1,7 @@
-/* eslint no-sync: 0 */
-import Sequelize from 'sequelize';
-import config from './config';
-import fs from 'fs';
-import path from 'path';
+import Knex from 'knex';
+import knexConfig from '../knexfile';
+import {Model} from 'objection';
 
-const sequelize = new Sequelize(config.get('database.uri'));
+const knex = Knex(knexConfig.development);
 
-// Require all models
-const files = fs.readdirSync(path.join(__dirname, 'models'));
-files.forEach(file =>
-  require(`./models/${file}`).default(sequelize)
-);
-
-export default sequelize;
+Model.knex(knex);
