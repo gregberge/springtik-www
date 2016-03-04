@@ -10,14 +10,14 @@
   ],
   "env": {
     "development": {
-      "plugins": ["babel-root-import", {
+      "plugins": [["babel-root-import", {
         "rootPathSuffix": "src"
-      }]
+      }]]
     },
     "production": {
-      "plugins": ["babel-root-import", {
+      "plugins": [["babel-root-import", {
         "rootPathSuffix": "lib"
-      }]
+      }]]
     }
   }
 }
