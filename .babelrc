@@ -2,13 +2,22 @@
   "presets": ["doctolib"],
   "plugins": [
     "syntax-async-functions",
-    "transform-regenerator",
-    ["babel-root-import", {
-      "rootPathSuffix": "src"
-    }]
+    "transform-regenerator"
   ],
   "ignore": [
     "public",
     "node_modules/(?!rxjs-es)"
-  ]
+  ],
+  "env": {
+    "development": {
+      "plugins": ["babel-root-import", {
+        "rootPathSuffix": "src"
+      }]
+    },
+    "production": {
+      "plugins": ["babel-root-import", {
+        "rootPathSuffix": "lib"
+      }]
+    }
+  }
 }
