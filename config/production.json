@@ -1,5 +1,6 @@
 {
   "session": {
-    "secret": "sdsde192312JRQZEjej&é"
+    "secret": "sdsde192312JRQZEjej&é",
+    "redis": {}
   }
 }

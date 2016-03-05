@@ -11,13 +11,15 @@ const config = convict({
   session: {
     secret: {
       doc: 'The session secret',
-      format: String
+      format: String,
+      default: 'secret'
     },
     redis: {
       url: {
         doc: 'Redis url',
         format: String,
-        env: 'REDIS_URL'
+        env: 'REDIS_URL',
+        default: 'redis://localhost:6379'
       }
     }
   },
@@ -34,5 +36,7 @@ const config = convict({
 const env = config.get('env');
 config.loadFile(path.join(__dirname, `../config/${env}.json`));
 config.validate();
+
+console.log(config.get('session.redis'));
 
 export default config;
