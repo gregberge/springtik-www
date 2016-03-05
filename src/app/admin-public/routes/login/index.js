@@ -24,7 +24,7 @@ export default class Login extends BaseComponent {
         return 'Mot de passe incorrect.';
     }
 
-    return null;
+    return 'Désolé, une erreur est survenue.';
   }
 
   onSubmit = model => {

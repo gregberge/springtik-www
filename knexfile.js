@@ -30,6 +30,8 @@ if (process.env.DATABASE_URL) {
     database: pgProd.path.substring(1),
     ssl: true
   };
+
+  console.log('___DB___', pgProd, config.production.connection);
 }
 
 module.exports = config;

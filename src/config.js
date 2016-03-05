@@ -37,6 +37,4 @@ const env = config.get('env');
 config.loadFile(path.join(__dirname, `../config/${env}.json`));
 config.validate();
 
-console.log(config.get('session.redis'));
-
 export default config;
