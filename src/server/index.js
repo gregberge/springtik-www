@@ -8,8 +8,8 @@ import www from './www';
 import compress from 'compression';
 import morgan from 'morgan';
 import errorHandler from 'express-err';
-import patchAsyncAwait from './patch-async-await';
-import '../db';
+import patchAsyncAwait from './utils/patch-async-await';
+import './db';
 
 const app = express();
 
@@ -22,7 +22,14 @@ app.use(subdomain('admin', admin));
 app.use(subdomain('www', www));
 
 // Error handling.
-app.use(errorHandler());
+app.use((err, req, res, next) => {
+  console.log(err.stack);
+  next(err);
+});
+app.use(errorHandler({
+  exitOnUncaughtException: false,
+  formatters: ['json', 'text']
+}));
 
 const server = http.createServer(app);
 server.listen(config.get('server.port'), () =>

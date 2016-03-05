@@ -15,6 +15,19 @@ export default class User extends Model {
     }
   };
 
+  validPassword(password) {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, this.password, (err, isMatch) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(isMatch);
+      });
+    });
+  }
+
   cryptPassword() {
     return new Promise((resolve, reject) => {
       bcrypt.hash(this.plainTextPassword, 8, (err, password) => {

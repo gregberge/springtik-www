@@ -1,12 +1,19 @@
 // Colors
 
-$primary-color: #3CB5B5;
+$green-color: #21a9b1;
 $yellow-color: #FCD920;
 $red-color: #E53B51;
 $orange-color: #EC6C20;
 $white-color: #FFFEFF;
 
-$text-color: #3f3f44;
+$primary-color: $green-color;
+
+$gray-light-color: #999999;
+$gray-color: #767676;
+$gray-dark-color: #333333;
+
+$text-color: $gray-dark-color;
+$danger-color: #e62638;
 
 // Unit
 

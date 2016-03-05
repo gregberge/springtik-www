@@ -1,4 +1,5 @@
-import {Observer} from 'rxjs-es/Observer';
+import Rx from '@doctolib/rx';
+import './rx-adapter';
 
 export default class ActionLocator {
   actions = [];
@@ -10,7 +11,7 @@ export default class ActionLocator {
    * @returns {Rx.Subject}
    */
   get(name) {
-    this.actions[name] = this.actions[name] || new Observer();
+    this.actions[name] = this.actions[name] || new Rx.Subject();
     return this.actions[name];
   }
 

@@ -42,3 +42,13 @@
     background-image: linear-gradient(to top, rgba(212,212,212,0) 0, #d4d4d4 30%, #d4d4d4 70%, rgba(212,212,212,0) 100%);
   }
 }
+
+.containerError {
+  .formControl {
+    color: $danger-color;
+  }
+
+  .inputIcon {
+    color: $danger-color;
+  }
+}

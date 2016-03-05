@@ -1,4 +1,10 @@
 {
+  "session": {
+    "secret": "foobar",
+    "redis": {
+      "url": "redis://localhost:6379"
+    }
+  },
   "server": {
     "port": 8000
   }

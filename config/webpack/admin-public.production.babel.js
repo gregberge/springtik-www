@@ -1,2 +1,2 @@
 import defaultConfig from './default.production';
-export default defaultConfig('admin');
+export default defaultConfig('admin-public');

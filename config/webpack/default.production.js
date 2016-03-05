@@ -47,6 +47,12 @@ export default app => {
         publicPath: '/dist',
         filename: 'bundle.js'
       },
+      resolve: {
+        ...baseConfig.resolve,
+        alias: {
+          'components/http-client': 'components/http-client/http-client-browser.js'
+        }
+      },
       entry: ['./client.js']
     },
     {
@@ -58,6 +64,12 @@ export default app => {
         publicPath: '/dist',
         filename: 'bundle.server.js',
         libraryTarget: 'commonjs2'
+      },
+      resolve: {
+        ...baseConfig.resolve,
+        alias: {
+          'components/http-client': 'components/http-client/http-client-server.js'
+        }
       },
       entry: ['./server.js']
     }

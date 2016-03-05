@@ -5,19 +5,19 @@
     "transform-regenerator"
   ],
   "ignore": [
-    "public",
-    "node_modules/(?!rxjs-es)"
+    "dist",
+    "node_modules"
   ],
   "env": {
     "development": {
-      "plugins": [["babel-root-import", {
-        "rootPathSuffix": "src"
-      }]]
+      "plugins": [["babel-plugin-module-alias", [
+        {"src": "./src", "expose": "~"}
+      ]]]
     },
     "production": {
-      "plugins": [["babel-root-import", {
-        "rootPathSuffix": "lib"
-      }]]
+      "plugins": [["babel-plugin-module-alias", [
+        {"src": "./lib", "expose": "~"}
+      ]]]
     }
   }
 }

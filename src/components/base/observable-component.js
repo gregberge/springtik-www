@@ -1,6 +1,7 @@
 import {Component as ReactComponent, PropTypes} from 'react';
 import shallowEqual from 'shallowequal';
 import ActionLocator from './action-locator';
+import './rx-adapter';
 
 export default class ObservableComponent extends ReactComponent {
   /**

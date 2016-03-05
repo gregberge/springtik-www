@@ -61,6 +61,12 @@ export default app => {
           ...baseConfig.module.loaders.slice(1)
         ]
       },
+      resolve: {
+        ...baseConfig.resolve,
+        alias: {
+          'components/http-client': 'components/http-client/http-client-browser.js'
+        }
+      },
       entry: [
         'webpack-hot-middleware/client',
         './client'
@@ -80,6 +86,12 @@ export default app => {
         publicPath: '/dist',
         filename: 'bundle.server.js',
         libraryTarget: 'commonjs2'
+      },
+      resolve: {
+        ...baseConfig.resolve,
+        alias: {
+          'components/http-client': 'components/http-client/http-client-server.js'
+        }
       },
       entry: ['./server'],
       plugins: []

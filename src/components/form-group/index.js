@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './form-group.scss';
-import BaseComponent from 'components/base';
+import Component from 'components/base';
 
-export default class FormGroup extends BaseComponent {
+export default class FormGroup extends Component {
   styles = styles;
 
   render() {

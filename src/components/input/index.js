@@ -1,28 +1,38 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import styles from './input.scss';
-import BaseComponent from 'components/base';
+import Component from 'components/base';
 import classnames from 'classnames';
 
-export default class Input extends BaseComponent {
-  // static propTypes = {
-  //   icon: PropTypes.string
-  // };
+export default class Input extends Component {
+  static propTypes = {
+    icon: PropTypes.string
+  };
 
   styles = styles;
 
+  focus() {
+    this.refs.input.focus();
+  }
+
+  componentDidMount() {
+    if (this.refs.input.value) {
+      const event = new Event('change');
+      this.refs.input.dispatchEvent(event);
+    }
+  }
+
   render() {
-    const {className: propClassName, icon, ...props} = this.props;
+    const {className: propClassName, icon, hasError, ...props} = this.props;
     const className = classnames(styles.formControl, propClassName);
-    const inputElement = <input {...{className}} {...props} />;
+    const inputElement = <input ref="input" {...{className}} {...props} />;
 
-    if (icon)
-      return (
-        <span>
-          <div className={`${styles.inputIcon} fa fa-${this.props.icon}`} />
-          {inputElement}
-        </span>
-      );
-
-    return inputElement;
+    return (
+      <span className={hasError ? styles.containerError : null}>
+        {icon
+          ? <div className={`${styles.inputIcon} fa fa-${this.props.icon}`} />
+          : null}
+        {inputElement}
+      </span>
+    );
   }
 }

@@ -8,6 +8,19 @@ const config = convict({
     default: 'development',
     env: 'NODE_ENV'
   },
+  session: {
+    secret: {
+      doc: 'The session secret',
+      format: String
+    },
+    redis: {
+      url: {
+        doc: 'Redis url',
+        format: String,
+        env: 'REDIS_URL'
+      }
+    }
+  },
   server: {
     port: {
       doc: 'The server port number',
