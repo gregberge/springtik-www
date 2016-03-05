@@ -32,6 +32,6 @@ if (config.get('env') === 'development')
   wpDev(router, configPath);
 
 router.use(express.static(publicPath));
-router.use(reactRouter({configPath}));
+router.use(reactRouter({routesPath: path.join(publicPath, 'dist/bundle.server.js')}));
 
 export default router;

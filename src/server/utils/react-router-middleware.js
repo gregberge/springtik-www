@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import {match, RouterContext} from 'react-router';
 import path from 'path';
 
-export default ({configPath}) => (req, res, next) => {
+export default ({routesPath}) => (req, res, next) => {
   const css = [];
 
   class ContextInjector extends React.Component {
@@ -23,9 +23,7 @@ export default ({configPath}) => (req, res, next) => {
     }
   }
 
-  const config = require(configPath).default;
-  const serverPath = path.join(config[1].output.path, config[1].output.filename);
-  const routes = require(serverPath).default;
+  const routes = require(routesPath).default;
 
   match({routes, location: req.url}, (error, redirectLocation, props) => {
     if (error) {
