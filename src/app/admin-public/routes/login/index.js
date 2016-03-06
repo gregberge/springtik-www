@@ -1,5 +1,5 @@
-import React, {PropTypes} from 'react';
-import BaseComponent from 'components/base';
+import React, {Component, PropTypes} from 'react';
+import connect from 'components/base/connect';
 import Alert from 'components/alert';
 import styles from './login.scss';
 import getObservables from './login.obs';
@@ -7,17 +7,23 @@ import {taskStates} from '@doctolib/rx';
 import {Form, Input} from '../../form';
 import {USERNAME_NOT_FOUND, INCORRECT_PASSWORD} from 'server/utils/login-errors';
 
-export default class Login extends BaseComponent {
-  getObservables = getObservables;
-
-  styles = styles;
-
-  static obsTypes = {
+export default connect({
+  styles,
+  getObservables,
+  obsTypes: {
     loginResult: PropTypes.object
-  };
+  }
+}, class Login extends Component {
+  componentDidUpdate() {
+    if (super.componentDidUpdate)
+      super.componentDidUpdate();
+
+    if (this.props.loginResult.state === taskStates.SUCCESS)
+      window.location = '/';
+  }
 
   getError() {
-    switch (this.state.loginResult.error.response.bodyData.message) {
+    switch (this.props.loginResult.error.response.bodyData.message) {
       case USERNAME_NOT_FOUND:
         return 'Aucun compte ne correspond à votre email.';
       case INCORRECT_PASSWORD:
@@ -28,20 +34,12 @@ export default class Login extends BaseComponent {
   }
 
   onSubmit = model => {
-    this.triggerAction('login.submitted', model);
+    this.props.triggerAction('login.submitted', model);
     return Promise.reject(new Error());
   };
 
-  componentDidUpdate() {
-    if (super.componentDidUpdate)
-      super.componentDidUpdate();
-
-    if (this.state.loginResult.state === taskStates.SUCCESS)
-      this.context.observables.redirect('/');
-  }
-
   render() {
-    const {loginResult} = this.state;
+    const {loginResult} = this.props;
 
     return (
       <div className={styles.login}>
@@ -80,4 +78,4 @@ export default class Login extends BaseComponent {
       </div>
     );
   }
-}
+});

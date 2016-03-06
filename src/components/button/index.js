@@ -1,22 +1,19 @@
 import React, {PropTypes} from 'react';
 import styles from './button.scss';
-import Component from 'components/base';
+import connect from 'components/base/connect';
 import classnames from 'classnames';
 
-export default class Button extends Component {
-  static propTypes = {
-    block: PropTypes.bool,
-    large: PropTypes.bool
-  };
+const Button = ({className: propClassName, children, block, large, ...props}) => {
+  const className = classnames(styles.btn, {
+    [styles.btnBlock]: block,
+    [styles.btnLarge]: large
+  }, propClassName);
+  return <button {...{className}} {...props}>{children}</button>;
+};
 
-  styles = styles;
+Button.propTypes = {
+  block: PropTypes.bool,
+  large: PropTypes.bool
+};
 
-  render() {
-    const {className: propClassName, children, block, large, ...props} = this.props;
-    const className = classnames(styles.btn, {
-      [styles.btnBlock]: block,
-      [styles.btnLarge]: large
-    }, propClassName);
-    return <button {...{className}} {...props}>{children}</button>;
-  }
-}
+export default connect({styles}, Button);

@@ -1,4 +1,7 @@
-var config = {
+/* eslint strict: 0, no-process-env: 0 */
+'use strict';
+
+const config = {
   development: {
     client: 'postgresql',
     connection: {
@@ -19,8 +22,8 @@ var config = {
 };
 
 if (process.env.DATABASE_URL) {
-  var url = require('url');
-  var pgProd = url.parse(process.env.DATABASE_URL);
+  const url = require('url');
+  const pgProd = url.parse(process.env.DATABASE_URL);
 
   config.production.connection = {
     host: pgProd.hostname,

@@ -1,26 +1,23 @@
 import React, {PropTypes} from 'react';
 import styles from './alert.scss';
-import Component from 'components/base';
+import connect from 'components/base/connect';
 import classnames from 'classnames';
 
-export default class Alert extends Component {
-  static propTypes = {
-    uiStyle: PropTypes.oneOf([
-      'danger'
-    ])
-  };
+const Alert = ({uiStyle, className: propClassName, children, ...props}) => {
+  const uiStyleClassName = uiStyle ? styles[uiStyle] : null;
+  const className = classnames(styles.alert, uiStyleClassName, propClassName);
 
-  styles = styles;
+  return (
+    <div {...{...props, className}}>
+      {children}
+    </div>
+  );
+};
 
-  render() {
-    const {uiStyle, className: propClassName, children, ...props} = this.props;
-    const uiStyleClassName = uiStyle ? styles[uiStyle] : null;
-    const className = classnames(styles.alert, uiStyleClassName, propClassName);
+Alert.propTypes = {
+  uiStyle: PropTypes.oneOf([
+    'danger'
+  ])
+};
 
-    return (
-      <div {...{...props, className}}>
-        {children}
-      </div>
-    );
-  }
-}
+export default connect({styles}, Alert);

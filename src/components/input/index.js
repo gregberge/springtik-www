@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import styles from './input.scss';
-import Component from 'components/base';
+import Component from 'components/base/base-component';
 import classnames from 'classnames';
 
 export default class Input extends Component {
@@ -8,17 +8,15 @@ export default class Input extends Component {
     icon: PropTypes.string
   };
 
+  componentDidMount() {
+    if (this.refs.input.value)
+      this.props.onChange({target: this.refs.input});
+  }
+
   styles = styles;
 
   focus() {
     this.refs.input.focus();
-  }
-
-  componentDidMount() {
-    if (this.refs.input.value) {
-      const event = new Event('change');
-      this.refs.input.dispatchEvent(event);
-    }
   }
 
   render() {

@@ -1,11 +1,8 @@
 import React from 'react';
 import styles from './form-group.scss';
-import Component from 'components/base';
+import connect from 'components/base/connect';
 
-export default class FormGroup extends Component {
-  styles = styles;
+const FormGroup = ({children}) =>
+  <div className={styles.formGroup}>{children}</div>;
 
-  render() {
-    return <div className={styles.formGroup}>{this.props.children}</div>;
-  }
-}
+export default connect({styles}, FormGroup);

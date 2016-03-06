@@ -1,5 +1,4 @@
 import Rx from '@doctolib/rx';
-import './rx-adapter';
 
 export default class ActionLocator {
   actions = [];
@@ -22,6 +21,6 @@ export default class ActionLocator {
    * @param {*} value
    */
   trigger(name, value) {
-    this.get(name).next(value);
+    this.get(name).onNext(value);
   }
 }

@@ -5,7 +5,8 @@ import ObservableComponent from './observable-component';
 export default class BaseComponent extends ObservableComponent {
   static contextTypes = {
     ...ObservableComponent.contextTypes,
-    insertCss: PropTypes.func
+    insertCss: PropTypes.func,
+    insertJs: PropTypes.func
   };
 
   /**
@@ -22,6 +23,9 @@ export default class BaseComponent extends ObservableComponent {
       else
         this.removeCss = this.styles._insertCss();
     }
+
+    if (this.scripts && this.context.insertJs)
+      this.context.insertJs(this.scripts);
   }
 
   /**

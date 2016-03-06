@@ -1,10 +1,10 @@
-@import "app/admin/styles/variables";
+@import "styles/variables";
 
 .header {
   position: relative;
   background: $primary-color;
   height: $header-height;
-  padding: 0 $padding-unit / 2;
+  padding: 0 $padding-unit * 2;
   color: $white-color;
   font-size: 0.85rem;
 }
@@ -12,17 +12,59 @@
 .logo {
   display: inline-block;
   height: $header-height;
-  width: 130px;
-  background-size: auto 20px;
+  width: 150px;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: left center;
-  background-image: url('./logo.svg');
+  background-image: url('images/logo.svg');
+}
+
+.user {
+  position: absolute;
+  cursor: pointer;
+  height: $header-height - $padding-unit;
+  width: $header-height - $padding-unit;
+  top: $padding-unit / 2;
+  right: $padding-unit * 2;
+  border: 1px solid $white-color;
+  border-radius: 50%;
+  background: grey;
+  box-shadow: 0 0 4px 2px rgba($gray-color, 0.01);
+  transition: box-shadow 300ms;
+
+  &:hover {
+    box-shadow: 0 0 4px 2px rgba($gray-color, 0.6);
+  }
 }
 
 .nav {
   position: absolute;
-  right: $padding-unit / 2;
-  height: $header-height;
-  line-height: $header-height;
+  min-width: 200;
+  top: $header-height;
+  right: $padding-unit * 2;
   display: inline-block;
+  background: $white-color;
+  box-shadow: 0 0 5px 1px rgba($gray-color, 0.4);
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+  padding: $padding-unit / 4 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li a {
+      display: block;
+      padding: $padding-unit / 2 $padding-unit;
+
+      &:hover {
+        background-color: lighten($gray-light-color, 35);
+        text-decoration: none;
+      }
+
+      i {
+        margin-right: $padding-unit;
+      }
+    }
+  }
 }

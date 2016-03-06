@@ -1,4 +1,4 @@
-import 'whatwg-fetch';
+import 'isomorphic-fetch';
 import HttpError from './http-error';
 import {format as formatUrl} from 'url';
 
@@ -9,18 +9,6 @@ const DEFAULT_FETCH_OPTIONS = {
     'Content-Type': 'application/json; charset=utf-8'
   }
 };
-
-if (fetch.polyfill) {
-  // Fix for old android browsers
-  // see https://bugs.jquery.com/ticket/8245
-  const originalSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
-  XMLHttpRequest.prototype.setRequestHeader = function setRequestHeader(name, value) {
-    if (name === 'accept')
-      name = 'Accept';
-
-    return originalSetRequestHeader.call(this, name, value);
-  };
-}
 
 export default class HttpClient {
   /**

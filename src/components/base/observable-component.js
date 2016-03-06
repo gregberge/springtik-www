@@ -1,7 +1,8 @@
+/* eslint no-empty: 0, no-console: 0, no-process-env: 0 */
 import {Component as ReactComponent, PropTypes} from 'react';
 import shallowEqual from 'shallowequal';
 import ActionLocator from './action-locator';
-import './rx-adapter';
+import Rx from '@doctolib/rx';
 
 export default class ObservableComponent extends ReactComponent {
   /**
@@ -60,8 +61,15 @@ export default class ObservableComponent extends ReactComponent {
    * - Cache childContext
    */
   componentWillMount() {
+    if (this.constructor.fetchResources) {
+      if (this.constructor.resources$)
+        this.resources$ = this.constructor.resources$;
+      else
+        this.resources$ = Rx.Observable.defer(() => this.constructor.fetchResources());
+    }
+
     this._cachedObservables = this.getObservables
-      ? this.getObservables(this.context.observables, this.props$) : null;
+      ? this.getObservables(this.context.observables, {props$: this.props$, resources$: this.resources$}) : null;
     this._cachedChildContext = this._createChildContext();
 
     this._subscribeToObservables(
@@ -70,6 +78,9 @@ export default class ObservableComponent extends ReactComponent {
 
     if (this.props$)
       this.props$.next(this.props);
+
+    if (typeof window === 'undefined')
+      this._cleanup();
   }
 
   /**
@@ -94,9 +105,7 @@ export default class ObservableComponent extends ReactComponent {
    * - Unsubscribe from observables
    */
   componentWillUnmount() {
-    this._unsubscribeFromObservables();
-    if (this._cachedObservables && this._cachedObservables.dispose)
-      this._cachedObservables.dispose();
+    this._cleanup();
   }
 
   /**
@@ -105,7 +114,7 @@ export default class ObservableComponent extends ReactComponent {
    * @param {string} name
    * @param {*} value
    */
-  triggerAction(name, value) {
+  triggerAction = (name, value) => {
     const actions = this._cachedObservables && this._cachedObservables.actions
       ? this._cachedObservables.actions
       : this.context.observables.actions;
@@ -171,11 +180,11 @@ export default class ObservableComponent extends ReactComponent {
 
     this._obsSubscriptions = obsKeys.map(key =>
       observables[key]
-        .subscribe({
-          next: value =>
+        .subscribe(
+          value =>
             this._observablesSubscribeNext({[key]: value}),
-          error: error => this._observablesSubscribeError(error)
-        })
+          error => this._observablesSubscribeError(error)
+        )
     );
 
     this._checkObsTypes(this._lastOnNextResult || {});
@@ -185,11 +194,20 @@ export default class ObservableComponent extends ReactComponent {
    * Unsubscribe from observables.
    */
   _unsubscribeFromObservables() {
-    this._obsSubscriptions.forEach(sub => sub.unsubscribe());
+    this._obsSubscriptions.forEach(sub => sub.dispose());
 
     this._obsSubscriptions = [];
     this._subscribedObservables = null;
     this._lastOnNextResult = null;
+  }
+
+  /**
+   * Clean up everything.
+   */
+  _cleanup() {
+    this._unsubscribeFromObservables();
+    if (this._cachedObservables && this._cachedObservables.dispose)
+      this._cachedObservables.dispose();
   }
 
   /**

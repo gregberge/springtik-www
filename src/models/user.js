@@ -49,4 +49,9 @@ export default class User extends Model {
   $beforeUpdate() {
     this.updatedAt = new Date().toISOString();
   }
+
+  $formatJson(json) {
+    const {password, ...props} = super.$formatJson(json);
+    return props;
+  }
 }

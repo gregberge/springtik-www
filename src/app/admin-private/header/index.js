@@ -1,21 +1,41 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import styles from './header.scss';
-import BaseComponent from 'components/base';
-import {Link} from 'react-router';
+import connect from 'components/base/connect';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-export default class Header extends BaseComponent {
-  styles = styles;
+const obsTypes = {
+  me: PropTypes.shape({
+    avatar200x200: PropTypes.string
+  })
+};
+
+export default connect({styles, obsTypes}, class extends Component {
+  state = {showNav: false};
+
+  onClickUser = () => this.setState({showNav: !this.state.showNav});
 
   render() {
     return (
       <header className={styles.header}>
+        {JSON.stringify(this.props.me)}
         <div className={styles.logo} />
-        <nav className={styles.nav}>
-          <Link to="/login">
-            <i className="fa fa-sign-in" /> Se connecter
-          </Link>
-        </nav>
+        <div className={styles.user} onClick={this.onClickUser} />
+        <ReactCSSTransitionGroup
+          transitionName="opacity"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={200}
+        >
+          {this.state.showNav ? <nav className={styles.nav}>
+            <ul>
+              <li>
+                <a href="/logout">
+                  <i className="fa fa-power-off" />Déconnexion
+                </a>
+              </li>
+            </ul>
+          </nav> : null}
+        </ReactCSSTransitionGroup>
       </header>
     );
   }
-}
+});

@@ -1,8 +1,11 @@
 import express from 'express';
-import users from './users';
+import adminApi from '~/api/admin';
 
 const router = express.Router();
 
-router.use('/users', users);
+router.get('/me', async function (req, res) {
+  const me = await adminApi.me({req});
+  res.send(me);
+});
 
 export default router;

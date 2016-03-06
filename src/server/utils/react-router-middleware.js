@@ -1,29 +1,16 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import {match, RouterContext} from 'react-router';
-import path from 'path';
+import match from 'react-router/lib/match';
+import createInjector from '~/components/base/create-injector';
+import Rx from '@doctolib/rx';
 
 export default ({routesPath}) => (req, res, next) => {
   const css = [];
+  const js = [];
 
-  class ContextInjector extends React.Component {
-    static childContextTypes = {
-      insertCss: React.PropTypes.func.isRequired
-    };
+  const Injector = createInjector({css, js});
 
-    getChildContext() {
-      return {
-        insertCss: styles =>
-          css.push(styles._getCss())
-      };
-    }
-
-    render() {
-      return React.createElement(RouterContext, this.props);
-    }
-  }
-
-  const routes = require(routesPath).default;
+  const routes = require(routesPath).default({req});
 
   match({routes, location: req.url}, (error, redirectLocation, props) => {
     if (error) {
@@ -41,14 +28,24 @@ export default ({routesPath}) => (req, res, next) => {
       return;
     }
 
-    let content = ReactDOMServer.renderToString(
-      React.createElement(ContextInjector, props)
-    );
+    Promise.all(props.components.map(Comp => {
+      if (!Comp.fetchResources)
+        return Promise.resolve();
 
-    content = content
-      .replace('/* %CSS% */', css.join(''))
-      .replace('/* %JS% */', 'WebFontConfig = {google: {families: [\'Open+Sans::latin\', \'Montserrat:400,700:latin\']}};');
+      return Comp.fetchResources().then(resources => {
+        Comp.resources$ = Rx.Observable.just(resources);
+      });
+    })).then(() => {
+      let content = ReactDOMServer.renderToString(
+        React.createElement(Injector, props)
+      );
 
-    res.send(`<!DOCTYPE html>${content}`);
+      content = content
+        .replace('/* %CSS% */', css.join(''))
+        .replace('/* %JS% */', js.join(''));
+
+      res.send(`<!DOCTYPE html>${content}`);
+    })
+    .catch(err => next(err));
   });
 };

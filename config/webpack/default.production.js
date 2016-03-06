@@ -50,7 +50,7 @@ export default app => {
       resolve: {
         ...baseConfig.resolve,
         alias: {
-          'components/http-client': 'components/http-client/http-client-browser.js'
+          'components/api-client/admin': 'components/api-client/admin/client.js'
         }
       },
       entry: ['./client.js']
@@ -68,7 +68,7 @@ export default app => {
       resolve: {
         ...baseConfig.resolve,
         alias: {
-          'components/http-client': 'components/http-client/http-client-server.js'
+          'components/api-client/admin': 'components/api-client/admin/server.js'
         }
       },
       entry: ['./server.js']
