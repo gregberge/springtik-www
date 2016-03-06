@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import {match, RouterContext} from 'react-router';
-import path from 'path';
 
-export default ({routesPath}) => (req, res, next) => {
+export default ({configureStore, routesPath}) => {
+  const store = configureStore();
+  const routes = require(routesPath);
+  const initialState = store.getState();
   const css = [];
 
   class ContextInjector extends React.Component {
@@ -23,32 +25,28 @@ export default ({routesPath}) => (req, res, next) => {
     }
   }
 
-  const routes = require(routesPath).default;
+  return (req, res, next) => {
+    match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
+      if (error)
+        return next(error);
 
-  match({routes, location: req.url}, (error, redirectLocation, props) => {
-    if (error) {
-      next(error);
-      return;
-    }
+      if (redirectLocation)
+        return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 
-    if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-      return;
-    }
+      if (!renderProps)
+        return res.status(404).send('Not found');
 
-    if (!props) {
+      let content = ReactDOMServer.renderToString(
+        React.createElement(ContextInjector, renderProps)
+      );
+
+      content = content
+        .replace('/* %CSS% */', css.join(''))
+        .replace('/* %JS% */', 'WebFontConfig = {google: {families: [\'Open+Sans::latin\', \'Montserrat:400,700:latin\']}};');
+
+      res.send(`<!DOCTYPE html>${content}`);
+
       res.status(404).send('Not found');
-      return;
-    }
-
-    let content = ReactDOMServer.renderToString(
-      React.createElement(ContextInjector, props)
-    );
-
-    content = content
-      .replace('/* %CSS% */', css.join(''))
-      .replace('/* %JS% */', 'WebFontConfig = {google: {families: [\'Open+Sans::latin\', \'Montserrat:400,700:latin\']}};');
-
-    res.send(`<!DOCTYPE html>${content}`);
-  });
+    });
+  };
 };

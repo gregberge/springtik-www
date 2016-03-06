@@ -5,6 +5,7 @@ import reactRouter from '~/server/utils/react-router-middleware';
 import path from 'path';
 import passport from 'passport';
 import {BAD_CREDENTIALS} from '~/server/utils/login-errors';
+import configureStore from '~/app/admin-public/configure-store';
 
 const router = express.Router();
 
@@ -32,6 +33,9 @@ if (config.get('env') === 'development')
   wpDev(router, configPath);
 
 router.use(express.static(publicPath));
-router.use(reactRouter({routesPath: path.join(publicPath, 'dist/bundle.server.js')}));
+router.use(reactRouter({
+  routesPath: path.join(publicPath, 'dist/bundle.server.js'),
+  configureStore
+}));
 
 export default router;

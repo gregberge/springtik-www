@@ -1,11 +1,8 @@
 import React from 'react';
 import BaseComponent from 'components/base';
 import styles from './app.scss';
-import getObservables from './app.obs.js';
 
 export default class App extends BaseComponent {
-  getObservables = getObservables;
-
   styles = styles;
 
   render() {

@@ -5,7 +5,7 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import passportConfig from './passport-config';
 import adminPublic from './apps/admin-public';
-import adminPrivate from './apps/admin-private';
+// import adminPrivate from './apps/admin-private';
 import config from '~/config';
 
 const router = express.Router();
@@ -25,9 +25,9 @@ router.use(passport.session());
 passportConfig(passport);
 
 router.use((req, res, next) => {
-  if (req.isAuthenticated())
-    adminPrivate(req, res, next);
-  else
+  // if (req.isAuthenticated())
+  //   adminPrivate(req, res, next);
+  // else
     adminPublic(req, res, next);
 });
 
