@@ -1,4 +1,5 @@
 /* eslint no-empty: 0, no-console: 0, no-process-env: 0 */
+/* global __INITIAL_RESOURCES__ */
 import {Component as ReactComponent, PropTypes} from 'react';
 import shallowEqual from 'shallowequal';
 import ActionLocator from './action-locator';
@@ -23,7 +24,8 @@ export default class ObservableComponent extends ReactComponent {
    * @type {object}
    */
   static contextTypes = {
-    observables: PropTypes.object
+    observables: PropTypes.object,
+    initialResources: PropTypes.object
   };
 
   /**
@@ -61,11 +63,20 @@ export default class ObservableComponent extends ReactComponent {
    * - Cache childContext
    */
   componentWillMount() {
+    let initialResources = null;
+
+    if (typeof __INITIAL_RESOURCES__ !== 'undefined') {
+      initialResources = __INITIAL_RESOURCES__;
+    } else {
+      initialResources = this.context.initialResources;
+    }
+
     if (this.constructor.fetchResources) {
-      if (this.constructor.resources$)
-        this.resources$ = this.constructor.resources$;
-      else
+      if (initialResources && initialResources[this.constructor.displayName]) {
+        this.resources$ = Rx.Observable.just(initialResources[this.constructor.displayName]);
+      } else {
         this.resources$ = Rx.Observable.defer(() => this.constructor.fetchResources());
+      }
     }
 
     this._cachedObservables = this.getObservables

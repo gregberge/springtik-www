@@ -19,6 +19,10 @@ export default app => {
         {
           test: /\.svg$/,
           loader: 'url?limit=5000&mimetype=image/svg+xml'
+        },
+        {
+          test: /\.json$/,
+          loader: 'json'
         }
       ]
     },

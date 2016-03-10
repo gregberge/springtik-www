@@ -4,5 +4,5 @@ import {match, Router, browserHistory} from 'react-router';
 import routes from './routes';
 
 match({history: browserHistory, routes}, (error, redirectLocation, props) => {
-  ReactDOM.render(<Router {...props} />, document);
+  ReactDOM.render(<Router {...props} />, document.getElementById('main'));
 });

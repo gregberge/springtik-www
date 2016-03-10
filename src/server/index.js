@@ -9,11 +9,15 @@ import compress from 'compression';
 import morgan from 'morgan';
 import errorHandler from 'express-err';
 import patchAsyncAwait from './utils/patch-async-await';
+import ejs from 'ejs';
 import './db';
 
 const app = express();
 
 patchAsyncAwait(app);
+
+app.engine('html', ejs.renderFile);
+app.set('views', __dirname);
 
 app.use(morgan('dev'));
 app.use(compress());

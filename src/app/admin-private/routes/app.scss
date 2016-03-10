@@ -29,4 +29,25 @@
   a:hover {
     text-decoration: underline;
   }
+
+  #main {
+    height: 100%;
+
+    > div {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #container {
+      flex: 1 0;
+      display: flex;
+    }
+
+    main {
+      background: $gray-lighter-color;
+      flex: 1 0;
+      display: flex;
+    }
+  }
 }

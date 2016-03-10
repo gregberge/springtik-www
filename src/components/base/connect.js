@@ -9,6 +9,7 @@ export default ({
   fetchResources
 }, Component) => {
   return class extends BaseComponent {
+    static displayName = Component.displayName;
     static obsTypes = obsTypes;
     static fetchResources = fetchResources;
     styles = styles;

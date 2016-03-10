@@ -8,8 +8,8 @@ import {BAD_CREDENTIALS} from '~/server/utils/login-errors';
 
 const router = express.Router();
 
-const publicPath = path.join(__dirname, '../../../../public/admin-public');
-const configPath = path.join(__dirname, '../../../../config/webpack/admin-public.development.babel');
+const publicPath = path.join(__dirname, '../../../../../public/admin-public');
+const configPath = path.join(__dirname, '../../../../../config/webpack/admin-public.development.babel');
 
 router.post('/api/login', (req, res, next) => {
   passport.authenticate('local', {badRequestMessage: BAD_CREDENTIALS}, (err, user, query) => {
@@ -32,6 +32,9 @@ if (config.get('env') === 'development')
   wpDev(router, configPath);
 
 router.use(express.static(publicPath));
-router.use(reactRouter({routesPath: path.join(publicPath, 'dist/bundle.server.js')}));
+router.use(reactRouter({
+  routesPath: path.join(publicPath, 'dist/bundle.server.js'),
+  layout: 'admin/apps/admin-public/layout.html'
+}));
 
 export default router;

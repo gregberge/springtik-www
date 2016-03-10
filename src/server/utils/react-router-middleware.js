@@ -2,13 +2,9 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import match from 'react-router/lib/match';
 import createInjector from '~/components/base/create-injector';
-import Rx from '@doctolib/rx';
 
-export default ({routesPath}) => (req, res, next) => {
+export default ({routesPath, layout}) => (req, res, next) => {
   const css = [];
-  const js = [];
-
-  const Injector = createInjector({css, js});
 
   const routes = require(routesPath).default({req});
 
@@ -32,19 +28,23 @@ export default ({routesPath}) => (req, res, next) => {
       if (!Comp.fetchResources)
         return Promise.resolve();
 
-      return Comp.fetchResources().then(resources => {
-        Comp.resources$ = Rx.Observable.just(resources);
-      });
-    })).then(() => {
-      let content = ReactDOMServer.renderToString(
+      return Comp.fetchResources()
+        .then(resources => ({[Comp.displayName]: resources}));
+    })).then(resources => {
+      const initialResources = resources
+        .reduce((all, res) => ({...all, ...res}), {});
+
+      const Injector = createInjector({css, initialResources});
+
+      const content = ReactDOMServer.renderToString(
         React.createElement(Injector, props)
       );
 
-      content = content
-        .replace('/* %CSS% */', css.join(''))
-        .replace('/* %JS% */', js.join(''));
-
-      res.send(`<!DOCTYPE html>${content}`);
+      res.render(layout, {
+        content,
+        css: css.join(''),
+        resources: JSON.stringify(initialResources)
+      });
     })
     .catch(err => next(err));
   });

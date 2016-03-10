@@ -28,11 +28,13 @@
   right: $padding-unit * 2;
   border: 1px solid $white-color;
   border-radius: 50%;
-  background: grey;
+  background-color: grey;
+  background-size: 100% 100%;
   box-shadow: 0 0 4px 2px rgba($gray-color, 0.01);
   transition: box-shadow 300ms;
 
-  &:hover {
+  &:hover, &:focus {
+    outline: none;
     box-shadow: 0 0 4px 2px rgba($gray-color, 0.6);
   }
 }

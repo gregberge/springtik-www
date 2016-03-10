@@ -1,0 +1,58 @@
+@import "styles/variables";
+
+.activities {
+  display: flex;
+  flex: 1 0;
+}
+
+.activityList {
+  width: 200px;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+  .toolbar {
+    background: $white-color;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    height: 40px;
+
+    i {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 20px;
+      text-align: center;
+      color: $red-color;
+    }
+  }
+}
+
+.editor {
+  flex: 1 0;
+  display: flex;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+  form {
+    flex: 1 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  input, textarea {
+    display: block;
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: $padding-unit / 2;
+    min-height: 40px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  textarea {
+    flex: 1 0;
+  }
+}
+
+.preview {
+  flex: 1 0;
+}

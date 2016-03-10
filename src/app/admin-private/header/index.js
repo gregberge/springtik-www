@@ -12,14 +12,23 @@ const obsTypes = {
 export default connect({styles, obsTypes}, class extends Component {
   state = {showNav: false};
 
-  onClickUser = () => this.setState({showNav: !this.state.showNav});
+  onFocusUser = () => this.setState({showNav: true});
+  onBlurUser = () => this.setState({showNav: false});
 
   render() {
+    const {me} = this.props;
+    const userStyle = me ? {backgroundImage: `url(${me.avatar200x200})`} : null;
+
     return (
       <header className={styles.header}>
-        {JSON.stringify(this.props.me)}
         <div className={styles.logo} />
-        <div className={styles.user} onClick={this.onClickUser} />
+        <div
+          tabIndex={-1}
+          className={styles.user}
+          onFocus={this.onFocusUser}
+          onBlur={this.onBlurUser}
+          style={userStyle}
+        />
         <ReactCSSTransitionGroup
           transitionName="opacity"
           transitionEnterTimeout={300}
