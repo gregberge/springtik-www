@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charSet="utf-8" />
+    <title>Springtik</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <style type="text/css" ref="style"><%- css %></style>
+  </head>
+  <body>
+    <div id="main"><%- content %></div>
+    <script>
+      __ROUTE_STORES__ = <%- routeStores %>;
+      WebFontConfig = {google: {families: ['Open+Sans::latin', 'Montserrat:400,700:latin']}};
+    </script>
+    <script async src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+    <script async src="/dist/bundle.js"></script>
+  </body>
+</html>

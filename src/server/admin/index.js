@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
-import passportConfig from './passport-config';
-import adminPublic from './apps/admin-public';
-import adminPrivate from './apps/admin-private';
+import configurePassport from './configurePassport';
+import admPublic from './public';
+// import private from './private';
 import config from '~/config';
 
 const router = express.Router();
@@ -22,13 +22,13 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 
-passportConfig(passport);
+configurePassport(passport);
 
 router.use((req, res, next) => {
-  if (req.isAuthenticated())
-    adminPrivate(req, res, next);
-  else
-    adminPublic(req, res, next);
+  // if (req.isAuthenticated())
+  //   adminPrivate(req, res, next);
+  // else
+    admPublic(req, res, next);
 });
 
 export default router;
