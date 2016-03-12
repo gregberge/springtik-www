@@ -1,5 +1,5 @@
 import gravatar from 'gravatar';
-import Activity from '~/models/activity';
+import Activity from '~/models/Activity';
 
 export default ({
   me({req}) {

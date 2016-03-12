@@ -1,6 +1,7 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
+import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
 
 export default app => {
   const baseConfig = {
@@ -26,7 +27,7 @@ export default app => {
         }
       ]
     },
-    context: path.join(__dirname, '../../src/app', app),
+    context: path.join(__dirname, '../../src/apps', app),
     sassLoader: {
       includePaths: [path.resolve(__dirname, '../../src')]
     },
@@ -34,11 +35,12 @@ export default app => {
       autoprefixer
     ],
     plugins: [
+      new ForceCaseSensitivityPlugin(),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}})
     ],
     resolve: {
-      modulesDirectories: ['src', 'node_modules']
+      root: ['src']
     }
   };
 
