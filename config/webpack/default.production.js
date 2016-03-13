@@ -1,7 +1,12 @@
 import path from 'path';
+import fs from 'fs';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
 import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
+
+const nodeModules = fs.readdirSync(path.join(__dirname, '../../node_modules'))
+  .filter(x => ['.bin'].indexOf(x) === -1)
+  .reduce((modules, mod) => ({...modules, [mod]: `commonjs ${mod}`}));
 
 export default app => {
   const baseConfig = {
@@ -34,11 +39,7 @@ export default app => {
     postcss: [
       autoprefixer
     ],
-    plugins: [
-      new ForceCaseSensitivityPlugin(),
-      new webpack.optimize.OccurrenceOrderPlugin(),
-      new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}})
-    ],
+    plugins: [],
     resolve: {
       root: ['src']
     }
@@ -53,12 +54,11 @@ export default app => {
         publicPath: '/dist',
         filename: 'bundle.js'
       },
-      resolve: {
-        ...baseConfig.resolve,
-        alias: {
-          'components/api-client/admin': 'components/api-client/admin/client.js'
-        }
-      },
+      plugins: [
+        new ForceCaseSensitivityPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}})
+      ],
       entry: ['./client.js']
     },
     {
@@ -71,13 +71,8 @@ export default app => {
         filename: 'bundle.server.js',
         libraryTarget: 'commonjs2'
       },
-      resolve: {
-        ...baseConfig.resolve,
-        alias: {
-          'components/api-client/admin': 'components/api-client/admin/server.js'
-        }
-      },
-      entry: ['./server.js']
+      entry: ['./server.js'],
+      externals: nodeModules
     }
   ];
 };

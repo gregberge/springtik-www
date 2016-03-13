@@ -1,7 +1,12 @@
 import path from 'path';
+import fs from 'fs';
 import webpack from 'webpack';
 import autoprefixer from 'autoprefixer';
 import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
+
+const nodeModules = fs.readdirSync(path.join(__dirname, '../../node_modules'))
+  .filter(x => ['.bin'].indexOf(x) === -1)
+  .reduce((modules, mod) => ({...modules, [mod]: `commonjs ${mod}`}));
 
 export default app => {
   const baseConfig = {
@@ -66,12 +71,6 @@ export default app => {
           ...baseConfig.module.loaders.slice(1)
         ]
       },
-      resolve: {
-        ...baseConfig.resolve,
-        alias: {
-          'components/api-client/admin': 'components/api-client/admin/client.js'
-        }
-      },
       entry: [
         'webpack-hot-middleware/client',
         './client'
@@ -93,16 +92,8 @@ export default app => {
         filename: 'bundle.server.js',
         libraryTarget: 'commonjs2'
       },
-      resolve: {
-        ...baseConfig.resolve,
-        alias: {
-          'components/api-client/admin': 'components/api-client/admin/server.js'
-        }
-      },
       entry: ['./server'],
-      plugins: [
-        new ForceCaseSensitivityPlugin()
-      ]
+      externals: nodeModules
     }
   ];
 };
