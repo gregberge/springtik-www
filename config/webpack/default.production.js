@@ -10,14 +10,8 @@ const nodeModules = fs.readdirSync(path.join(__dirname, '../../node_modules'))
 
 export default app => {
   const baseConfig = {
-    debug: true,
     module: {
       loaders: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules\/(?!rxjs-es)/,
-          loader: 'babel'
-        },
         {
           test: /\.scss$/,
           loader: 'isomorphic-style!css?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss'
@@ -32,7 +26,7 @@ export default app => {
         }
       ]
     },
-    context: path.join(__dirname, '../../src/apps', app),
+    context: path.join(__dirname, '../../lib/apps', app),
     sassLoader: {
       includePaths: [path.resolve(__dirname, '../../src')]
     },

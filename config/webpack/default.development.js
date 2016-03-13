@@ -15,7 +15,7 @@ export default app => {
       loaders: [
         {
           test: /\.js$/,
-          exclude: /node_modules\/(?!rxjs-es)/,
+          exclude: /node_modules/,
           loader: 'babel'
         },
         {
