@@ -1,25 +1,16 @@
-import {Model} from 'objection';
+import BaseModel from '~/modules/BaseModel';
 
-export default class Activity extends Model {
+export default class Activity extends BaseModel {
   static tableName = 'activities';
 
   static jsonSchema = {
-    type: 'object',
+    ...BaseModel.jsonSchema,
     required: ['name'],
 
     properties: {
-      id: {type: 'integer'},
+      ...BaseModel.jsonSchema.properties,
       name: {type: 'string', minLength: 1, maxLength: 255},
       description: {type: 'string'}
     }
   };
-
-  $beforeInsert() {
-    this.createdAt = new Date().toISOString();
-    return this.cryptPassword();
-  }
-
-  $beforeUpdate() {
-    this.updatedAt = new Date().toISOString();
-  }
 }

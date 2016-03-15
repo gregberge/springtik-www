@@ -26,10 +26,6 @@ export default (Component, mixins) => {
       mixinMethod(this, 'componentWillReceiveProps', args);
     }
 
-    shouldComponentUpdate(...args) {
-      return mixinMethod(this, 'shouldComponentUpdate', ...args);
-    }
-
     componentWillUnmount() {
       mixinMethod(this, 'componentWillUnmount');
     }

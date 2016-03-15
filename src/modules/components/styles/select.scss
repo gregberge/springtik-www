@@ -1,0 +1,9 @@
+@import "styles/variables";
+
+.foo {
+  color: $placeholder-color;
+}
+
+.formControl {
+  composes: formControl from './form-control.scss';
+}

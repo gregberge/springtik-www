@@ -1,10 +1,11 @@
-export default class BrowserAdapter {
-  constructor({httpClient}) {
-    this.httpClient = httpClient;
-  }
+import createGenericBrowserApi from './createGenericBrowserApi';
 
+export default ({httpClient}) => ({
   me() {
-    return this.httpClient.get('/api/me')
+    return httpClient.get('/api/me')
       .then(({bodyData}) => bodyData);
-  }
-}
+  },
+
+  activities: createGenericBrowserApi('activities', {httpClient}),
+  categories: createGenericBrowserApi('categories', {httpClient})
+});

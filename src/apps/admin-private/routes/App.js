@@ -3,20 +3,23 @@ import connect from '~/modules/gravito/connect';
 import styles from './app.scss';
 import Header from '../header/Header';
 import Menu from '../menu/Menu';
+import Rx from 'rxjs/Rx';
+import apiClient from '~/apps/admin-private/apiClient';
 
-const store = (props$, routeStore$) => {
-  const me$ = routeStore$
-    .map(({me}) => me);
+export const routeStore = () => () => ({
+  me$: Rx.Observable.fromPromise(apiClient.me())
+});
 
-  return {me$};
-};
+export const store = () => (props$, routeStore$) => ({
+  me$: routeStore$.map(({me}) => me)
+});
 
-export default connect({store, styles}, ({children, me}) => (
+export default connect({store: store(), styles}, ({children, me, location}) => (
   <div>
     <Header {...{me}} />
     <div id="container">
-      <Menu />
-      <main>{children}</main>
+      <Menu {...{location}} />
+      {children}
     </div>
   </div>
 ));

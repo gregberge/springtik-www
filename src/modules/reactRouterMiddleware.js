@@ -30,18 +30,22 @@ export default ({routesPath, layout}) => (req, res, next) => {
       if (err)
         return next(err);
 
-      const content = ReactDOMServer.renderToString(
-        React.createElement(connect({
-          routeStores,
-          insertCss: styles => css.push(styles)
-        }, RouterContext), props)
-      );
+      try {
+        const content = ReactDOMServer.renderToString(
+          React.createElement(connect({
+            routeStores,
+            insertCss: styles => css.push(styles)
+          }, RouterContext), props)
+        );
 
-      res.render(layout, {
-        content,
-        css: css.join(''),
-        routeStores: JSON.stringify(routeStores) || 'null'
-      });
+        res.render(layout, {
+          content,
+          css: css.join(''),
+          routeStores: JSON.stringify(routeStores) || 'null'
+        });
+      } catch (e) {
+        return next(e);
+      }
     });
   });
 };

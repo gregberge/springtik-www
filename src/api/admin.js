@@ -1,5 +1,7 @@
 import gravatar from 'gravatar';
+import createApiFromModel from '~/modules/createApiFromModel';
 import Activity from '~/models/Activity';
+import Category from '~/models/Category';
 
 export default ({
   me({req}) {
@@ -9,9 +11,6 @@ export default ({
     });
   },
 
-  activities: {
-    get() {
-      return Activity.query();
-    }
-  }
+  activities: createApiFromModel(Activity),
+  categories: createApiFromModel(Category)
 });

@@ -9,7 +9,7 @@ import httpClient from './httpClient';
 import apiClient from './apiClient';
 
 const adapter = new BrowserAdapter({httpClient});
-apiClient.adapter = adapter;
+apiClient.initialize(adapter);
 
 match({history: browserHistory, routes}, (error, redirectLocation, props) => {
   ReactDOM.render(<Router {...props} />, document.getElementById('main'));

@@ -1,11 +1,11 @@
-import adminApi from '~/api/admin';
+import createGenericServerApi from './createGenericServerApi';
+import api from '~/api/admin';
 
-export default class ServerAdapter {
-  constructor({req}) {
-    this.req = req;
-  }
-
+export default ({req}) => ({
   me() {
-    return adminApi.me({req: this.req});
-  }
-}
+    return api.me({req});
+  },
+
+  activities: createGenericServerApi('activities', {api}),
+  categories: createGenericServerApi('categories', {api})
+});

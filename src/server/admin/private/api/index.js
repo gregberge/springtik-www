@@ -1,14 +1,15 @@
 import express from 'express';
-import adminApi from '~/api/admin';
-import activities from './activities';
+import api from '~/api/admin';
+import createRouterFromApi from '~/modules/createRouterFromApi';
 
 const router = express.Router();
 
 router.get('/me', async function (req, res) {
-  const me = await adminApi.me({req});
+  const me = await api.me({req});
   res.send(me);
 });
 
-router.use('/activities', activities);
+router.use('/activities', createRouterFromApi('activities', {api}));
+router.use('/categories', createRouterFromApi('categories', {api}));
 
 export default router;

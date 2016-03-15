@@ -19,7 +19,9 @@ export default connect({styles}, class Input extends Component {
 
   render() {
     const {className: propClassName, icon, hasError, ...props} = this.props;
-    const className = classnames(styles.formControl, propClassName);
+    const className = classnames(styles.formControl, {
+      [styles.withIcon]: icon
+    }, propClassName);
     const inputElement = <input ref="input" {...{className}} {...props} />;
 
     return (

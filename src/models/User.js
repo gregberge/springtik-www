@@ -1,15 +1,15 @@
-import {Model} from 'objection';
+import BaseModel from '~/modules/BaseModel';
 import bcrypt from 'bcryptjs';
 
-export default class User extends Model {
+export default class User extends BaseModel {
   static tableName = 'users';
 
   static jsonSchema = {
-    type: 'object',
+    ...BaseModel.jsonSchema,
     required: ['email', 'password'],
 
     properties: {
-      id: {type: 'integer'},
+      ...BaseModel.jsonSchema.properties,
       email: {type: 'string', minLength: 1, maxLength: 255},
       password: {type: 'string', minLength: 1, maxLength: 255}
     }
@@ -42,12 +42,8 @@ export default class User extends Model {
   }
 
   $beforeInsert() {
-    this.createdAt = new Date().toISOString();
+    super.$beforeInsert();
     return this.cryptPassword();
-  }
-
-  $beforeUpdate() {
-    this.updatedAt = new Date().toISOString();
   }
 
   $formatJson(json) {

@@ -12,7 +12,7 @@ export default connect({styles}, class Activities extends Component {
 
   render() {
     return (
-      <div className={styles.activities}>
+      <main>
         <div className={styles.activityList}>
           <div className={styles.toolbar}>
             <i className="fa fa-plus-circle" />
@@ -26,7 +26,7 @@ export default connect({styles}, class Activities extends Component {
           </form>
         </div>
         <ReactMarkdown className={styles.preview} source={this.state.input} />
-      </div>
+      </main>
     );
   }
 });

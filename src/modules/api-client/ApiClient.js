@@ -1,5 +1,5 @@
 export default class ApiClient {
-  me() {
-    return this.adapter.me();
+  initialize(adapter) {
+    Object.assign(this, adapter);
   }
 }

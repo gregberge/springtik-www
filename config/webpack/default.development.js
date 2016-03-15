@@ -11,6 +11,7 @@ const nodeModules = fs.readdirSync(path.join(__dirname, '../../node_modules'))
 export default app => {
   const baseConfig = {
     debug: true,
+    devtool: 'source-map',
     module: {
       loaders: [
         {
@@ -42,6 +43,9 @@ export default app => {
     resolve: {
       root: ['src']
     },
+    output: {
+      pathinfo: true
+    },
     context: path.join(__dirname, '../../src/apps', app)
   };
 
@@ -50,6 +54,7 @@ export default app => {
       ...baseConfig,
       name: 'browser',
       output: {
+        ...baseConfig.output,
         path: path.join(__dirname, '../../public', app, 'dist'),
         publicPath: '/dist',
         filename: 'bundle.js'
@@ -87,13 +92,18 @@ export default app => {
       name: 'server',
       target: 'node',
       output: {
+        ...baseConfig.output,
         path: path.join(__dirname, '../../public', app, 'dist'),
         publicPath: '/dist',
         filename: 'bundle.server.js',
         libraryTarget: 'commonjs2'
       },
       entry: ['./server'],
-      externals: nodeModules
+      externals: nodeModules,
+      plugins: [
+        new webpack.BannerPlugin('require("source-map-support").install();',
+          {raw: true, entryOnly: false})
+      ]
     }
   ];
 };

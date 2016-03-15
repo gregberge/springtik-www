@@ -3,6 +3,7 @@ import createElement from 'recompose/createElement';
 import mixin from './utils/mixin';
 import stylesBehavior from './mixins/styles';
 import observablesBehavior from './mixins/observables';
+import shallowEqual from 'shallowequal';
 
 export default (options = {}, WrappedComponent) => {
   const mixins = [];
@@ -21,6 +22,11 @@ export default (options = {}, WrappedComponent) => {
     state = {};
 
     _options = options;
+
+    shouldComponentUpdate(nextProps, nextState) {
+      return !shallowEqual(this.props, nextProps)
+        || !shallowEqual(this.state, nextState);
+    }
 
     render() {
       return createElement(WrappedComponent, {...this.props, ...this.state.childProps});

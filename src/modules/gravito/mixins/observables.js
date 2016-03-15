@@ -1,7 +1,8 @@
 import Rx from 'rxjs/Rx';
-import shallowEqual from 'shallowequal';
 import objectToPropSequence from '../utils/objectToPropSequence';
 import getCompleteRoutePath from '../utils/getCompleteRoutePath';
+
+const isServer = typeof window === 'undefined';
 
 export default {
   initialize() {
@@ -18,16 +19,18 @@ export default {
 
       if (this.context.serverHooks && this.context.serverHooks.routeStores)
         routeStores = this.context.serverHooks.routeStores;
-      else if (typeof window !== 'undefined' && window.__ROUTE_STORES__)
+      else if (!isServer && window.__ROUTE_STORES__)
         routeStores = window.__ROUTE_STORES__;
       else
         routeStores = {};
 
       const initialRouteStoreData = routeStores[path];
 
-      if (initialRouteStoreData)
+      if (initialRouteStoreData) {
         this._routeStore$ = Rx.Observable.from([initialRouteStoreData]);
-      else
+        if (!isServer)
+          delete routeStores[path];
+      } else
         this._routeStore$ = objectToPropSequence(this.constructor.routeStore(this._ownerProps$));
     }
 
@@ -54,11 +57,6 @@ export default {
 
   componentWillReceiveProps(nextProps) {
     this._receiveOwnerProps$.next(nextProps);
-  },
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return !shallowEqual(this.props, nextProps)
-      || !shallowEqual(this.state, nextState);
   },
 
   componentWillUnmount() {
