@@ -1,11 +1,11 @@
 import createGenericBrowserApi from './createGenericBrowserApi';
 
-export default ({httpClient}) => ({
+export default ({http}) => ({
   me() {
-    return httpClient.get('/api/me')
+    return http.get('/api/me')
       .then(({bodyData}) => bodyData);
   },
 
-  activities: createGenericBrowserApi('activities', {httpClient}),
-  categories: createGenericBrowserApi('categories', {httpClient})
+  activities: createGenericBrowserApi('activities', {http}),
+  categories: createGenericBrowserApi('categories', {http})
 });

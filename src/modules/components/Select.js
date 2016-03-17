@@ -19,6 +19,7 @@ function Select({placeholder, value, defaultValue, options = [], className: prop
   const className = classnames(styles.formControl, {
     [styles.foo]: !value && !defaultValue && placeholder
   }, propClassName);
+  value = value || '';
   return (
     <select {...{...props, value, defaultValue, className}}>
       {placeholder ? <option value="">{placeholder}</option> : null}
@@ -32,8 +33,8 @@ function Select({placeholder, value, defaultValue, options = [], className: prop
 Select.propTypes = {
   className: PropTypes.string,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
-  defaultValue: PropTypes.string,
+  value: PropTypes.any,
+  defaultValue: PropTypes.any,
   children: PropTypes.node,
   options: React.PropTypes.oneOfType([
     React.PropTypes.array,

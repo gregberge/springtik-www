@@ -97,7 +97,10 @@ export default class HttpClient {
 
     request = this.applyInterceptors('request', request);
 
-    request.url = formatUrl(request.pathname, request.query);
+    request.url = formatUrl({
+      pathname: request.pathname,
+      query: request.query
+    });
 
     const contentType = this.getContentType(request.headers);
 
@@ -117,7 +120,7 @@ export default class HttpClient {
           return response;
         }
 
-        const {cache, pathname, url, ...fetchPayload} = request;
+        const {cache, pathname, url, query, ...fetchPayload} = request;
         if (request.method === 'get')
           delete fetchPayload.body;
 

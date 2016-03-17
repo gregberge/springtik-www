@@ -20,19 +20,20 @@ registerTheme('default', (FormContainer, Fields, {status, formProps}) => (
         );
       }}
     </Fields>
-    <Button disabled={formProps.progress} block>
+    <Button disabled={formProps.progress} block large>
       {formProps.submitText}
     </Button>
+    {formProps.buttons}
   </FormContainer>
 ));
 
 export const Input = wrapInput('Input', BaseInput, {
-  extractValueFromOnChange: event => event.target.value
+  extractValueFromOnChange: event => event.target.value,
+  valueToProps: value => ({value})
 });
 
 export const Select = wrapInput('Select', BaseSelect, {
   extractValueFromOnChange: event => event.target.value
 });
 
-
-export {Form};
+export {Form, Button};

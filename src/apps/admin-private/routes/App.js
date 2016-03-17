@@ -4,10 +4,10 @@ import styles from './app.scss';
 import Header from '../header/Header';
 import Menu from '../menu/Menu';
 import Rx from 'rxjs/Rx';
-import apiClient from '~/apps/admin-private/apiClient';
+import api from '~/apps/admin-private/api';
 
 export const routeStore = () => () => ({
-  me$: Rx.Observable.fromPromise(apiClient.me())
+  me$: Rx.Observable.fromPromise(api.me())
 });
 
 export const store = () => (props$, routeStore$) => ({

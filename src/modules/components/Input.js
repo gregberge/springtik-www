@@ -23,7 +23,6 @@ export default connect({styles}, class Input extends Component {
       [styles.withIcon]: icon
     }, propClassName);
     const inputElement = <input ref="input" {...{className}} {...props} />;
-
     return (
       <span className={hasError ? styles.containerError : null}>
         {icon

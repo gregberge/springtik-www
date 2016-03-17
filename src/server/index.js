@@ -10,13 +10,10 @@ import config from '~/config';
 import admin from './admin';
 import www from './www';
 import configureDatabase from './configureDatabase';
-import monkeyPatchExpressAsyncAwait from '~/modules/monkeyPatchExpressAsyncAwait';
 
 configureDatabase();
 
 const app = express();
-
-monkeyPatchExpressAsyncAwait(app);
 
 app.engine('html', ejs.renderFile);
 app.set('views', __dirname);

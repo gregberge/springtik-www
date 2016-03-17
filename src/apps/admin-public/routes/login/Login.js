@@ -1,11 +1,24 @@
 import React from 'react';
+import Rx from 'rxjs/Rx';
+import '~/modules/rx-extended/watchTask';
 import connect from '~/modules/gravito/connect';
 import Alert from '~/modules/components/Alert';
-import {ERROR, PROGRESS} from '~/modules/rx-extended/taskStates';
-import styles from './login.scss';
-import store from './Login.store';
-import {Form, Input} from '../../form';
+import httpClient from '~/apps/admin-public/httpClient';
 import {USERNAME_NOT_FOUND, INCORRECT_PASSWORD} from '~/modules/loginErrors';
+import styles from './login.scss';
+import {Form, Input} from '~/modules/components/form';
+
+export const store = () => () => {
+  const submit$ = new Rx.Subject();
+  const result$ = submit$
+    .watchTask(body => httpClient.post('/api/login', {body}))
+    .do(({success}) => {
+      if (success)
+        window.location = '/';
+    });
+
+  return {submit$, result$};
+};
 
 const getWordingFromMessage = message => {
   switch (message) {
@@ -18,20 +31,24 @@ const getWordingFromMessage = message => {
   return 'Désolé, une erreur est survenue.';
 };
 
-export default connect({styles, store}, ({onSubmit, result}) => {
+export default connect({styles, store: store()}, ({onSubmit, result}) => {
   return (
     <div className={styles.login}>
       <div className={styles.logo} />
       <div className={styles.panel}>
         <h3 className={styles.title}>Connexion à l’admin</h3>
-        {result.state === ERROR ? (
+        {result.error ? (
           <Alert uiStyle="danger">
             {getWordingFromMessage(result.error.response.bodyData.message)}
           </Alert>
         ) : null}
         <Form
-          onSubmit={onSubmit}
-          progress={result.state === PROGRESS}
+          submitText="Se connecter"
+          onSubmit={model => {
+            onSubmit(model);
+            return Promise.reject({});
+          }}
+          progress={result.progress}
         >
           <Input
             autoFocus

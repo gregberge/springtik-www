@@ -26,6 +26,10 @@
 
 .formControl {
   composes: formControl from './form-control.scss';
+
+  &.withIcon {
+    padding-left: 50px;
+  }
 }
 
 .containerError {

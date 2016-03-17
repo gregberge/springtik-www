@@ -5,11 +5,11 @@ import Router from 'react-router/lib/Router';
 import browserHistory from 'react-router/lib/browserHistory';
 import routes from './routes';
 import BrowserAdapter from '~/modules/api-client/BrowserAdapter';
-import httpClient from './httpClient';
-import apiClient from './apiClient';
+import http from './http';
+import api from './api';
 
-const adapter = new BrowserAdapter({httpClient});
-apiClient.initialize(adapter);
+const adapter = new BrowserAdapter({http});
+api.initialize(adapter);
 
 match({history: browserHistory, routes}, (error, redirectLocation, props) => {
   ReactDOM.render(<Router {...props} />, document.getElementById('main'));

@@ -21,16 +21,24 @@
   &.disabled, &[disabled] {
     opacity: 0.5;
   }
-}
 
-.btnBlock {
-  display: block;
-  width: 100%;
-}
+  &.btn-block {
+    display: block;
+    width: 100%;
+  }
 
-.btnLarge {
-  padding: 10px 16px;
-  font-size: 1.2em;
-  line-height: 1.2em;
-  height: 44px;
+  &.btn-large {
+    padding: 10px 16px;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    height: 44px;
+  }
+
+  &.btn-danger {
+    background-color: $danger-color;
+
+    &:hover {
+      background-color: darken($danger-color, 5);
+    }
+  }
 }

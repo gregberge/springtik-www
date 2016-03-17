@@ -1,5 +1,4 @@
-import Rx from 'rxjs/Rx';
-import {PROGRESS, SUCCESS, ERROR, IDLE} from './taskStates';
+import Rx from 'rxjs/Observable';
 
 /**
  * @typedef {Object} TaskPayload
@@ -15,7 +14,7 @@ import {PROGRESS, SUCCESS, ERROR, IDLE} from './taskStates';
  * @param {Function|Promise} selectorOrPromise
  * @returns {Rx.Observable.<TaskPayload>}
  */
-Rx.Observable.prototype.watchTask = function (selectorOrPromise) {
+Rx.Observable.prototype.watchTask = function watchTask(selectorOrPromise) {
   return this
     .switchMap(input => {
       const source$ = typeof selectorOrPromise === 'function'
@@ -23,12 +22,17 @@ Rx.Observable.prototype.watchTask = function (selectorOrPromise) {
       const task$ = (typeof source$.then === 'function'
           ? Rx.Observable.fromPromise(source$)
           : source$)
-        .map(output => ({state: SUCCESS, input, output}))
-        .catch(error => (Rx.Observable.from([{state: ERROR, input, error}])));
+        .map(output => ({success: true, input, output}))
+        .catch(error => (Rx.Observable.from([{error, input}])));
 
       return Rx.Observable
-        .from([{state: PROGRESS, input}])
+        .from([{progress: true, input}])
         .concat(task$);
     })
-    .startWith({state: IDLE});
+    .startWith({idle: true});
+};
+
+Rx.Observable.watchTask = selectorOrPromise => {
+  return Rx.Observable.from([undefined])
+    .watchTask(selectorOrPromise);
 };

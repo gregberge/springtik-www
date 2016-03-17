@@ -28,8 +28,20 @@ export default {
 
       if (initialRouteStoreData) {
         this._routeStore$ = Rx.Observable.from([initialRouteStoreData]);
-        if (!isServer)
+        if (!isServer) {
           delete routeStores[path];
+          this._routeStore$ = this._routeStore$.concat(
+            this._receiveOwnerProps$
+              .take(1)
+              .switchMap(props =>
+                objectToPropSequence(
+                  this.constructor.routeStore(
+                    this._receiveOwnerProps$.startWith(props)
+                  )
+                )
+              )
+          );
+        }
       } else
         this._routeStore$ = objectToPropSequence(this.constructor.routeStore(this._ownerProps$));
     }
