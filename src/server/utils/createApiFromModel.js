@@ -13,5 +13,13 @@ export default Model => ({
 
   create(model) {
     return Model.fromJson(model).$query().insert();
+  },
+
+  update({id, ...data}) {
+    return Model.query().patchAndFetchById(id, data);
+  },
+
+  destroy(id) {
+    return Model.query().delete().where({id});
   }
 });

@@ -124,6 +124,8 @@ export default class HttpClient {
         if (request.method === 'get')
           delete fetchPayload.body;
 
+        fetchPayload.method = fetchPayload.method.toUpperCase();
+
         return fetch(request.url, fetchPayload)
           .then(response => {
             const contentType = this.getContentType(response.headers);

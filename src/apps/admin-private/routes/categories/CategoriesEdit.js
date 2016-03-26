@@ -13,14 +13,18 @@ export const routeStore = () => props$ => ({
 export const store = () => (props$, routeStore$) => {
   const submit$ = new Rx.Subject();
   const result$ = submit$
-    .map(model => ({
+    .withLatestFrom(props$)
+    .map(([model, {params: {id}}]) => ({
       ...model,
+      id,
       level: Number(model.level)
     }))
-    .watchTask(model => api.categories.create(model));
+    .watchTask(model => api.categories.update(model));
 
-  const category$ = routeStore$.map(({category}) => category)
-    .map(({output}) => output);
+  const category$ = Rx.Observable.merge(
+    routeStore$.map(({category}) => category)
+      .map(({output}) => output)
+  );
 
   return {submit$, category$, result$};
 };

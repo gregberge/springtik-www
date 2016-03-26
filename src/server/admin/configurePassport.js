@@ -1,5 +1,5 @@
 import {Strategy} from 'passport-local';
-import User from '~/models/User';
+import User from '~/server/models/User';
 import * as loginErrors from '~/modules/loginErrors';
 
 export default passport => {

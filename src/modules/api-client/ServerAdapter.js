@@ -1,5 +1,5 @@
 import createGenericServerApi from './createGenericServerApi';
-import api from '~/api/admin';
+import api from '~/server/api/admin';
 
 export default ({req}) => ({
   me() {

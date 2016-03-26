@@ -15,9 +15,8 @@ export default (object, {startWithUndefined} = {}) => {
   else
     propSequences = propKeys.map(key => object[key]);
 
-  return Rx.Observable.combineLatest(
-    ...propSequences,
-    (...propValues) => propKeys.reduce((props, key, i) => {
+  return Rx.Observable.combineLatest(propSequences, (...propValues) =>
+    propKeys.reduce((props, key, i) => {
       if (object[key].next) {
         const onKey = `on${capitalizeFirstLetter(purifyKey(key))}`;
         props[onKey] = object[key].next.bind(object[key]);

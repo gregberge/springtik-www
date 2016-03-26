@@ -10,6 +10,8 @@ function observe(promise, {next}) {
 
 export default (name, {api}) => {
   const created$ = new Rx.Subject();
+  const updated$ = new Rx.Subject();
+  const destroyed$ = new Rx.Subject();
 
   return {
     $fetchAll(...args) {
@@ -32,6 +34,22 @@ export default (name, {api}) => {
     },
     create(model) {
       return observe(api[name].create(model), created$);
+    },
+
+    updated$,
+    $update(...args) {
+      return Rx.Obserable.watchTask(this.update(...args));
+    },
+    update(model) {
+      return observe(api[name].update(model), updated$);
+    },
+
+    destroyed$,
+    $destroy(...args) {
+      return Rx.Obserable.watchTask(this.destroy(...args));
+    },
+    destroy(id) {
+      return observe(api[name].destroy(id).then(() => id), destroyed$);
     }
   };
 };

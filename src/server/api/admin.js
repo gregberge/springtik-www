@@ -1,7 +1,7 @@
 import gravatar from 'gravatar';
-import createApiFromModel from '~/modules/createApiFromModel';
-import Activity from '~/models/Activity';
-import Category from '~/models/Category';
+import createApiFromModel from '~/server/utils/createApiFromModel';
+import Activity from '~/server/models/Activity';
+import Category from '~/server/models/Category';
 
 export default ({
   me({req}) {

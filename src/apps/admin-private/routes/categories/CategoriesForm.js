@@ -1,32 +1,50 @@
 import React from 'react';
-import {Form, Input, Select, Button} from '~/modules/components/form';
+import FormGroup from '~/modules/components/FormGroup';
+import Input from '~/modules/components/Input';
+import Select from '~/modules/components/Select';
+import Button from '~/modules/components/Button';
 
 const levelOptions = {
   1: 'Premier niveau',
   2: 'Second niveau'
 };
 
-export default ({onSubmit, result: {progress}, category = {}}) => (
-  <Form
-    model={category}
-    submitText="Créer la catégorie"
-    buttons={
-      category.id ? <Button uiStyle="danger">Supprimer</Button> : null
-    }
-    {...{onSubmit, progress}}
-  >
-    <Input
-      autoFocus
-      name="name"
-      placeholder="Titre de la catégorie"
-      is-required
-    />
-    <Select
-      autoFocus
-      name="level"
-      placeholder="Niveau de la catégorie"
-      options={levelOptions}
-      is-required
-    />
-  </Form>
-);
+export default ({onSubmit, result: {progress}, category}) => {
+  if (!category)
+    return <div />;
+
+  function sub(e) {
+    e.preventDefault();
+  }
+
+  function onChange(e) {
+    console.log(arguments);
+  }
+
+  return (
+    <form onChange={onChange} onSubmit={sub}>
+      <FormGroup>
+        <Input
+          autoFocus
+          name="name"
+          placeholder="Titre de la catégorie"
+        />
+      </FormGroup>
+      <FormGroup>
+        <Select
+          name="level"
+          placeholder="Niveau de la catégorie"
+          options={levelOptions}
+        />
+        <Button disabled={progress} block>
+          {category.id ? 'Enregistrer' : 'Créer la catégorie'}
+        </Button>
+        {category.id ? (
+          <Button uiStyle="danger" block>
+            Supprimer
+          </Button>
+        ) : null}
+      </FormGroup>
+    </form>
+  );
+};

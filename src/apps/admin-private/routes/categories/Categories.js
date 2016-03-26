@@ -13,7 +13,10 @@ export const routeStore = () => () => ({
 export const store = () => (props$, routeStore$) => {
   const categories$ = Rx.Observable.merge(
     routeStore$.map(({categories}) => categories),
-    api.categories.created$
+    Rx.Observable.merge(
+        api.categories.created$,
+        api.categories.updated$
+      )
       .switchMap(() => api.categories.$fetchAll())
       .filter(({success}) => success)
   );

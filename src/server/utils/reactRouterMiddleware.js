@@ -5,8 +5,11 @@ import RouterContext from 'react-router/lib/RouterContext';
 import connect from '~/modules/gravito/server/connect';
 import resolve from '~/modules/gravito/server/resolve';
 
-export default ({routesPath, layout}) => (req, res, next) => {
+export default ({routesPath, layout, name, dev}) => (req, res, next) => {
   const css = [];
+
+  if (dev)
+    delete require.cache[require.resolve(routesPath)];
 
   const routes = require(routesPath).default({req});
 
@@ -41,6 +44,9 @@ export default ({routesPath, layout}) => (req, res, next) => {
         res.render(layout, {
           content,
           css: css.join(''),
+          bundle: dev
+            ? `http://localhost:8080/assets/${name}-bundle.js`
+            : '/dist/bundle.js',
           routeStores: JSON.stringify(routeStores) || 'null'
         });
       } catch (e) {

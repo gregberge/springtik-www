@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import classnames from 'classnames';
 import connect from '~/modules/gravito/connect';
 import styles from './styles/select.scss';
@@ -15,31 +15,51 @@ function optionsToArray(options) {
   );
 }
 
-function Select({placeholder, value, defaultValue, options = [], className: propClassName, ...props}) {
-  const className = classnames(styles.formControl, {
-    [styles.foo]: !value && !defaultValue && placeholder
-  }, propClassName);
-  value = value || '';
-  return (
-    <select {...{...props, value, defaultValue, className}}>
-      {placeholder ? <option value="">{placeholder}</option> : null}
-      {optionsToArray(options).map(({value, label}, index) =>
-        <option key={index} {...{value}}>{label}</option>
-      )}
-    </select>
-  );
-}
+class Select extends Component {
+  static propTypes = {
+    options: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object
+    ]).isRequired
+  };
 
-Select.propTypes = {
-  className: PropTypes.string,
-  placeholder: PropTypes.string,
-  value: PropTypes.any,
-  defaultValue: PropTypes.any,
-  children: PropTypes.node,
-  options: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.object
-  ]).isRequired
-};
+  componentWillMount() {
+    const {value, defaultValue, placeholder} = this.props;
+    this.state = {placeholder: !value && !defaultValue && placeholder};
+  }
+
+  onChange = event => {
+    const {placeholder} = this.props;
+    this.setState({placeholder: !event.target.value && placeholder});
+  };
+
+  render() {
+    const {
+      placeholder,
+      value,
+      defaultValue,
+      options = [],
+      className: propClassName,
+      onChange,
+      ...props
+    } = this.props;
+
+    const className = classnames(styles.formControl, {
+      [styles.placeholder]: this.state.placeholder
+    }, propClassName);
+
+    return (
+      <select
+        {...{...props, value, defaultValue, className}}
+        onChange={this.onChange}
+      >
+        {placeholder ? <option value="">{placeholder}</option> : null}
+        {optionsToArray(options).map(({value, label}, index) =>
+          <option key={index} {...{value}}>{label}</option>
+        )}
+      </select>
+    );
+  }
+}
 
 export default connect({styles}, Select);

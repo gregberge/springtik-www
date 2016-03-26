@@ -1,7 +1,7 @@
 import express from 'express';
-import api from '~/api/admin';
-import createRouterFromApi from '~/modules/createRouterFromApi';
-import errCheck from '~/modules/expressErrorChecking';
+import api from '~/server/api/admin';
+import createRouterFromApi from '~/server/utils/createRouterFromApi';
+import errCheck from '~/server/utils/expressErrorChecking';
 
 const router = express.Router();
 

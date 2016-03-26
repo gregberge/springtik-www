@@ -1,4 +1,4 @@
-import BaseModel from '~/modules/BaseModel';
+import BaseModel from './BaseModel';
 
 export default class Activity extends BaseModel {
   static tableName = 'activities';

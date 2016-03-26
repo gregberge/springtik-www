@@ -18,5 +18,5 @@ export const store = () => () => {
 };
 
 export default connect(({store: store()}), props =>
-  <CategoriesForm {...props} />
+  <CategoriesForm {...props} category={{}} />
 );

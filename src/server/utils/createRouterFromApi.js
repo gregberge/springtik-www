@@ -1,5 +1,5 @@
 import express from 'express';
-import errCheck from '~/modules/expressErrorChecking';
+import errCheck from '~/server/utils/expressErrorChecking';
 
 export default (name, {api}) => {
   const router = express.Router();
@@ -9,7 +9,18 @@ export default (name, {api}) => {
   }));
 
   router.post('/', errCheck(async function (req, res) {
-    res.send(await api[name].create(req.body));
+    res
+      .status(201)
+      .send(await api[name].create(req.body));
+  }));
+
+  router.patch('/:id', errCheck(async function (req, res) {
+    res.send(await api[name].update({id: req.params.id, ...req.body}));
+  }));
+
+  router.delete('/:id', errCheck(async function (req, res) {
+    await api[name].destroy(req.params.id);
+    res.status(204).end();
   }));
 
   router.get('/:id', errCheck(async function (req, res) {

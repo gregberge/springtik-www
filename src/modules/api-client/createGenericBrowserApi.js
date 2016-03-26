@@ -11,6 +11,8 @@ function observe(promise, observer) {
 export default (name, {http}) => {
   const baseUrl = `/api/${name}`;
   const created$ = new Rx.Subject();
+  const updated$ = new Rx.Subject();
+  const destroyed$ = new Rx.Subject();
 
   return {
     $fetchAll(...args) {
@@ -36,6 +38,24 @@ export default (name, {http}) => {
     create(body) {
       return observe(http.post(baseUrl, {body})
         .then(({bodyData}) => bodyData), created$);
+    },
+
+    updated$,
+    $update(...args) {
+      return Rx.Observable.watchTask(this.update(...args));
+    },
+    update(body) {
+      return observe(http.patch(`${baseUrl}/${body.id}`, {body})
+        .then(({bodyData}) => bodyData), updated$);
+    },
+
+    destroyed$,
+    $destroy(...args) {
+      return Rx.Observable.watchTask(this.destroy(...args));
+    },
+    destroy(id) {
+      return observe(http.delete(`${baseUrl}/${id}`)
+        .then(() => id), destroyed$);
     }
   };
 };

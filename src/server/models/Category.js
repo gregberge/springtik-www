@@ -1,4 +1,4 @@
-import BaseModel from '~/modules/BaseModel';
+import BaseModel from './BaseModel';
 
 export default class Category extends BaseModel {
   static tableName = 'categories';
