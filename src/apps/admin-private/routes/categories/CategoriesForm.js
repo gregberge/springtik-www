@@ -1,33 +1,28 @@
 import React from 'react';
 import FormGroup from '~/modules/components/FormGroup';
-import Input from '~/modules/components/Input';
-import Select from '~/modules/components/Select';
+import Form, {Input, Select} from '~/modules/components/Form';
 import Button from '~/modules/components/Button';
 
 const levelOptions = {
-  1: 'Premier niveau',
-  2: 'Second niveau'
+  '1': 'Premier niveau',
+  '2': 'Second niveau'
 };
 
-export default ({onSubmit, result: {progress}, category}) => {
-  if (!category)
-    return <div />;
-
-  function sub(e) {
-    e.preventDefault();
-  }
-
-  function onChange(e) {
-    console.log(arguments);
-  }
-
+export default ({
+  onSubmit,
+  onDelete,
+  result: {progress},
+  deleteResult,
+  category
+}) => {
   return (
-    <form onChange={onChange} onSubmit={sub}>
+    <Form model={category} onSubmit={onSubmit}>
       <FormGroup>
         <Input
           autoFocus
           name="name"
           placeholder="Titre de la catégorie"
+          required
         />
       </FormGroup>
       <FormGroup>
@@ -35,16 +30,26 @@ export default ({onSubmit, result: {progress}, category}) => {
           name="level"
           placeholder="Niveau de la catégorie"
           options={levelOptions}
+          required
         />
-        <Button disabled={progress} block>
-          {category.id ? 'Enregistrer' : 'Créer la catégorie'}
-        </Button>
-        {category.id ? (
-          <Button uiStyle="danger" block>
-            Supprimer
-          </Button>
-        ) : null}
       </FormGroup>
-    </form>
+      <Button
+        large
+        disabled={progress}
+      >
+        {category.id ? 'Mettre à jour la catégorie' : 'Créer la catégorie'}
+      </Button>
+      {category.id ? (
+        <Button
+          large
+          type="button"
+          uiStyle="danger"
+          onClick={onDelete}
+          disabled={deleteResult.progress}
+        >
+          Supprimer
+        </Button>
+      ) : null}
+    </Form>
   );
 };

@@ -6,7 +6,7 @@ import Alert from '~/modules/components/Alert';
 import httpClient from '~/apps/admin-public/httpClient';
 import {USERNAME_NOT_FOUND, INCORRECT_PASSWORD} from '~/modules/loginErrors';
 import styles from './login.scss';
-import {Form, Input} from '~/modules/components/form';
+import {Form, Input} from '~/modules/components/form-re';
 
 export const store = () => () => {
   const submit$ = new Rx.Subject();

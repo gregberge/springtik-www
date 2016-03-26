@@ -4,7 +4,7 @@ import baseConfig from './base-config';
 export default {
   ...baseConfig,
   debug: true,
-  devtool: 'eval',
+  devtool: 'source-map',
   output: {
     ...baseConfig.output,
     pathinfo: true

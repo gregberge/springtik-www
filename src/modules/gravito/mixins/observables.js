@@ -40,6 +40,8 @@ export default {
                   )
                 )
               )
+              .publish()
+              .refCount()
           );
         }
       } else

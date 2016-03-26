@@ -8,7 +8,6 @@ export default connect({styles}, () => (
     <ul>
       <li>
         <Link to="/categories" activeClassName={styles.active}>Catégories</Link>
-        <Link to="/activities" activeClassName={styles.active}>Activités</Link>
       </li>
     </ul>
   </nav>

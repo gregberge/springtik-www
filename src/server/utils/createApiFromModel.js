@@ -1,14 +1,25 @@
-export default Model => ({
-  fetchAll(query) {
-    if (query && Object.keys(query).length)
-      return Model.query().where(query);
+import ApiError from '~/modules/ApiError';
+import {FETCH_NOT_FOUND} from '~/modules/apiErrors';
 
-    return Model.query();
+export default Model => ({
+  fetchAll(options) {
+    const query = Model.query()
+      .orderBy('id', 'desc');
+
+    if (options && Object.keys(options).length)
+      return query.where(options);
+
+    return query;
   },
 
   fetch(id) {
     return Model.query().where({id})
-      .then(([res]) => res);
+      .then(([res]) => {
+        if (!res)
+          throw new ApiError('Result not found', FETCH_NOT_FOUND, 404);
+
+        return res;
+      });
   },
 
   create(model) {
@@ -19,7 +30,7 @@ export default Model => ({
     return Model.query().patchAndFetchById(id, data);
   },
 
-  destroy(id) {
+  delete(id) {
     return Model.query().delete().where({id});
   }
 });

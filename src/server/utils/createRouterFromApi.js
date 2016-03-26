@@ -19,7 +19,7 @@ export default (name, {api}) => {
   }));
 
   router.delete('/:id', errCheck(async function (req, res) {
-    await api[name].destroy(req.params.id);
+    await api[name].delete(req.params.id);
     res.status(204).end();
   }));
 

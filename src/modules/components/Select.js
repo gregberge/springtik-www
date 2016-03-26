@@ -29,6 +29,9 @@ class Select extends Component {
   }
 
   onChange = event => {
+    if (this.props.onChange)
+      this.props.onChange(event);
+
     const {placeholder} = this.props;
     this.setState({placeholder: !event.target.value && placeholder});
   };
@@ -36,8 +39,6 @@ class Select extends Component {
   render() {
     const {
       placeholder,
-      value,
-      defaultValue,
       options = [],
       className: propClassName,
       onChange,
@@ -50,7 +51,7 @@ class Select extends Component {
 
     return (
       <select
-        {...{...props, value, defaultValue, className}}
+        {...{...props, className}}
         onChange={this.onChange}
       >
         {placeholder ? <option value="">{placeholder}</option> : null}

@@ -1,39 +1,89 @@
-import React from 'react';
-import {Form, wrapInput, registerTheme} from 'react-reform';
-import 'react-reform/opt/validators';
-import BaseInput from '~/modules/components/Input';
-import BaseSelect from '~/modules/components/Select';
-import FormGroup from '~/modules/components/FormGroup';
-import Button from '~/modules/components/Button';
+import React, {PropTypes} from 'react';
+import createElement from 'recompose/createElement';
+import BaseInput from './Input';
+import BaseSelect from './Select';
 
-registerTheme('default', (FormContainer, Fields, {status, formProps}) => (
-  <FormContainer noValidate>
-    <Fields>
-      {(Field, {validations}) => {
-        const hasError = validations.some(({isValid}) => isValid === false);
-        const showError = status === 'preSubmitFail' && hasError;
+function inForm(Control) {
+  return class extends React.Component {
+    static propTypes = {
+      name: PropTypes.string.isRequired
+    };
 
-        return (
-          <FormGroup>
-            <Field hasError={showError} />
-          </FormGroup>
-        );
-      }}
-    </Fields>
-    <Button disabled={formProps.progress} block large>
-      {formProps.submitText}
-    </Button>
-    {formProps.buttons}
-  </FormContainer>
-));
+    static contextTypes = {
+      form: PropTypes.object.isRequired
+    };
 
-export const Input = wrapInput('Input', BaseInput, {
-  extractValueFromOnChange: event => event.target.value,
-  valueToProps: value => ({value})
-});
+    componentWillMount() {
+      this.state = {
+        value: this.context.form.getValue(this.props.name)
+      };
+    }
 
-export const Select = wrapInput('Select', BaseSelect, {
-  extractValueFromOnChange: event => event.target.value
-});
+    onChange = event => {
+      if (this.props.onChange)
+        this.props.onChange(event);
 
-export {Form, Button};
+      this.context.form.setValue(this.props.name, event.target.value);
+      this.setState({value: event.target.value});
+    }
+
+    render() {
+      return createElement(Control, {
+        ...this.props,
+        ...this.state,
+        onChange: this.onChange
+      });
+    }
+  };
+}
+
+export const Input = inForm(BaseInput);
+export const Select = inForm(BaseSelect);
+
+export default class Form extends React.Component {
+  static propTypes = {
+    model: PropTypes.object.isRequired,
+    onSubmit: PropTypes.func.isRequired
+  };
+
+  static childContextTypes = {
+    form: PropTypes.object
+  };
+
+  getChildContext() {
+    return {
+      form: {
+        getValue: this.getValue,
+        setValue: this.setValue
+      }
+    };
+  }
+
+  componentWillMount() {
+    this.state = {model: this.props.model};
+  }
+
+  getValue = name => {
+    return this.state.model[name];
+  };
+
+  setValue = (name, value) => {
+    const model = {...this.state.model, [name]: value};
+    this.setState({model});
+  };
+
+  onSubmit = event => {
+    event.preventDefault();
+    this.props.onSubmit(this.state.model, event);
+  };
+
+  render() {
+    const {children, model, onSubmit, ...props} = this.props;
+
+    return (
+      <form {...props} onSubmit={this.onSubmit}>
+        {children}
+      </form>
+    );
+  }
+}

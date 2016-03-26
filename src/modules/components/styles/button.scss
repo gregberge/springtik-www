@@ -42,3 +42,7 @@
     }
   }
 }
+
+.btn + .btn {
+  margin-left: $padding-unit / 2;
+}

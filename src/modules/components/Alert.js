@@ -4,7 +4,7 @@ import connect from '~/modules/gravito/connect';
 import classnames from 'classnames';
 
 const Alert = ({uiStyle, className: propClassName, children, ...props}) => {
-  const uiStyleClassName = uiStyle ? styles[uiStyle] : null;
+  const uiStyleClassName = uiStyle ? styles[`alert-${uiStyle}`] : null;
   const className = classnames(styles.alert, uiStyleClassName, propClassName);
 
   return (
@@ -16,7 +16,9 @@ const Alert = ({uiStyle, className: propClassName, children, ...props}) => {
 
 Alert.propTypes = {
   uiStyle: PropTypes.oneOf([
-    'danger'
+    'info',
+    'danger',
+    'warning'
   ])
 };
 

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styles from './header.scss';
 import connect from '~/modules/gravito/connect';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
+import Link from 'react-router/lib/Link';
 
 export default connect({styles}, class extends Component {
   state = {showNav: false};
@@ -16,7 +16,9 @@ export default connect({styles}, class extends Component {
 
     return (
       <header className={styles.header}>
-        <div className={styles.logo} />
+        <Link to="/">
+          <div className={styles.logo} />
+        </Link>
         <div
           tabIndex={-1}
           className={styles.user}

@@ -11,7 +11,7 @@ function observe(promise, {next}) {
 export default (name, {api}) => {
   const created$ = new Rx.Subject();
   const updated$ = new Rx.Subject();
-  const destroyed$ = new Rx.Subject();
+  const deleted$ = new Rx.Subject();
 
   return {
     $fetchAll(...args) {
@@ -44,12 +44,12 @@ export default (name, {api}) => {
       return observe(api[name].update(model), updated$);
     },
 
-    destroyed$,
-    $destroy(...args) {
-      return Rx.Obserable.watchTask(this.destroy(...args));
+    deleted$,
+    $delete(...args) {
+      return Rx.Obserable.watchTask(this.delete(...args));
     },
-    destroy(id) {
-      return observe(api[name].destroy(id).then(() => id), destroyed$);
+    delete(id) {
+      return observe(api[name].delete(id).then(() => id), deleted$);
     }
   };
 };

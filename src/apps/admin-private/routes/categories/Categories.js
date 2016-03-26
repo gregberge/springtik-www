@@ -4,6 +4,7 @@ import Rx from 'rxjs/Rx';
 import connect from '~/modules/gravito/connect';
 import api from '~/apps/admin-private/api';
 import styles from './categories.scss';
+import Toolbar from '~/modules/components/Toolbar';
 
 export const routeStore = () => () => ({
   categories$: api.categories.$fetchAll()
@@ -15,7 +16,8 @@ export const store = () => (props$, routeStore$) => {
     routeStore$.map(({categories}) => categories),
     Rx.Observable.merge(
         api.categories.created$,
-        api.categories.updated$
+        api.categories.updated$,
+        api.categories.deleted$
       )
       .switchMap(() => api.categories.$fetchAll())
       .filter(({success}) => success)
@@ -25,19 +27,24 @@ export const store = () => (props$, routeStore$) => {
 
 export default connect({styles, store: store()}, ({categories, children}) =>
   <main>
-    <ul>
-      <li>
-        <Link to="/categories/new">
-          Ajouter une catégorie
-        </Link>
-      </li>
-      {categories.success ? categories.output.map(({id, name}, index) =>
-        <li key={index}>
-          <Link to={`/categories/edit/${id}`}>{name}</Link>
-        </li>
-      ) : null}
-    </ul>
-    <div>
+    <Toolbar>
+      <Link to="/categories/new">
+        <i className="fa fa-plus-circle" />Créer une catégorie
+      </Link>
+    </Toolbar>
+    <div className={styles.workspace}>
+      <ul>
+        {categories.success ? categories.output.map(({id, level, name}, index) =>
+          <li key={index}>
+            <Link
+              activeClassName={styles.active}
+              to={`/categories/edit/${id}`}
+            >
+              [{level}] {name}
+            </Link>
+          </li>
+        ) : null}
+      </ul>
       {children}
     </div>
   </main>
