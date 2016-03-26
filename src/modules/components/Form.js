@@ -4,7 +4,7 @@ import BaseInput from './Input';
 import BaseSelect from './Select';
 
 function inForm(Control) {
-  return class extends React.Component {
+  return class WrappedControl extends React.Component {
     static propTypes = {
       name: PropTypes.string.isRequired
     };
