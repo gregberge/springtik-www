@@ -6,7 +6,7 @@
     background-color: $white-color;
     font-family: 'Open Sans', sans-serif;
     font-size: 1em;
-    height: 100%;
+    min-height: 100vh;
   }
 
   html {
@@ -31,10 +31,10 @@
   }
 
   #main {
-    height: 100%;
+    min-height: 100vh;
 
     > div {
-      height: 100%;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
