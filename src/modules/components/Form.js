@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import createElement from 'recompose/createElement';
 import BaseInput from './Input';
+import BaseTextarea from './Textarea';
 import BaseSelect from './Select';
 
 function inForm(Control) {
@@ -39,6 +40,7 @@ function inForm(Control) {
 
 export const Input = inForm(BaseInput);
 export const Select = inForm(BaseSelect);
+export const Textarea = inForm(BaseTextarea);
 
 export default class Form extends React.Component {
   static propTypes = {

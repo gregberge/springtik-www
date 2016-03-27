@@ -1,6 +1,6 @@
 import React from 'react';
 import FormGroup from '~/modules/components/FormGroup';
-import Form, {Input, Select} from '~/modules/components/Form';
+import Form, {Input, Select, Textarea} from '~/modules/components/Form';
 import Button from '~/modules/components/Button';
 
 const levelOptions = {
@@ -31,6 +31,15 @@ export default ({
           placeholder="Niveau de la catégorie"
           options={levelOptions}
           required
+        />
+      </FormGroup>
+      <FormGroup>
+        <Textarea
+          counter
+          name="description"
+          maxLength={180}
+          rows={4}
+          placeholder="Description courte"
         />
       </FormGroup>
       <Button

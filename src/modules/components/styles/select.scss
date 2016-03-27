@@ -6,4 +6,5 @@
 
 .formControl {
   composes: formControl from './form-control.scss';
+  height: 44px;
 }
