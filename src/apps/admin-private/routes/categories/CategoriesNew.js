@@ -6,7 +6,12 @@ import '~/modules/rx-extended/watchTask';
 import CategoriesForm from './CategoriesForm';
 import styles from './categories.scss';
 
-export const store = () => () => {
+export const routeStore = () => props$ => ({
+  keywords$: props$
+    .switchMap(() => api.categories.$fetchKeywords())
+});
+
+export const store = () => (props$, routeStore$) => {
   const submit$ = new Rx.Subject();
 
   const result$ = submit$
@@ -16,7 +21,11 @@ export const store = () => () => {
 
   const category$ = Rx.Observable.from([{}]);
 
-  return {submit$, result$, category$};
+  const keywords$ = routeStore$
+    .map(({keywords}) => keywords)
+    .map(({output}) => output);
+
+  return {submit$, keywords$, result$, category$};
 };
 
 
