@@ -3,15 +3,24 @@
 .workspace {
   display: flex;
   flex: 1 0;
+}
 
-  > ul {
+.listContainer {
+  flex: 0 0 auto;
+  width: 200px;
+  position: relative;
+
+  ul {
     padding: 0;
     margin: 0;
-    width: 200px;
     font-size: 0.8em;
     list-style-type: none;
     background: $white-color;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    position: absolute;
 
     a {
       display: block;
@@ -28,16 +37,16 @@
       }
     }
   }
+}
 
-  > div {
-    flex: 1 0;
-    max-width: 700px;
-    padding: $padding-unit;
+.formContainer {
+  flex: 1 0;
+  max-width: 700px;
+  padding: $padding-unit;
 
-    h2 {
-      margin: 0 0 $padding-unit;
-      font-size: 1.2em;
-      color: $primary-color;
-    }
+  h2 {
+    margin: 0 0 $padding-unit;
+    font-size: 1.2em;
+    color: $primary-color;
   }
 }

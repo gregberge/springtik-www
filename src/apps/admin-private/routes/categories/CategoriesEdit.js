@@ -6,6 +6,7 @@ import CategoriesForm from './CategoriesForm';
 import Alert from '~/modules/components/Alert';
 import Loader from '~/modules/components/Loader';
 import {FETCH_NOT_FOUND} from '~/modules/apiErrors';
+import styles from './categories.scss';
 import '~/modules/rx-extended/watchTask';
 
 export const routeStore = () => props$ => ({
@@ -42,7 +43,7 @@ export const store = () => (props$, routeStore$) => {
   return {submit$, delete$, category$, result$, fetchError$, deleteResult$};
 };
 
-export default connect(({store: store()}),
+export default connect(({styles, store: store()}),
   class CategoriesEdit extends React.Component {
     static contextTypes = {
       router: PropTypes.object
@@ -79,7 +80,7 @@ export default connect(({store: store()}),
 
     render() {
       return (
-        <div>
+        <div className={styles.formContainer}>
           <h2>Edition d’une catégorie</h2>
           {this.renderForm()}
         </div>

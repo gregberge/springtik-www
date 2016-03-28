@@ -4,6 +4,7 @@ import connect from '~/modules/gravito/connect';
 import Rx from 'rxjs/Rx';
 import '~/modules/rx-extended/watchTask';
 import CategoriesForm from './CategoriesForm';
+import styles from './categories.scss';
 
 export const store = () => () => {
   const submit$ = new Rx.Subject();
@@ -23,7 +24,7 @@ export const store = () => () => {
 };
 
 
-export default connect(({store: store()}),
+export default connect(({styles, store: store()}),
   class CategoriesEdit extends React.Component {
     static contextTypes = {
       router: PropTypes.object
@@ -38,7 +39,7 @@ export default connect(({store: store()}),
 
     render() {
       return (
-        <div>
+        <div className={styles.formContainer}>
           <h2>Nouvelle catégorie</h2>
           <CategoriesForm {...this.props} />
         </div>

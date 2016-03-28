@@ -33,18 +33,20 @@ export default connect({styles, store: store()}, ({categories, children}) =>
       </Link>
     </Toolbar>
     <div className={styles.workspace}>
-      <ul>
-        {categories.success ? categories.output.map(({id, level, name}, index) =>
-          <li key={index}>
-            <Link
-              activeClassName={styles.active}
-              to={`/categories/edit/${id}`}
-            >
-              [{level}] {name}
-            </Link>
-          </li>
-        ) : null}
-      </ul>
+      <div className={styles.listContainer}>
+        <ul>
+          {categories.success ? categories.output.map(({id, level, name}, index) =>
+            <li key={index}>
+              <Link
+                activeClassName={styles.active}
+                to={`/categories/edit/${id}`}
+              >
+                [{level}] {name}
+              </Link>
+            </li>
+          ) : null}
+        </ul>
+      </div>
       {children}
     </div>
   </main>
