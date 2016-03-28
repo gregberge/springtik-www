@@ -3,17 +3,18 @@ import FormGroup from '~/modules/components/FormGroup';
 import Form, {Input, Select, Textarea} from '~/modules/components/Form';
 import Button from '~/modules/components/Button';
 
-const levelOptions = {
-  '1': 'Premier niveau',
-  '2': 'Second niveau'
-};
+const levelOptions = [
+  {value: 1, label: 'Premier niveau'},
+  {value: 2, label: 'Second niveau'}
+];
 
 export default ({
   onSubmit,
   onDelete,
   result: {progress},
   deleteResult,
-  category
+  category,
+  keywords
 }) => {
   return (
     <Form model={category} onSubmit={onSubmit}>
@@ -40,6 +41,15 @@ export default ({
           maxLength={180}
           rows={4}
           placeholder="Description courte"
+        />
+      </FormGroup>
+      <FormGroup>
+        <Select
+          multi
+          allowCreate
+          name="keywords"
+          placeholder="Mots clefs"
+          options={keywords && keywords.map(value => ({value, label: value}))}
         />
       </FormGroup>
       <Button

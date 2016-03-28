@@ -10,7 +10,6 @@ export const routeStore = () => () => ({
   categories$: api.categories.$fetchAll()
 });
 
-
 export const store = () => (props$, routeStore$) => {
   const categories$ = Rx.Observable.merge(
     routeStore$.map(({categories}) => categories),
@@ -22,6 +21,7 @@ export const store = () => (props$, routeStore$) => {
       .switchMap(() => api.categories.$fetchAll())
       .filter(({success}) => success)
   );
+
   return {categories$};
 };
 

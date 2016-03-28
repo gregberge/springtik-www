@@ -3,6 +3,7 @@
 
 const config = {
   development: {
+    debug: true,
     client: 'postgresql',
     connection: {
       database: 'springtik'

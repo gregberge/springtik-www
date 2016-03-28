@@ -11,7 +11,12 @@ export default class Category extends BaseModel {
       ...BaseModel.jsonSchema.properties,
       level: {type: 'number'},
       name: {type: 'string', minLength: 1, maxLength: 255},
-      description: {type: 'string', maxLength: 180}
+      description: {type: 'string', maxLength: 180},
+      keywords: {
+        type: 'array',
+        items: {type: 'string'},
+        uniqueItems: true
+      }
     }
   };
 }

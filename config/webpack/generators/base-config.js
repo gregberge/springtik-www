@@ -24,7 +24,10 @@ export default {
     ]
   },
   sassLoader: {
-    includePaths: [path.resolve(__dirname, '../../../src')]
+    includePaths: [
+      path.resolve(__dirname, '../../../src'),
+      path.resolve(__dirname, '../../../node_modules')
+    ]
   },
   postcss: [
     autoprefixer

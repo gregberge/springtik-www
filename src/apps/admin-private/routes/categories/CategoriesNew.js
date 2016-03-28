@@ -10,10 +10,6 @@ export const store = () => () => {
   const submit$ = new Rx.Subject();
 
   const result$ = submit$
-    .map(model => ({
-      ...model,
-      level: Number(model.level)
-    }))
     .watchTask(model => api.categories.create(model))
     .publish()
     .refCount();

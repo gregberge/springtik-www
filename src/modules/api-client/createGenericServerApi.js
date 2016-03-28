@@ -1,6 +1,6 @@
 import Rx from 'rxjs/Rx';
 
-function observe(promise, {next}) {
+export function observe(promise, {next}) {
   return promise
     .then(output => {
       next(output);

@@ -11,7 +11,9 @@ import '~/modules/rx-extended/watchTask';
 
 export const routeStore = () => props$ => ({
   category$: props$
-    .switchMap(({params: {id}}) => api.categories.$fetch(id))
+    .switchMap(({params: {id}}) => api.categories.$fetch(id)),
+  keywords$: props$
+    .switchMap(() => api.categories.$fetchKeywords())
 });
 
 export const store = () => (props$, routeStore$) => {
@@ -22,8 +24,7 @@ export const store = () => (props$, routeStore$) => {
     .withLatestFrom(props$)
     .map(([model, {params: {id}}]) => ({
       ...model,
-      id,
-      level: Number(model.level)
+      id
     }))
     .watchTask(model => api.categories.update(model));
 
@@ -36,11 +37,23 @@ export const store = () => (props$, routeStore$) => {
     .map(({category}) => category)
     .map(({output}) => output);
 
+  const keywords$ = routeStore$
+    .map(({keywords}) => keywords)
+    .map(({output}) => output);
+
   const fetchError$ = routeStore$
     .map(({category}) => category)
     .map(({error}) => error);
 
-  return {submit$, delete$, category$, result$, fetchError$, deleteResult$};
+  return {
+    keywords$,
+    submit$,
+    delete$,
+    category$,
+    result$,
+    fetchError$,
+    deleteResult$
+  };
 };
 
 export default connect(({styles, store: store()}),

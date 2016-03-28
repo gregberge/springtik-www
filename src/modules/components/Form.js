@@ -4,7 +4,9 @@ import BaseInput from './Input';
 import BaseTextarea from './Textarea';
 import BaseSelect from './Select';
 
-function inForm(Control) {
+function inForm(Control, {
+  extractValueFromOnChange = event => event.target.value
+} = {}) {
   return class WrappedControl extends React.Component {
     static propTypes = {
       name: PropTypes.string.isRequired
@@ -20,12 +22,13 @@ function inForm(Control) {
       };
     }
 
-    onChange = event => {
+    onChange = (...args) => {
       if (this.props.onChange)
-        this.props.onChange(event);
+        this.props.onChange(...args);
 
-      this.context.form.setValue(this.props.name, event.target.value);
-      this.setState({value: event.target.value});
+      const value = extractValueFromOnChange(...args);
+      this.context.form.setValue(this.props.name, value);
+      this.setState({value});
     }
 
     render() {
@@ -39,7 +42,14 @@ function inForm(Control) {
 }
 
 export const Input = inForm(BaseInput);
-export const Select = inForm(BaseSelect);
+export const Select = inForm(BaseSelect, {
+  extractValueFromOnChange: item => {
+    if (typeof item === 'string')
+      return item ? Array.from(new Set(item.toLowerCase().split(','))) : [];
+
+    return item.value;
+  }
+});
 export const Textarea = inForm(BaseTextarea);
 
 export default class Form extends React.Component {

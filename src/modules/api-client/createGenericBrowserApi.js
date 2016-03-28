@@ -1,7 +1,7 @@
 import Rx from 'rxjs/Rx';
 import ApiError from '~/modules/ApiError';
 
-function observe(promise, observer) {
+export function observe(promise, observer) {
   return promise
     .then(output => {
       observer.next(output);
@@ -9,7 +9,7 @@ function observe(promise, observer) {
     });
 }
 
-function handleHttpError(err) {
+export function handleHttpError(err) {
   if (err.response && err.response.bodyData)
     throw new ApiError(
       err.response.bodyData.error.message,
@@ -19,7 +19,7 @@ function handleHttpError(err) {
   return err;
 }
 
-function wrapHttp(promise) {
+export function wrapHttp(promise) {
   return promise
     .then(({bodyData}) => bodyData)
     .catch(handleHttpError);
