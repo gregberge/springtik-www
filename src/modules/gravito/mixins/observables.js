@@ -40,7 +40,7 @@ export default {
                   )
                 )
               )
-              .publish()
+              .publishReplay(null, 1)
               .refCount()
           );
         }
