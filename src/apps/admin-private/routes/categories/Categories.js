@@ -71,7 +71,7 @@ export default connect({styles, store: store()}, ({
                     })}
                     to={`/categories/edit/${id}`}
                   >
-                    [{level}] {name}
+                    {name}
                   </Link>
                 </li>
             )}
@@ -89,7 +89,7 @@ export default connect({styles, store: store()}, ({
                     activeClassName={styles.active}
                     to={`/categories/edit/${id}`}
                   >
-                    [{level}] {name}
+                    {name}
                   </Link>
                 </li>
             )}
