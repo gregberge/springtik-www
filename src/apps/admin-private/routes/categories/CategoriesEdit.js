@@ -33,7 +33,13 @@ export const store = () => (props$, routeStore$) => {
   const deleteResult$ = delete$
     .withLatestFrom(props$)
     .map(([, {params: {id}}]) => id)
-    .watchTask(id => api.categories.delete(id));
+    .watchTask(id => api.categories.delete(id))
+    .merge(
+      props$
+        .map(({params: {id}}) => id)
+        .distinctUntilChanged()
+        .mapTo({idle: true})
+    );
 
   const category$ = props$
     .map(({category}) => category || {})
@@ -101,7 +107,7 @@ export default connect(({styles, store: store()}),
             La catégorie a bien été modifiée.
           </Banner>
           <Banner
-            show={this.props.result.error}
+            show={this.props.result.error || this.props.deleteResult.error}
             uiStyle="danger"
           >
             Une erreur est survenue, veuillez réessayer.
