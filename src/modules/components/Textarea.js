@@ -23,9 +23,9 @@ export default connect({styles}, class Textarea extends Component {
   }
 
   getCharCountFromProps(props) {
-    return props.value
+    return typeof props.value === 'string'
       ? props.value.length
-      : props.defaultValue
+      : typeof props.defaultValue === 'string'
         ? props.defaultValue.length
         : null;
   }
