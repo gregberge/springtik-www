@@ -32,7 +32,7 @@ export const store = () => (props$, routeStore$) => {
   return {categories$, keywords$};
 };
 
-export default connect({styles, store: store()}, ({categories, keywords, children}) =>
+export default connect({styles, store: store()}, ({categories = {}, keywords, children}) =>
   <main>
     <Toolbar>
       <Link to="/categories/new">
