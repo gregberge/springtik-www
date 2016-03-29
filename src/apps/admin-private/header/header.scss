@@ -50,6 +50,7 @@
   border-radius: 0 0 4px 4px;
   overflow: hidden;
   padding: $padding-unit / 4 0;
+  z-index: $z-index-nav;
 
   ul {
     margin: 0;
