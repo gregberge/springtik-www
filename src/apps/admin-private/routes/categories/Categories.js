@@ -6,7 +6,7 @@ import api from '~/apps/admin-private/api';
 import styles from './categories.scss';
 import Toolbar from '~/modules/components/Toolbar';
 
-export const routeStore = () => () => ({
+export const routeStore = () => props$ => ({
   categories$: api.categories.$fetchAll()
 });
 
@@ -19,13 +19,20 @@ export const store = () => (props$, routeStore$) => {
         api.categories.deleted$
       )
       .switchMap(() => api.categories.$fetchAll())
-      .filter(({success}) => success)
-  );
+  )
+  .filter(({success}) => success);
 
-  return {categories$};
+  const keywords$ = categories$
+    .map(({output = []}) =>
+      Array.from(new Set(output.reduce((all, {keywords}) =>
+        all.concat(keywords), []
+      )))
+    );
+
+  return {categories$, keywords$};
 };
 
-export default connect({styles, store: store()}, ({categories, children}) =>
+export default connect({styles, store: store()}, ({categories, keywords, children}) =>
   <main>
     <Toolbar>
       <Link to="/categories/new">
@@ -47,7 +54,9 @@ export default connect({styles, store: store()}, ({categories, children}) =>
           ) : null}
         </ul>
       </div>
-      {children}
+      {React.Children.map(children, child =>
+        React.cloneElement(child, {categories, keywords})
+      )}
     </div>
   </main>
 );

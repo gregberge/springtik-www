@@ -11,18 +11,25 @@ const levelOptions = [
 export default ({
   onSubmit,
   onDelete,
-  result: {progress},
+  onCategoryChange,
+  result,
   deleteResult,
-  category,
+  category = {},
+  disabled,
   keywords
 }) => {
   return (
-    <Form model={category} onSubmit={onSubmit}>
+    <Form
+      model={category}
+      onModelChange={onCategoryChange}
+      onSubmit={onSubmit}
+    >
       <FormGroup>
         <Input
           autoFocus
           name="name"
           placeholder="Titre de la catégorie"
+          disabled={disabled}
           required
         />
       </FormGroup>
@@ -31,6 +38,7 @@ export default ({
           name="level"
           placeholder="Niveau de la catégorie"
           options={levelOptions}
+          disabled={disabled}
           required
         />
       </FormGroup>
@@ -41,6 +49,7 @@ export default ({
           maxLength={180}
           rows={4}
           placeholder="Description courte"
+          disabled={disabled}
         />
       </FormGroup>
       <FormGroup>
@@ -50,11 +59,12 @@ export default ({
           name="keywords"
           placeholder="Mots clefs"
           options={keywords && keywords.map(value => ({value, label: value}))}
+          disabled={disabled}
         />
       </FormGroup>
       <Button
         large
-        disabled={progress}
+        disabled={result.progress || disabled}
       >
         {category.id ? 'Mettre à jour la catégorie' : 'Créer la catégorie'}
       </Button>
@@ -64,7 +74,7 @@ export default ({
           type="button"
           uiStyle="danger"
           onClick={onDelete}
-          disabled={deleteResult.progress}
+          disabled={deleteResult.progress || disabled}
         >
           Supprimer
         </Button>

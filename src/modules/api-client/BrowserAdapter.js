@@ -8,13 +8,5 @@ export default ({http}) => ({
   },
 
   activities: createGenericBrowserApi('activities', {http}),
-  categories: {
-    ...createGenericBrowserApi('categories', {http}),
-    $fetchKeywords(...args) {
-      return Rx.Observable.watchTask(this.fetchKeywords(...args));
-    },
-    fetchKeywords(query) {
-      return wrapHttp(http.get('/api/keywords', {query}));
-    }
-  }
+  categories: createGenericBrowserApi('categories', {http})
 });

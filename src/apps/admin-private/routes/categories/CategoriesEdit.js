@@ -9,22 +9,17 @@ import {FETCH_NOT_FOUND} from '~/modules/apiErrors';
 import styles from './categories.scss';
 import '~/modules/rx-extended/watchTask';
 
-export const routeStore = () => props$ => ({
-  category$: props$
-    .switchMap(({params: {id}}) => api.categories.$fetch(id)),
-  keywords$: props$
-    .switchMap(() => api.categories.$fetchKeywords())
-});
-
 export const store = () => (props$, routeStore$) => {
   const submit$ = new Rx.Subject();
   const delete$ = new Rx.Subject();
+  const categoryChange$ = new Rx.Subject();
 
   const result$ = submit$
     .withLatestFrom(props$)
     .map(([model, {params: {id}}]) => ({
       ...model,
-      id
+      id,
+      keywords: model.keywords || []
     }))
     .watchTask(model => api.categories.update(model));
 
@@ -33,21 +28,23 @@ export const store = () => (props$, routeStore$) => {
     .map(([, {params: {id}}]) => id)
     .watchTask(id => api.categories.delete(id));
 
-  const category$ = routeStore$
-    .map(({category}) => category)
-    .map(({output}) => output);
+  const category$ = props$
+    .map(({categories}) => categories)
+    .filter(categories => categories.success)
+    .withLatestFrom(props$)
+    .map(([categories, {params: {id}}]) =>
+      categories.output
+        .filter(category => category.id === id)[0]
+    )
+    .merge(categoryChange$);
 
-  const keywords$ = routeStore$
-    .map(({keywords}) => keywords)
-    .map(({output}) => output);
-
-  const fetchError$ = routeStore$
-    .map(({category}) => category)
-    .map(({error}) => error);
+  const fetchError$ = category$
+    .filter(category => !category)
+    .mapTo(new Error('Unable to find category'));
 
   return {
-    keywords$,
     submit$,
+    categoryChange$,
     delete$,
     category$,
     result$,
@@ -85,10 +82,7 @@ export default connect(({styles, store: store()}),
         );
       }
 
-      if (!category)
-        return <Loader delay={100} />;
-
-      return <CategoriesForm {...{category, ...props}} />;
+      return <CategoriesForm {...{category, ...props}} disabled={!category} />;
     }
 
     render() {

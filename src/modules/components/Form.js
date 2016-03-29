@@ -17,9 +17,11 @@ function inForm(Control, {
     };
 
     componentWillMount() {
-      this.state = {
-        value: this.context.form.getValue(this.props.name)
-      };
+      this.context.form.addControl(this);
+    }
+
+    componentWillUnmount() {
+      this.context.form.removeControl(this);
     }
 
     onChange = (...args) => {
@@ -28,14 +30,13 @@ function inForm(Control, {
 
       const value = extractValueFromOnChange(...args);
       this.context.form.setValue(this.props.name, value);
-      this.setState({value});
     }
 
     render() {
       return createElement(Control, {
         ...this.props,
-        ...this.state,
-        onChange: this.onChange
+        onChange: this.onChange,
+        value: this.context.form.getValue(this.props.name)
       });
     }
   };
@@ -55,38 +56,54 @@ export const Textarea = inForm(BaseTextarea);
 export default class Form extends React.Component {
   static propTypes = {
     model: PropTypes.object.isRequired,
+    onModelChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired
   };
 
   static childContextTypes = {
-    form: PropTypes.object
+    form: PropTypes.object.isRequired
   };
 
   getChildContext() {
     return {
       form: {
-        getValue: this.getValue,
-        setValue: this.setValue
+        addControl: this.addControl,
+        removeControl: this.removeControl,
+        setValue: this.setValue,
+        getValue: this.getValue
       }
     };
   }
 
-  componentWillMount() {
-    this.state = {model: this.props.model};
+  componentDidUpdate() {
+    this.controls.forEach(control => {
+      control.forceUpdate();
+    });
   }
 
-  getValue = name => {
-    return this.state.model[name];
+  controls = [];
+
+  addControl = control => {
+    this.controls.push(control);
+  };
+
+  removeControl = control => {
+    const index = this.controls.indexOf(control);
+
+    if (index !== -1)
+      this.controls.splice(index, 1);
   };
 
   setValue = (name, value) => {
-    const model = {...this.state.model, [name]: value};
-    this.setState({model});
+    const model = {...this.props.model, [name]: value};
+    this.props.onModelChange(model);
   };
+
+  getValue = name => this.props.model[name];
 
   onSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit(this.state.model, event);
+    this.props.onSubmit(this.props.model, event);
   };
 
   render() {

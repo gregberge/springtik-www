@@ -12,17 +12,5 @@ export default ({
   },
 
   activities: createApiFromModel(Activity),
-  categories: {
-    ...createApiFromModel(Category),
-    fetchKeywords() {
-      return Category.query()
-        .select('keywords')
-        .whereNotNull('keywords')
-        .then(results =>
-          Array.from(new Set(results.reduce((all, {keywords}) =>
-            all.concat(keywords), []
-          )))
-        );
-    }
-  }
+  categories: createApiFromModel(Category)
 });

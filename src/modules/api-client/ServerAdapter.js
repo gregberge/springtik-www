@@ -8,13 +8,5 @@ export default ({req}) => ({
   },
 
   activities: createGenericServerApi('activities', {api}),
-  categories: {
-    ...createGenericServerApi('categories', {api}),
-    $fetchKeywords(...args) {
-      return Rx.Observable.watchTask(this.fetchKeywords(...args));
-    },
-    fetchKeywords(query) {
-      return api.categories.fetchKeywords(query);
-    }
-  }
+  categories: createGenericServerApi('categories', {api})
 });
