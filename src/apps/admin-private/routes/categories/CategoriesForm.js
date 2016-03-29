@@ -39,7 +39,7 @@ export default ({
           name="level"
           placeholder="Niveau de la catégorie"
           options={levelOptions}
-          disabled={disabled}
+          disabled={disabled || Boolean(category.id)}
           required
         />
       </FormGroup>
