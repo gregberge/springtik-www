@@ -1,0 +1,52 @@
+@import "styles/variables";
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: $padding-unit / 3;
+  color: $white-color;
+  font-size: 0.7em;
+  text-align: center;
+}
+
+.banner-danger {
+  background-color: lighten($danger-color, 10);
+}
+
+.banner-success {
+  background-color: lighten($success-color, 10);
+}
+
+.banner-warning {
+  background-color: lighten($warning-color, 10);
+}
+
+.banner-info {
+  background-color: lighten($primary-color, 10);
+}
+
+:global {
+  .bannerFromTop-enter {
+    transition: transform 250ms, opacity 250ms;
+    opacity: 0;
+    transform: translate3d(0, -50px, 0);
+
+    &.bannerFromTop-enter-active {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+ .bannerFromTop-leave {
+    transition: transform 500ms, opacity 500ms;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &.bannerFromTop-leave-active {
+      opacity: 0;
+      transform: translate3d(0, -50px, 0);
+    }
+  }
+}

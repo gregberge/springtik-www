@@ -5,6 +5,7 @@ import Rx from 'rxjs/Rx';
 import '~/modules/rx-extended/watchTask';
 import CategoriesForm from './CategoriesForm';
 import styles from './categories.scss';
+import Banner from '~/modules/components/Banner';
 
 export const store = () => (props$, routeStore$) => {
   const submit$ = new Rx.Subject();
@@ -43,6 +44,12 @@ export default connect(({styles, store: store()}),
     render() {
       return (
         <div className={styles.formContainer}>
+          <Banner
+            show={this.props.result.error}
+            uiStyle="danger"
+          >
+            Une erreur est survenue, veuillez réessayer.
+          </Banner>
           <h2>Nouvelle catégorie</h2>
           <CategoriesForm {...this.props} />
         </div>

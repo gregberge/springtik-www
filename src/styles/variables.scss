@@ -16,7 +16,9 @@ $gray-dark-color: #333333;
 $placeholder-color: #A9A9A9;
 
 $text-color: $gray-dark-color;
+
 $danger-color: #e62638;
+$success-color: #5cb85c;
 $warning-color: $orange-color;
 
 // Unit
@@ -27,3 +29,4 @@ $header-height: 50px;
 // Index
 
 $z-index-menu: 10;
+$z-index-toolbar: 20;

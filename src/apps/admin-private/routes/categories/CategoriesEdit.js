@@ -8,6 +8,7 @@ import Loader from '~/modules/components/Loader';
 import {FETCH_NOT_FOUND} from '~/modules/apiErrors';
 import styles from './categories.scss';
 import '~/modules/rx-extended/watchTask';
+import Banner from '~/modules/components/Banner';
 
 export const store = () => (props$, routeStore$) => {
   const submit$ = new Rx.Subject();
@@ -21,7 +22,13 @@ export const store = () => (props$, routeStore$) => {
       id,
       keywords: model.keywords || []
     }))
-    .watchTask(model => api.categories.update(model));
+    .watchTask(model => api.categories.update(model))
+    .merge(
+      props$
+        .map(({params: {id}}) => id)
+        .distinctUntilChanged()
+        .mapTo({idle: true})
+    );
 
   const deleteResult$ = delete$
     .withLatestFrom(props$)
@@ -82,12 +89,29 @@ export default connect(({styles, store: store()}),
         );
       }
 
-      return <CategoriesForm {...{category, ...props}} disabled={!category} />;
+      return (
+        <CategoriesForm
+          {...{category, ...props}}
+          disabled={!category}
+        />
+      );
     }
 
     render() {
       return (
         <div className={styles.formContainer}>
+          <Banner
+            show={this.props.result.success}
+            uiStyle="success"
+          >
+            La catégorie a bien été modifiée.
+          </Banner>
+          <Banner
+            show={this.props.result.error}
+            uiStyle="danger"
+          >
+            Une erreur est survenue, veuillez réessayer.
+          </Banner>
           <h2>Edition d’une catégorie</h2>
           {this.renderForm()}
         </div>
