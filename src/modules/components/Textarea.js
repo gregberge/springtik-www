@@ -5,18 +5,29 @@ import classNames from 'classnames';
 
 export default connect({styles}, class Textarea extends Component {
   componentWillMount() {
-    const charCount = this.props.value
-      ? this.props.value.length
-      : this.props.defaultValue
-        ? this.props.defaultValue.length
-        : 0;
+    this.state = {
+      charCount: this.getCharCountFromProps(this.props) || 0
+    };
+  }
 
-    this.state = {charCount};
+  componentWillReceiveProps(nextProps) {
+    const charCount = this.getCharCountFromProps(nextProps);
+
+    if (charCount !== null)
+      this.setState({charCount});
   }
 
   componentDidMount() {
     if (this.refs.textarea.value)
       this.onChange({target: this.refs.textarea});
+  }
+
+  getCharCountFromProps(props) {
+    return props.value
+      ? props.value.length
+      : props.defaultValue
+        ? props.defaultValue.length
+        : null;
   }
 
   onChange = event => {
