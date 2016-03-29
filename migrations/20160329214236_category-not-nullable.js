@@ -3,8 +3,8 @@ exports.up = (knex, Promise) =>
     .raw('ALTER TABLE categories ALTER COLUMN description SET DEFAULT \'\'')
     .raw('UPDATE categories SET description=\'\' WHERE description IS NULL')
     .raw('ALTER TABLE categories ALTER COLUMN description SET NOT NULL')
-    .raw('ALTER TABLE categories ALTER keywords SET DEFAULT jsonb_build_array()')
-    .raw('UPDATE categories SET keywords=jsonb_build_array() WHERE keywords IS NULL')
+    .raw('ALTER TABLE categories ALTER keywords SET DEFAULT \'[]\'::jsonb ')
+    .raw('UPDATE categories SET keywords = \'[]\'::jsonb  WHERE keywords IS NULL')
     .raw('ALTER TABLE categories ALTER keywords SET NOT NULL');
 
 exports.down = (knex, Promise) =>
