@@ -28,7 +28,7 @@ function inForm(Control, {
       if (this.props.onChange)
         this.props.onChange(...args);
 
-      const value = extractValueFromOnChange(...args);
+      const value = extractValueFromOnChange.apply(this, args);
       this.context.form.setValue(this.props.name, value);
     }
 
@@ -44,11 +44,11 @@ function inForm(Control, {
 
 export const Input = inForm(BaseInput);
 export const Select = inForm(BaseSelect, {
-  extractValueFromOnChange: item => {
-    if (typeof item === 'string')
+  extractValueFromOnChange(item) {
+    if (this.props.multi)
       return item ? Array.from(new Set(item.toLowerCase().split(','))) : [];
 
-    return item.value;
+    return item;
   }
 });
 export const Textarea = inForm(BaseTextarea);

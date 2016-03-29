@@ -12,6 +12,7 @@ export default class Category extends BaseModel {
       level: {type: 'number'},
       name: {type: 'string', minLength: 1, maxLength: 255},
       description: {type: 'string', maxLength: 180},
+      parentId: {type: ['string', 'null']},
       keywords: {
         type: 'array',
         items: {type: 'string'},
@@ -19,4 +20,26 @@ export default class Category extends BaseModel {
       }
     }
   };
+
+  static get relationMappings() {
+    return {
+      children: {
+        relation: BaseModel.OneToManyRelation,
+        modelClass: Category,
+        join: {
+          from: 'categories.id',
+          to: 'categories.parentId'
+        }
+      },
+
+      parent: {
+        relation: BaseModel.OneToOneRelation,
+        modelClass: Category,
+        join: {
+          from: 'categories.parentId',
+          to: 'categories.id'
+        }
+      }
+    };
+  }
 }

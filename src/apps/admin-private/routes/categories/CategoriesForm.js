@@ -15,6 +15,7 @@ export default ({
   result,
   deleteResult,
   category = {},
+  categories,
   disabled,
   keywords
 }) => {
@@ -42,6 +43,21 @@ export default ({
           required
         />
       </FormGroup>
+      {category.level === 2 ? (
+        <FormGroup>
+          <Select
+            name="parentId"
+            placeholder="Catégorie parente"
+            options={
+              categories
+                .filter(({level}) => level === 1)
+                .map(({id, name}) => ({value: id, label: name}))
+            }
+            disabled={disabled}
+            required
+          />
+        </FormGroup>
+      ) : null}
       <FormGroup>
         <Textarea
           counter

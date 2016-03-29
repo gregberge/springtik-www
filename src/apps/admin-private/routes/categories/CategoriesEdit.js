@@ -36,13 +36,7 @@ export const store = () => (props$, routeStore$) => {
     .watchTask(id => api.categories.delete(id));
 
   const category$ = props$
-    .map(({categories}) => categories)
-    .filter(categories => categories.success)
-    .withLatestFrom(props$)
-    .map(([categories, {params: {id}}]) =>
-      categories.output
-        .filter(category => category.id === id)[0]
-    )
+    .map(({category}) => category || {})
     .merge(categoryChange$);
 
   const fetchError$ = category$
