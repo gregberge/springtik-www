@@ -10,13 +10,15 @@ const Button = ({
   children,
   block,
   large,
+  small,
   uiStyle,
   ...props
 }) => {
   const uiStyleClassName = uiStyle ? `btn-${uiStyle}` : null;
   const className = cx('btn', {
     'btn-block': block,
-    'btn-large': large
+    'btn-large': large,
+    'btn-small': small
   }, uiStyleClassName, propClassName);
   return <button {...{className}} {...props}>{children}</button>;
 };

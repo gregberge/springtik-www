@@ -1,4 +1,3 @@
-import Rx from 'rxjs/Rx';
 import createGenericServerApi from './createGenericServerApi';
 import api from '~/server/api/admin';
 

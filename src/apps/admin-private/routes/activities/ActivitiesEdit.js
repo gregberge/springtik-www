@@ -1,26 +1,25 @@
 import React, {PropTypes} from 'react';
+import Rx from 'rxjs/Rx';
 import api from '~/apps/admin-private/api';
 import connect from '~/modules/gravito/connect';
-import Rx from 'rxjs/Rx';
-import CategoriesForm from './CategoriesForm';
 import Alert from '~/modules/components/Alert';
-import styles from './categories.scss';
 import '~/modules/rx-extended/watchTask';
 import Banner from '~/modules/components/Banner';
+import ActivitiesForm from './ActivitiesForm';
+import styles from './activities.scss';
 
 export const store = () => props$ => {
   const submit$ = new Rx.Subject();
   const delete$ = new Rx.Subject();
-  const categoryChange$ = new Rx.Subject();
+  const activityChange$ = new Rx.Subject();
 
   const result$ = submit$
     .withLatestFrom(props$)
     .map(([model, {params: {id}}]) => ({
       ...model,
-      id,
-      keywords: model.keywords || []
+      id
     }))
-    .watchTask(model => api.categories.update(model))
+    .watchTask(model => api.activities.update(model))
     .merge(
       props$
         .map(({params: {id}}) => id)
@@ -31,7 +30,7 @@ export const store = () => props$ => {
   const deleteResult$ = delete$
     .withLatestFrom(props$)
     .map(([, {params: {id}}]) => id)
-    .watchTask(id => api.categories.delete(id))
+    .watchTask(id => api.activities.delete(id))
     .merge(
       props$
         .map(({params: {id}}) => id)
@@ -39,19 +38,19 @@ export const store = () => props$ => {
         .mapTo({idle: true})
     );
 
-  const category$ = props$
-    .map(({category}) => category || {})
-    .merge(categoryChange$);
+  const activity$ = props$
+    .map(({activity}) => activity || {})
+    .merge(activityChange$);
 
-  const fetchError$ = category$
-    .filter(category => !category)
-    .mapTo(new Error('Unable to find category'));
+  const fetchError$ = activity$
+    .filter(activity => !activity)
+    .mapTo(new Error('Unable to find activity'));
 
   return {
     submit$,
-    categoryChange$,
+    activityChange$,
     delete$,
-    category$,
+    activity$,
     result$,
     fetchError$,
     deleteResult$
@@ -66,11 +65,11 @@ export default connect(({styles, store: store()}),
 
     componentDidUpdate() {
       if (this.props.deleteResult.success)
-        this.context.router.push('/categories');
+        this.context.router.push('/activities');
     }
 
     renderForm() {
-      const {category, fetchError, ...props} = this.props;
+      const {activity, fetchError, ...props} = this.props;
 
       if (fetchError) {
         return (
@@ -81,9 +80,9 @@ export default connect(({styles, store: store()}),
       }
 
       return (
-        <CategoriesForm
-          {...{category, ...props}}
-          disabled={!category}
+        <ActivitiesForm
+          {...{activity, ...props}}
+          disabled={!activity}
         />
       );
     }
@@ -95,7 +94,7 @@ export default connect(({styles, store: store()}),
             show={this.props.result.success}
             uiStyle="success"
           >
-            La catégorie a bien été modifiée.
+            L'activité a bien été modifiée.
           </Banner>
           <Banner
             show={this.props.result.error || this.props.deleteResult.error}
@@ -103,7 +102,7 @@ export default connect(({styles, store: store()}),
           >
             Une erreur est survenue, veuillez réessayer.
           </Banner>
-          <h2>Edition d’une catégorie</h2>
+          <h2>Edition d’une activité</h2>
           {this.renderForm()}
         </div>
       );

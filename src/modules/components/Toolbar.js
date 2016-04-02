@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import styles from './styles/toolbar.scss';
 import connect from '~/modules/gravito/connect';
 import classnames from 'classnames';

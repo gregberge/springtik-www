@@ -47,7 +47,10 @@ export default class User extends BaseModel {
   }
 
   $formatJson(json) {
-    const {password, ...props} = super.$formatJson(json);
+    const {
+      password, // eslint-disable-line no-unused-vars
+      ...props
+    } = super.$formatJson(json);
     return props;
   }
 }

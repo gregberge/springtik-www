@@ -1,4 +1,5 @@
 import BaseModel from './BaseModel';
+import Activity from './Activity';
 
 export default class Category extends BaseModel {
   static tableName = 'categories';
@@ -23,6 +24,15 @@ export default class Category extends BaseModel {
 
   static get relationMappings() {
     return {
+      activities: {
+        relation: BaseModel.OneToManyRelation,
+        modelClass: Activity,
+        join: {
+          from: 'categories.id',
+          to: 'activities.categoryId'
+        }
+      },
+
       children: {
         relation: BaseModel.OneToManyRelation,
         modelClass: Category,

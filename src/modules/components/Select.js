@@ -1,6 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
 import Select from 'react-select';
-import classnames from 'classnames';
 import connect from '~/modules/gravito/connect';
 import styles from './styles/select.scss';
 

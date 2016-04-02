@@ -3,33 +3,33 @@ import api from '~/apps/admin-private/api';
 import connect from '~/modules/gravito/connect';
 import Rx from 'rxjs/Rx';
 import '~/modules/rx-extended/watchTask';
-import CategoriesForm from './CategoriesForm';
-import styles from './categories.scss';
+import styles from './activities.scss';
 import Banner from '~/modules/components/Banner';
+import ActivitiesForm from './ActivitiesForm';
 
 export const store = () => () => {
   const submit$ = new Rx.Subject();
-  const categoryChange$ = new Rx.Subject();
+  const activityChange$ = new Rx.Subject();
 
   const result$ = submit$
-    .watchTask(model => api.categories.create(model))
+    .watchTask(model => api.activities.create(model))
     .publish()
     .refCount();
 
-  const category$ = Rx.Observable.from([{}])
-    .merge(categoryChange$);
+  const activity$ = Rx.Observable.from([{}])
+    .merge(activityChange$);
 
   return {
     submit$,
-    categoryChange$,
+    activityChange$,
     result$,
-    category$
+    activity$
   };
 };
 
 
 export default connect(({styles, store: store()}),
-  class CategoriesNew extends React.Component {
+  class ActivitiesNew extends React.Component {
     static contextTypes = {
       router: PropTypes.object
     };
@@ -38,7 +38,7 @@ export default connect(({styles, store: store()}),
       const {result} = this.props;
 
       if (result.success)
-        this.context.router.push(`/categories/edit/${result.output.id}`);
+        this.context.router.push(`/activities/edit/${result.output.id}`);
     }
 
     render() {
@@ -50,8 +50,8 @@ export default connect(({styles, store: store()}),
           >
             Une erreur est survenue, veuillez réessayer.
           </Banner>
-          <h2>Nouvelle catégorie</h2>
-          <CategoriesForm {...this.props} />
+          <h2>Nouvelle activité</h2>
+          <ActivitiesForm {...this.props} />
         </div>
       );
     }

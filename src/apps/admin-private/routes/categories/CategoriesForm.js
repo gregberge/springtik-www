@@ -2,6 +2,7 @@ import React from 'react';
 import FormGroup from '~/modules/components/FormGroup';
 import Form, {Input, Select, Textarea} from '~/modules/components/Form';
 import Button from '~/modules/components/Button';
+import styles from './categories.scss';
 
 const levelOptions = [
   {value: 1, label: 'Premier niveau'},
@@ -25,7 +26,7 @@ export default ({
       onModelChange={onCategoryChange}
       onSubmit={onSubmit}
     >
-      <FormGroup>
+      <FormGroup className={styles.smallGroup}>
         <Input
           autoFocus
           name="name"
@@ -34,7 +35,7 @@ export default ({
           required
         />
       </FormGroup>
-      <FormGroup>
+      <FormGroup className={styles.smallGroup}>
         <Select
           name="level"
           placeholder="Niveau de la catégorie"
@@ -44,7 +45,7 @@ export default ({
         />
       </FormGroup>
       {category.level === 2 ? (
-        <FormGroup>
+        <FormGroup className={styles.smallGroup}>
           <Select
             name="parentId"
             placeholder="Catégorie parente"
@@ -58,7 +59,7 @@ export default ({
           />
         </FormGroup>
       ) : null}
-      <FormGroup>
+      <FormGroup className={styles.smallGroup}>
         <Textarea
           counter
           name="description"
@@ -68,7 +69,7 @@ export default ({
           disabled={disabled}
         />
       </FormGroup>
-      <FormGroup>
+      <FormGroup className={styles.smallGroup}>
         <Select
           multi
           allowCreate
@@ -82,7 +83,7 @@ export default ({
         large
         disabled={result.progress || disabled}
       >
-        {category.id ? 'Mettre à jour la catégorie' : 'Créer la catégorie'}
+        {category.id ? 'Mettre à jour' : 'Créer'}
       </Button>
       {category.id ? (
         <Button

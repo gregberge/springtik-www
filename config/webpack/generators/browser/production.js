@@ -1,7 +1,6 @@
 import productionConfig from '../production-config';
 import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
 import path from 'path';
-import fs from 'fs';
 import webpack from 'webpack';
 
 export default app => {

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import styles from './styles/textarea.scss';
 import connect from '~/modules/gravito/connect';
 import classNames from 'classnames';
@@ -42,11 +42,23 @@ export default connect({styles}, class Textarea extends Component {
   }
 
   render() {
-    const {className: propClassName, onChange, counter, hasError, ...props} = this.props;
-    const className = classNames(styles.formControl, propClassName);
+    const {
+      className: propClassName,
+      containerClassName: propContainerClassName,
+      noControl,
+      counter,
+      hasError,
+      /* eslint-disable no-unused-vars */
+      onChange,
+      /* eslint-enable no-unused-vars */
+      ...props
+    } = this.props;
+    const className = classNames({
+      [styles.formControl]: !noControl
+    }, propClassName);
     const containerClassName = classNames(styles.controlContainer, {
       [styles.containerError]: hasError
-    });
+    }, propContainerClassName);
 
     return (
       <span className={containerClassName}>

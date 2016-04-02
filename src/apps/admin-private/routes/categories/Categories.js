@@ -5,9 +5,11 @@ import connect from '~/modules/gravito/connect';
 import api from '~/apps/admin-private/api';
 import styles from './categories.scss';
 import Toolbar from '~/modules/components/Toolbar';
+import List from '~/modules/components/List';
+import ListItem from '~/modules/components/ListItem';
 import classNames from 'classnames';
 
-export const routeStore = () => props$ => ({
+export const routeStore = () => () => ({
   categories$: api.categories.$fetchAll()
 });
 
@@ -24,7 +26,7 @@ export const store = () => (props$, routeStore$) => {
     .filter(({success}) => success)
     .map(({output}) => output)
     .startWith([])
-    .publishReplay(null, 1)
+    .publishReplay(1)
     .refCount();
 
   const keywords$ = categories$
@@ -60,40 +62,40 @@ export default connect({styles, store: store()}, ({
       </Toolbar>
       <div className={styles.workspace}>
         <div className={styles.listContainer}>
-          <ul>
+          <List className={styles.list}>
             {categories
-              .filter(({level, parentId}) => level === 1)
+              .filter(({level}) => level === 1)
               .map(({id, level, name}, index) =>
-                <li key={index}>
+                <ListItem key={index}>
                   <Link
                     className={classNames({
-                      [styles.active]: id === level1Id
+                      active: id === level1Id
                     })}
                     to={`/categories/edit/${id}`}
                   >
                     {name}
                   </Link>
-                </li>
+                </ListItem>
             )}
-          </ul>
+          </List>
         </div>
         <div className={styles.listContainer}>
-          <ul>
+          <List className={styles.list}>
             {categories
-              .filter(({id, level, parentId}) =>
+              .filter(({level, parentId}) =>
                 level === 2 && parentId === level1Id
               )
               .map(({id, level, name}, index) =>
-                <li key={index}>
+                <ListItem key={index}>
                   <Link
-                    activeClassName={styles.active}
+                    activeClassName="active"
                     to={`/categories/edit/${id}`}
                   >
                     {name}
                   </Link>
-                </li>
+                </ListItem>
             )}
-          </ul>
+          </List>
         </div>
         {React.Children.map(children, child =>
           React.cloneElement(child, {category, categories, keywords})

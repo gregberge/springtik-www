@@ -1,5 +1,4 @@
-import createGenericBrowserApi, {wrapHttp} from './createGenericBrowserApi';
-import Rx from 'rxjs/Rx';
+import createGenericBrowserApi from './createGenericBrowserApi';
 
 export default ({http}) => ({
   me() {

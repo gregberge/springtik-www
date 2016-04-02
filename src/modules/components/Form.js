@@ -1,3 +1,4 @@
+/* eslint react/no-multi-comp: 0 */
 import React, {PropTypes} from 'react';
 import createElement from 'recompose/createElement';
 import BaseInput from './Input';
@@ -107,7 +108,14 @@ export default class Form extends React.Component {
   };
 
   render() {
-    const {children, model, onSubmit, ...props} = this.props;
+    const {
+      children,
+      /* eslint-disable no-unused-vars */
+      model,
+      onSubmit,
+      /* eslint-enable no-unused-vars */
+      ...props
+    } = this.props;
 
     return (
       <form {...props} onSubmit={this.onSubmit}>

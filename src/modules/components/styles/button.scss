@@ -34,6 +34,12 @@
     height: 44px;
   }
 
+  &.btn-small {
+    padding: 8px 16px;
+    font-size: 1em;
+    line-height: 1em;
+  }
+
   &.btn-danger {
     background-color: $danger-color;
 

@@ -1,58 +1,47 @@
 @import "styles/variables";
-
-.activities {
-  display: flex;
-  flex: 1 0;
-}
-
-.activityList {
-  width: 200px;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-
-  .toolbar {
-    background: $white-color;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    height: 40px;
-
-    i {
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
-      font-size: 20px;
-      text-align: center;
-      color: $red-color;
-    }
-  }
-}
+@import "apps/admin-private/routes/app";
 
 .editor {
-  flex: 1 0;
   display: flex;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-
-  form {
-    flex: 1 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  input, textarea {
-    display: block;
-    border: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: $padding-unit / 2;
-    min-height: 40px;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  textarea {
-    flex: 1 0;
-  }
+  position: relative;
+  background: $white-color;
+  border: 1px solid rgba(black, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  height: 300px;
 }
 
-.preview {
-  flex: 1 0;
+.previewLabel {
+  position: absolute;
+  top: $padding-unit / 2;
+  right: $padding-unit / 2;
+  font-size: 0.65em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(black, 0.2);
+}
+
+.editorInput, .editorPreview {
+  display: block;
+  flex: 1 0 0;
+}
+
+.editorInput {
+  border-right: 1px solid rgba(black, 0.1);
+}
+
+.editorTextarea {
+  display: block;
+  width: 100%;
+  height: 300px;
+  border: 0;
+  resize: none;
+  outline: none;
+  padding: $padding-unit;
+}
+
+.editorPreview {
+  padding: $padding-unit;
+  overflow-y: scroll;
+  font-size: 0.8em;
 }

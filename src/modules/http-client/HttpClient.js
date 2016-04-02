@@ -120,7 +120,16 @@ export default class HttpClient {
           return response;
         }
 
-        const {cache, pathname, url, query, ...fetchPayload} = request;
+        const {
+          /* eslint-disable no-unused-vars */
+          cache,
+          pathname,
+          url,
+          query,
+          /* eslint-enable no-unused-vars */
+          ...fetchPayload
+        } = request;
+
         if (request.method === 'get')
           delete fetchPayload.body;
 
