@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 import express from 'express';
 import http from 'http';
+import path from 'path';
 import subdomain from 'express-subdomain';
 import compress from 'compression';
 import morgan from 'morgan';
@@ -20,6 +21,8 @@ app.set('views', __dirname);
 
 app.use(morgan('dev'));
 app.use(compress());
+
+app.use(express.static(path.join(__dirname, '../../public/common')));
 
 app.use(subdomain('admin', admin));
 app.use(subdomain('www', www));
