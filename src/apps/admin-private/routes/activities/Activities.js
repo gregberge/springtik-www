@@ -63,7 +63,7 @@ export default connect({styles, store: store()}, ({
                     activeClassName="active"
                     to={`/activities/edit/${id}`}
                   >
-                    {name}
+                    {`#${id} - ${name}`}
                   </Link>
                 </ListItem>
             )}

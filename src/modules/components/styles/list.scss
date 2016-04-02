@@ -17,6 +17,9 @@
   padding: 0 $padding-unit / 2;
   background-color: $white-color;
   transition: background-color 400ms;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover, &:global(.active) {
     background-color: $gray-lighter-color;
