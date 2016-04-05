@@ -19,6 +19,17 @@
   background-image: url('images/logo.svg');
 }
 
+.admin {
+  display: inline-block;
+  height: $header-height;
+  line-height: $header-height;
+  color: white;
+  vertical-align: top;
+  margin-left: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
 .user {
   position: absolute;
   cursor: pointer;

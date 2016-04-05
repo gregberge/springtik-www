@@ -18,6 +18,9 @@ export default connect({styles}, class extends Component {
       <header className={styles.header}>
         <Link to="/">
           <div className={styles.logo} />
+          <div className={styles.admin}>
+            admin
+          </div>
         </Link>
         <div
           tabIndex={-1}
