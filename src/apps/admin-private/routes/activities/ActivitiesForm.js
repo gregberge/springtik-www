@@ -25,7 +25,7 @@ export default ({
       <div className={styles['form-section-fields']}>
         <FormGroup className={styles['form-group-small']}>
           <Input
-            autoFocus
+            autoFocus={!activity.id}
             name="name"
             placeholder="Titre de l'activité"
             disabled={disabled}
@@ -49,6 +49,34 @@ export default ({
             options={categories && categories.map(({id, name}) =>
               ({value: id, label: name})
             )}
+            disabled={disabled}
+            required
+          />
+        </FormGroup>
+        <FormGroup className={styles['form-group-small']}>
+          <Input
+            name="address"
+            maxLength={255}
+            placeholder="Adresse"
+            disabled={disabled}
+            required
+          />
+        </FormGroup>
+        <FormGroup className={styles['form-group-small']}>
+          <Input
+            name="zipcode"
+            maxLength={5}
+            placeholder="Code postal"
+            pattern="[0-9]{5}"
+            disabled={disabled}
+            required
+          />
+        </FormGroup>
+        <FormGroup className={styles['form-group-small']}>
+          <Input
+            name="city"
+            maxLength={50}
+            placeholder="Ville"
             disabled={disabled}
             required
           />

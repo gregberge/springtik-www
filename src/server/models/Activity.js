@@ -6,12 +6,15 @@ export default class Activity extends BaseModel {
 
   static jsonSchema = {
     ...BaseModel.jsonSchema,
-    required: ['name'],
+    required: ['name', 'address', 'zipcode', 'city'],
 
     properties: {
       ...BaseModel.jsonSchema.properties,
       name: {type: 'string', minLength: 1, maxLength: 255},
       description: {type: 'string', maxLength: 180},
+      address: {type: 'string', minLength: 1, maxLength: 255},
+      zipcode: {type: 'string', minLength: 1, maxLength: 5, pattern: /^\d+$/},
+      city: {type: 'string', minLength: 1, maxLength: 50},
       text: {type: 'string'},
       categoryId: {type: ['string', 'null']}
     }

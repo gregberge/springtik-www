@@ -30,7 +30,7 @@ export default ({
       <div className={styles['form-section-fields']}>
         <FormGroup className={styles['form-group-small']}>
           <Input
-            autoFocus
+            autoFocus={!category.id}
             name="name"
             placeholder="Titre de la catégorie"
             disabled={disabled}
