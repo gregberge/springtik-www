@@ -89,7 +89,7 @@ export default connect(({styles, store: store()}),
 
     render() {
       return (
-        <div className={styles.formContainer}>
+        <div className={styles.section}>
           <Banner
             show={this.props.result.success}
             uiStyle="success"
@@ -102,7 +102,6 @@ export default connect(({styles, store: store()}),
           >
             Une erreur est survenue, veuillez réessayer.
           </Banner>
-          <h2>Edition d’une activité</h2>
           {this.renderForm()}
         </div>
       );

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import Rx from 'rxjs/Rx';
 import styles from './activities.scss';
 import connect from '~/modules/gravito/connect';
@@ -54,7 +55,7 @@ export default connect({styles, store: store()}, ({
         </Link>
       </Toolbar>
       <div className={styles.workspace}>
-        <div className={styles.listContainer}>
+        <div className={classNames(styles.section, styles['list-section'])}>
           <List className={styles.list}>
             {activities
               .map(({id, name}, index) =>

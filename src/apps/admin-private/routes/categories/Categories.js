@@ -61,7 +61,7 @@ export default connect({styles, store: store()}, ({
         </Link>
       </Toolbar>
       <div className={styles.workspace}>
-        <div className={styles.listContainer}>
+        <div className={classNames(styles.section, styles['list-section'])}>
           <List className={styles.list}>
             {categories
               .filter(({level}) => level === 1)
@@ -79,7 +79,7 @@ export default connect({styles, store: store()}, ({
             )}
           </List>
         </div>
-        <div className={styles.listContainer}>
+        <div className={classNames(styles.section, styles['list-section'])}>
           <List className={styles.list}>
             {categories
               .filter(({level, parentId}) =>

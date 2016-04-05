@@ -19,11 +19,12 @@
   text-transform: uppercase;
   font-weight: 600;
   color: rgba(black, 0.2);
+  pointer-events: none;
 }
 
 .editorInput, .editorPreview {
   display: block;
-  flex: 1 0 0;
+  flex: 1 0 auto;
 }
 
 .editorInput {
@@ -42,6 +43,8 @@
 
 .editorPreview {
   padding: $padding-unit;
-  overflow-y: scroll;
+  overflow-y: auto;
+  height: 300px;
   font-size: 0.8em;
+  z-index: 1;
 }

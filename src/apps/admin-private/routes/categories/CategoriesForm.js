@@ -2,6 +2,7 @@ import React from 'react';
 import FormGroup from '~/modules/components/FormGroup';
 import Form, {Input, Select, Textarea} from '~/modules/components/Form';
 import Button from '~/modules/components/Button';
+import Toolbar from '~/modules/components/Toolbar';
 import styles from './categories.scss';
 
 const levelOptions = [
@@ -26,76 +27,80 @@ export default ({
       onModelChange={onCategoryChange}
       onSubmit={onSubmit}
     >
-      <FormGroup className={styles.smallGroup}>
-        <Input
-          autoFocus
-          name="name"
-          placeholder="Titre de la catégorie"
-          disabled={disabled}
-          required
-        />
-      </FormGroup>
-      <FormGroup className={styles.smallGroup}>
-        <Select
-          name="level"
-          placeholder="Niveau de la catégorie"
-          options={levelOptions}
-          disabled={disabled || Boolean(category.id)}
-          required
-        />
-      </FormGroup>
-      {category.level === 2 ? (
-        <FormGroup className={styles.smallGroup}>
-          <Select
-            name="parentId"
-            placeholder="Catégorie parente"
-            options={
-              categories
-                .filter(({level}) => level === 1)
-                .map(({id, name}) => ({value: id, label: name}))
-            }
+      <div className={styles['form-section-fields']}>
+        <FormGroup className={styles['form-group-small']}>
+          <Input
+            autoFocus
+            name="name"
+            placeholder="Titre de la catégorie"
             disabled={disabled}
             required
           />
         </FormGroup>
-      ) : null}
-      <FormGroup className={styles.smallGroup}>
-        <Textarea
-          counter
-          name="description"
-          maxLength={180}
-          rows={4}
-          placeholder="Description courte"
-          disabled={disabled}
-        />
-      </FormGroup>
-      <FormGroup className={styles.smallGroup}>
-        <Select
-          multi
-          allowCreate
-          name="keywords"
-          placeholder="Mots clefs"
-          options={keywords && keywords.map(value => ({value, label: value}))}
-          disabled={disabled}
-        />
-      </FormGroup>
-      <Button
-        large
-        disabled={result.progress || disabled}
-      >
-        {category.id ? 'Mettre à jour' : 'Créer'}
-      </Button>
-      {category.id ? (
+        <FormGroup className={styles['form-group-small']}>
+          <Select
+            name="level"
+            placeholder="Niveau de la catégorie"
+            options={levelOptions}
+            disabled={disabled || Boolean(category.id)}
+            required
+          />
+        </FormGroup>
+        {category.level === 2 ? (
+          <FormGroup className={styles['form-group-small']}>
+            <Select
+              name="parentId"
+              placeholder="Catégorie parente"
+              options={
+                categories
+                  .filter(({level}) => level === 1)
+                  .map(({id, name}) => ({value: id, label: name}))
+              }
+              disabled={disabled}
+              required
+            />
+          </FormGroup>
+        ) : null}
+        <FormGroup className={styles['form-group-small']}>
+          <Textarea
+            counter
+            name="description"
+            maxLength={180}
+            rows={4}
+            placeholder="Description courte"
+            disabled={disabled}
+          />
+        </FormGroup>
+        <FormGroup className={styles['form-group-small']}>
+          <Select
+            multi
+            allowCreate
+            name="keywords"
+            placeholder="Mots clefs"
+            options={keywords && keywords.map(value => ({value, label: value}))}
+            disabled={disabled}
+          />
+        </FormGroup>
+      </div>
+      <Toolbar className={styles['form-section-toolbar']}>
         <Button
-          large
-          type="button"
-          uiStyle="danger"
-          onClick={onDelete}
-          disabled={deleteResult.progress || disabled}
+          small
+          disabled={result.progress || disabled}
         >
-          Supprimer
+          {category.id ? 'Mettre à jour' : 'Créer'}
         </Button>
-      ) : null}
+        {category.id ? (
+          <Button
+            small
+            type="button"
+            uiStyle="danger"
+            onClick={onDelete}
+            disabled={deleteResult.progress || disabled}
+          >
+            Supprimer
+          </Button>
+        ) : null}
+      </Toolbar>
     </Form>
   );
 };

@@ -1,46 +1,54 @@
 @import "styles/variables";
 @import "styles/animations";
 
-.listContainer {
-  flex: 0 0 auto;
-  width: 200px;
-  position: relative;
-
-  .list {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-  }
-}
-
 .workspace {
   display: flex;
   flex: 1 0;
 }
 
-.smallGroup {
-  max-width: 700px;
+.section {
+  flex: 1 0 0;
+  position: relative;
+  overflow: hidden;
+
+  &.list-section {
+    flex: 0 0 auto;
+    width: 200px;
+  }
 }
 
-.formContainer {
-  flex: 1 0;
-  position: relative;
-  padding: $padding-unit;
+.list {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
 
-  h2 {
-    margin: 0 0 $padding-unit;
-    font-size: 1.4em;
-    color: $primary-color;
-  }
+.form-section-fields {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  overflow-y: auto;
+  padding: 40px + $padding-unit $padding-unit $padding-unit;
+}
 
-  .bottomToolbar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-bottom: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
+.form-section-title {
+  position: absolute;
+  border-top: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.form-section-toolbar {
+  position: absolute;
+  border-top: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.form-group-small {
+  max-width: 700px;
 }
 
 :global {

@@ -43,14 +43,13 @@ export default connect(({styles, store: store()}),
 
     render() {
       return (
-        <div className={styles.formContainer}>
+        <div className={styles.section}>
           <Banner
             show={this.props.result.error}
             uiStyle="danger"
           >
             Une erreur est survenue, veuillez réessayer.
           </Banner>
-          <h2>Nouvelle activité</h2>
           <ActivitiesForm {...this.props} />
         </div>
       );
