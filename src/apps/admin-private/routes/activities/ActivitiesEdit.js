@@ -28,6 +28,9 @@ export const store = () => props$ => {
     );
 
   const deleteResult$ = delete$
+    .filter(() =>
+      window.confirm('Êtes vous sûr de vouloir supprimer l\'activité ?')
+    )
     .withLatestFrom(props$)
     .map(([, {params: {id}}]) => id)
     .watchTask(id => api.activities.delete(id))

@@ -29,6 +29,9 @@ export const store = () => props$ => {
     );
 
   const deleteResult$ = delete$
+    .filter(() =>
+      window.confirm('Êtes vous sûr de vouloir supprimer la catégorie ?')
+    )
     .withLatestFrom(props$)
     .map(([, {params: {id}}]) => id)
     .watchTask(id => api.categories.delete(id))
