@@ -48,3 +48,19 @@
   font-size: 0.8em;
   z-index: 1;
 }
+
+.statusSelect {
+  border-style: solid;
+  border-color: rgba(black, 0.1);
+  border-width: 0 1px 1px 0;
+  height: 40px;
+  font-size: 0.9em;
+
+  :global {
+    .Select-control {
+      border-color: transparent;
+      border-radius: 0;
+      height: 39px;
+    }
+  }
+}

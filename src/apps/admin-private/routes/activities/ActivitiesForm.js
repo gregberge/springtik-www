@@ -6,6 +6,11 @@ import Toolbar from '~/modules/components/Toolbar';
 import styles from './activities.scss';
 import ActivitiesEditor from './ActivitiesEditor';
 
+const statusOptions = [
+  {value: 'review', label: 'À relire'},
+  {value: 'published', label: 'Publiée'}
+];
+
 export default ({
   onSubmit,
   onDelete,
@@ -28,6 +33,15 @@ export default ({
             autoFocus={!activity.id}
             name="name"
             placeholder="Titre de l'activité"
+            disabled={disabled}
+            required
+          />
+        </FormGroup>
+        <FormGroup className={styles['form-group-small']}>
+          <Select
+            name="status"
+            placeholder="Status"
+            options={statusOptions}
             disabled={disabled}
             required
           />
