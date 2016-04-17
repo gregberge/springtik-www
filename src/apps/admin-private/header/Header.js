@@ -1,18 +1,27 @@
-import React, {Component} from 'react';
-import styles from './header.scss';
-import connect from '~/modules/gravito/connect';
+import React, {PropTypes, Component} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import compose from 'recompose/compose';
+import connect from '~/modules/observo/connect';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from 'react-router/lib/Link';
+import styles from './header.scss';
 
-export default connect({styles}, class extends Component {
+export class Header extends Component {
   state = {showNav: false};
 
-  onFocusUser = () => this.setState({showNav: true});
-  onBlurUser = () => this.setState({showNav: false});
+  handleUserFocus = () => {
+    this.setState({showNav: true});
+  };
+
+  handleUserBlur = () => {
+    this.setState({showNav: false});
+  };
 
   render() {
     const {me} = this.props;
-    const userStyle = me ? {backgroundImage: `url(${me.avatar200x200})`} : null;
+    const userStyle = me ? {
+      backgroundImage: `url(${me.avatar200x200})`
+    } : null;
 
     return (
       <header className={styles.header}>
@@ -25,8 +34,8 @@ export default connect({styles}, class extends Component {
         <div
           tabIndex={-1}
           className={styles.user}
-          onFocus={this.onFocusUser}
-          onBlur={this.onBlurUser}
+          onFocus={this.handleUserFocus}
+          onBlur={this.handleUserBlur}
           style={userStyle}
         />
         <ReactCSSTransitionGroup
@@ -47,4 +56,17 @@ export default connect({styles}, class extends Component {
       </header>
     );
   }
-});
+}
+
+Header.propTypes = {
+  me: PropTypes.shape({
+    avatar200x200: PropTypes.string.isRequired
+  })
+};
+
+export default compose(
+  withStyles(styles),
+  connect(({me$}) => ({
+    me: me$
+  }))
+)(Header);

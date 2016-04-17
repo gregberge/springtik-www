@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import styles from './styles/list.scss';
-import connect from '~/modules/gravito/connect';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classNames from 'classnames';
 
-const ListItem = ({
+export const ListItem = ({
   className: propClassName,
   children,
   ...props
@@ -12,4 +12,9 @@ const ListItem = ({
   return <li {...{className}} {...props}>{children}</li>;
 };
 
-export default connect({styles}, ListItem);
+ListItem.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node
+};
+
+export default withStyles(styles)(ListItem);

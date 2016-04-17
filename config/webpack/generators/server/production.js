@@ -16,7 +16,7 @@ export default app => {
       filename: 'bundle.server.js',
       libraryTarget: 'commonjs2'
     },
-    entry: ['./server.js'],
+    entry: ['./server'],
     externals: nodeModules,
     context: path.join(__dirname, '../../../../lib/apps', app)
   };

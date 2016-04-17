@@ -31,9 +31,7 @@ export default app => {
         ...developmentConfig.module.loaders.slice(1)
       ]
     },
-    entry: [
-      './client'
-    ],
+    entry: ['./browser'],
     plugins: [
       new ForceCaseSensitivityPlugin(),
       new webpack.NoErrorsPlugin()

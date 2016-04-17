@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 import Route from 'react-router/lib/Route';
 import Redirect from 'react-router/lib/Redirect';

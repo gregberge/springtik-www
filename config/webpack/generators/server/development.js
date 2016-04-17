@@ -19,9 +19,7 @@ export default app => {
       filename: 'bundle.server.js',
       libraryTarget: 'commonjs2'
     },
-    entry: [
-      './server'
-    ],
+    entry: ['./server'],
     externals: nodeModules,
     plugins: [
       new webpack.BannerPlugin('require("source-map-support").install();',

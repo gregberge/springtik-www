@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react';
 import styles from './styles/button.scss';
-import connect from '~/modules/gravito/connect';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-const Button = ({
+export const Button = ({
   className: propClassName,
   children,
   block,
@@ -26,7 +26,10 @@ const Button = ({
 Button.propTypes = {
   block: PropTypes.bool,
   large: PropTypes.bool,
+  small: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.node,
   uiStyle: PropTypes.oneOf(['danger'])
 };
 
-export default connect({styles}, Button);
+export default withStyles(styles)(Button);

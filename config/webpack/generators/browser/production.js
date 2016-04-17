@@ -17,7 +17,7 @@ export default app => {
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}})
     ],
-    entry: ['./client.js'],
+    entry: ['./browser'],
     context: path.join(__dirname, '../../../../lib/apps', app)
   };
 };

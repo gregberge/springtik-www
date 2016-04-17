@@ -1,13 +1,15 @@
-import React from 'react';
-import classNames from 'classnames';
-import connect from '~/modules/gravito/connect';
+import React, {PropTypes} from 'react';
+import classNames from 'classnames/bind';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from './styles/form-group.scss';
 
-const FormGroup = ({
+const cx = classNames.bind(styles);
+
+export const FormGroup = ({
   className: propClassName,
   children
 }) => {
-  const className = classNames(styles.formGroup, propClassName);
+  const className = cx('form-group', propClassName);
   return (
     <div {...{className}}>
       {children}
@@ -15,4 +17,9 @@ const FormGroup = ({
   );
 };
 
-export default connect({styles}, FormGroup);
+FormGroup.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node
+};
+
+export default withStyles(styles)(FormGroup);

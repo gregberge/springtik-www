@@ -1,13 +1,18 @@
-import React, {Component} from 'react';
-import styles from './styles/textarea.scss';
-import connect from '~/modules/gravito/connect';
+import React, {PropTypes, Component} from 'react';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classNames from 'classnames';
+import styles from './styles/textarea.scss';
 
-export default connect({styles}, class Textarea extends Component {
+export class Textarea extends Component {
   componentWillMount() {
     this.state = {
       charCount: this.getCharCountFromProps(this.props) || 0
     };
+  }
+
+  componentDidMount() {
+    if (this.refs.textarea.value)
+      this.handleChange({target: this.refs.textarea});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -15,11 +20,6 @@ export default connect({styles}, class Textarea extends Component {
 
     if (charCount !== null)
       this.setState({charCount});
-  }
-
-  componentDidMount() {
-    if (this.refs.textarea.value)
-      this.onChange({target: this.refs.textarea});
   }
 
   getCharCountFromProps(props) {
@@ -30,7 +30,7 @@ export default connect({styles}, class Textarea extends Component {
         : null;
   }
 
-  onChange = event => {
+  handleChange = event => {
     if (this.props.onChange)
       this.props.onChange(event);
 
@@ -64,7 +64,7 @@ export default connect({styles}, class Textarea extends Component {
       <span className={containerClassName}>
         <textarea
           ref="textarea"
-          onChange={this.onChange}
+          onChange={this.handleChange}
           {...{...props, className}}
         />
         {counter ? (
@@ -75,4 +75,16 @@ export default connect({styles}, class Textarea extends Component {
       </span>
     );
   }
-});
+}
+
+Textarea.propTypes = {
+  onChange: PropTypes.func,
+  className: PropTypes.string,
+  containerClassName: PropTypes.string,
+  noControl: PropTypes.bool,
+  counter: PropTypes.bool,
+  hasError: PropTypes.bool,
+  maxLength: PropTypes.number,
+};
+
+export default withStyles(styles)(Textarea);

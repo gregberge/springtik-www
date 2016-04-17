@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import match from 'react-router/lib/match';
 import RouterContext from 'react-router/lib/RouterContext';
-import connect from '~/modules/gravito/server/connect';
-import resolve from '~/modules/gravito/server/resolve';
+import compose from 'recompose/compose';
+import withContext from 'recompose/withContext';
+import injectState from '~/modules/observo/server/injectState';
+import resolve from '~/modules/observo/server/resolve';
 
 export default ({routesPath, layout, name, dev}) => (req, res, next) => {
   const css = [];
@@ -29,16 +31,28 @@ export default ({routesPath, layout, name, dev}) => (req, res, next) => {
       return;
     }
 
-    resolve(props, (err, routeStores) => {
+    resolve(props, (err, initialState) => {
       if (err)
         return next(err);
 
       try {
         const content = ReactDOMServer.renderToString(
-          React.createElement(connect({
-            routeStores,
-            insertCss: styles => css.push(styles)
-          }, RouterContext), props)
+          React.createElement(
+            compose(
+              withContext(
+                {
+                  insertCss: React.PropTypes.func.isRequired
+                },
+                () => ({
+                  insertCss(styles) {
+                    css.push(styles._getCss());
+                  }
+                })
+              ),
+              injectState(initialState)
+            )(RouterContext)
+            , props
+          )
         );
 
         res.render(layout, {
@@ -47,7 +61,7 @@ export default ({routesPath, layout, name, dev}) => (req, res, next) => {
           bundle: dev
             ? `http://localhost:8080/assets/${name}-bundle.js`
             : '/dist/bundle.js',
-          routeStores: JSON.stringify(routeStores) || 'null'
+          initialState: JSON.stringify(initialState) || 'null'
         });
       } catch (e) {
         return next(e);

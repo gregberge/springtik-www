@@ -10,7 +10,8 @@ function inForm(Control, {
 } = {}) {
   return class WrappedControl extends React.Component {
     static propTypes = {
-      name: PropTypes.string.isRequired
+      name: PropTypes.string.isRequired,
+      onChange: PropTypes.func
     };
 
     static contextTypes = {
@@ -25,7 +26,7 @@ function inForm(Control, {
       this.context.form.removeControl(this);
     }
 
-    onChange = (...args) => {
+    handleChange = (...args) => {
       if (this.props.onChange)
         this.props.onChange(...args);
 
@@ -36,7 +37,7 @@ function inForm(Control, {
     render() {
       return createElement(Control, {
         ...this.props,
-        onChange: this.onChange,
+        onChange: this.handleChange,
         value: this.context.form.getValue(this.props.name)
       });
     }
@@ -58,7 +59,8 @@ export default class Form extends React.Component {
   static propTypes = {
     model: PropTypes.object.isRequired,
     onModelChange: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    children: PropTypes.node
   };
 
   static childContextTypes = {
@@ -102,7 +104,7 @@ export default class Form extends React.Component {
 
   getValue = name => this.props.model[name];
 
-  onSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
     this.props.onSubmit(this.props.model, event);
   };
@@ -118,7 +120,7 @@ export default class Form extends React.Component {
     } = this.props;
 
     return (
-      <form {...props} onSubmit={this.onSubmit}>
+      <form {...props} onSubmit={this.handleSubmit}>
         {children}
       </form>
     );

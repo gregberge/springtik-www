@@ -20,15 +20,15 @@
   max-width: 430px;
   margin: 0 auto;
   overflow: auto;
-  padding: 14px;
+  padding: $padding-unit;
+}
 
-  form {
-    padding: 20px;
-  }
+.form {
+  padding: 20px;
 }
 
 .logo {
-  margin: 40px 0;
+  margin: $padding-unit 0;
   height: 100px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
