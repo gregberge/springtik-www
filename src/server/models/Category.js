@@ -17,9 +17,9 @@ export default class Category extends BaseModel {
       keywords: {
         type: 'array',
         items: {type: 'string'},
-        uniqueItems: true
-      }
-    }
+        uniqueItems: true,
+      },
+    },
   };
 
   static get relationMappings() {
@@ -29,8 +29,8 @@ export default class Category extends BaseModel {
         modelClass: Activity,
         join: {
           from: 'categories.id',
-          to: 'activities.categoryId'
-        }
+          to: 'activities.categoryId',
+        },
       },
 
       children: {
@@ -38,8 +38,8 @@ export default class Category extends BaseModel {
         modelClass: Category,
         join: {
           from: 'categories.id',
-          to: 'categories.parentId'
-        }
+          to: 'categories.parentId',
+        },
       },
 
       parent: {
@@ -47,9 +47,9 @@ export default class Category extends BaseModel {
         modelClass: Category,
         join: {
           from: 'categories.parentId',
-          to: 'categories.id'
-        }
-      }
+          to: 'categories.id',
+        },
+      },
     };
   }
 }

@@ -6,6 +6,6 @@ export default {
   devtool: 'eval',
   output: {
     ...baseConfig.output,
-    pathinfo: true
-  }
+    pathinfo: true,
+  },
 };

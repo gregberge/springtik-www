@@ -1,15 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import styles from './styles/input.scss';
-import connect from '~/modules/gravito/connect';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classnames from 'classnames';
 
-export default connect({styles}, class Input extends Component {
+export class Input extends Component {
   static propTypes = {
-    icon: PropTypes.string
+    onChange: PropTypes.func,
+    icon: PropTypes.string,
+    className: PropTypes.string,
+    hasError: PropTypes.bool,
   };
 
   componentDidMount() {
-    if (this.refs.input.value)
+    if (this.refs.input.value && this.props.onChange)
       this.props.onChange({target: this.refs.input});
   }
 
@@ -18,9 +21,15 @@ export default connect({styles}, class Input extends Component {
   }
 
   render() {
-    const {className: propClassName, icon, hasError, ...props} = this.props;
+    const {
+      className: propClassName,
+      icon,
+      hasError,
+      ...props,
+    } = this.props;
+
     const className = classnames(styles.formControl, {
-      [styles.withIcon]: icon
+      [styles.withIcon]: icon,
     }, propClassName);
     const inputElement = <input ref="input" {...{className}} {...props} />;
     return (
@@ -32,4 +41,6 @@ export default connect({styles}, class Input extends Component {
       </span>
     );
   }
-});
+}
+
+export default withStyles(styles)(Input);

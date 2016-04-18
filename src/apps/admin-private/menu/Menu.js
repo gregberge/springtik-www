@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './menu.scss';
-import connect from '~/modules/gravito/connect';
 import Link from 'react-router/lib/Link';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from './menu.scss';
 
-export default connect({styles}, () => (
+export const Menu = () => (
   <nav className={styles.menu}>
     <ul>
       <li>
@@ -12,4 +12,6 @@ export default connect({styles}, () => (
       </li>
     </ul>
   </nav>
-));
+);
+
+export default withStyles(styles)(Menu);

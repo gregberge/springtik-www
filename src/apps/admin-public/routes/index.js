@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 import Route from 'react-router/lib/Route';
 import Redirect from 'react-router/lib/Redirect';
@@ -10,5 +11,5 @@ export default [
     <Route path="login" component={Login} />
     <IndexRedirect to="login" />
     <Redirect from="*" to="login" />
-  </Route>
+  </Route>,
 ];

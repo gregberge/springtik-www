@@ -1,11 +1,17 @@
-import React from 'react';
-import Select from 'react-select';
-import connect from '~/modules/gravito/connect';
+import React, {PropTypes} from 'react';
+import ReactSelect from 'react-select';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from './styles/select.scss';
 
-export default connect({styles}, ({
+export const Select = ({
   addLabelText = 'Ajouter "{label}" ?',
-  ...props
-}) =>
-  <Select {...{addLabelText, ...props}} />
+  ...props,
+}) => (
+  <ReactSelect {...{addLabelText, ...props}} />
 );
+
+Select.propTypes = {
+  addLabelText: PropTypes.string,
+};
+
+export default withStyles(styles)(Select);

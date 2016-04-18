@@ -17,7 +17,7 @@ router.use(session({
   secret: config.get('session.secret'),
   resave: true,
   saveUninitialized: true,
-  store: new RedisStore(config.get('session.redis'))
+  store: new RedisStore(config.get('session.redis')),
 }));
 router.use(passport.initialize());
 router.use(passport.session());

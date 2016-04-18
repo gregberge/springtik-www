@@ -10,14 +10,14 @@ export default app => {
     output: {
       path: path.join(__dirname, '../../../../public', app, 'dist'),
       publicPath: '/dist',
-      filename: 'bundle.js'
+      filename: 'bundle.js',
     },
     plugins: [
       new ForceCaseSensitivityPlugin(),
       new webpack.optimize.OccurrenceOrderPlugin(),
-      new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}})
+      new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}}),
     ],
-    entry: ['./client.js'],
-    context: path.join(__dirname, '../../../../lib/apps', app)
+    entry: ['./browser'],
+    context: path.join(__dirname, '../../../../lib/apps', app),
   };
 };

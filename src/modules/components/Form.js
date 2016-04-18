@@ -6,15 +6,16 @@ import BaseTextarea from './Textarea';
 import BaseSelect from './Select';
 
 function inForm(Control, {
-  extractValueFromOnChange = event => event.target.value
+  extractValueFromOnChange = event => event.target.value,
 } = {}) {
   return class WrappedControl extends React.Component {
     static propTypes = {
-      name: PropTypes.string.isRequired
+      name: PropTypes.string.isRequired,
+      onChange: PropTypes.func,
     };
 
     static contextTypes = {
-      form: PropTypes.object.isRequired
+      form: PropTypes.object.isRequired,
     };
 
     componentWillMount() {
@@ -25,7 +26,7 @@ function inForm(Control, {
       this.context.form.removeControl(this);
     }
 
-    onChange = (...args) => {
+    handleChange = (...args) => {
       if (this.props.onChange)
         this.props.onChange(...args);
 
@@ -36,8 +37,8 @@ function inForm(Control, {
     render() {
       return createElement(Control, {
         ...this.props,
-        onChange: this.onChange,
-        value: this.context.form.getValue(this.props.name)
+        onChange: this.handleChange,
+        value: this.context.form.getValue(this.props.name),
       });
     }
   };
@@ -50,7 +51,7 @@ export const Select = inForm(BaseSelect, {
       return item ? Array.from(new Set(item.toLowerCase().split(','))) : [];
 
     return item;
-  }
+  },
 });
 export const Textarea = inForm(BaseTextarea);
 
@@ -58,11 +59,12 @@ export default class Form extends React.Component {
   static propTypes = {
     model: PropTypes.object.isRequired,
     onModelChange: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    children: PropTypes.node,
   };
 
   static childContextTypes = {
-    form: PropTypes.object.isRequired
+    form: PropTypes.object.isRequired,
   };
 
   getChildContext() {
@@ -71,8 +73,8 @@ export default class Form extends React.Component {
         addControl: this.addControl,
         removeControl: this.removeControl,
         setValue: this.setValue,
-        getValue: this.getValue
-      }
+        getValue: this.getValue,
+      },
     };
   }
 
@@ -102,7 +104,7 @@ export default class Form extends React.Component {
 
   getValue = name => this.props.model[name];
 
-  onSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
     this.props.onSubmit(this.props.model, event);
   };
@@ -114,11 +116,11 @@ export default class Form extends React.Component {
       model,
       onSubmit,
       /* eslint-enable no-unused-vars */
-      ...props
+      ...props,
     } = this.props;
 
     return (
-      <form {...props} onSubmit={this.onSubmit}>
+      <form {...props} onSubmit={this.handleSubmit}>
         {children}
       </form>
     );

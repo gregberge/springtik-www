@@ -4,7 +4,7 @@ import * as loginErrors from '~/modules/loginErrors';
 
 export default passport => {
   passport.use(new Strategy({
-    usernameField: 'email'
+    usernameField: 'email',
   }, (email, password, done) => {
     User
       .query()

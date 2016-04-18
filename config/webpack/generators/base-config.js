@@ -7,32 +7,37 @@ export default {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel'
+        loader: 'babel',
       },
       {
         test: /\.scss$/,
-        loader: 'isomorphic-style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss'
+        loaders: [
+          'isomorphic-style',
+          'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          'sass',
+          'postcss',
+        ],
       },
       {
         test: /\.svg$/,
-        loader: 'url?limit=5000&mimetype=image/svg+xml'
+        loader: 'url?limit=5000&mimetype=image/svg+xml',
       },
       {
         test: /\.json$/,
-        loader: 'json'
-      }
-    ]
+        loader: 'json',
+      },
+    ],
   },
   sassLoader: {
     includePaths: [
       path.resolve(__dirname, '../../../src'),
-      path.resolve(__dirname, '../../../node_modules')
-    ]
+      path.resolve(__dirname, '../../../node_modules'),
+    ],
   },
   postcss: [
-    autoprefixer
+    autoprefixer,
   ],
   resolve: {
-    root: ['src']
-  }
+    root: ['src'],
+  },
 };

@@ -15,7 +15,7 @@ router.use(reactRouterMiddleware({
   name: 'admin-public',
   dev: config.get('env') === 'development',
   routesPath: path.join(publicPath, 'dist/bundle.server.js'),
-  layout: 'admin/public/layout.html'
+  layout: 'admin/public/layout.html',
 }));
 
 export default router;

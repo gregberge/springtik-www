@@ -14,10 +14,10 @@ export default app => {
       path: path.join(__dirname, '../../../../public', app, 'dist'),
       publicPath: '/dist',
       filename: 'bundle.server.js',
-      libraryTarget: 'commonjs2'
+      libraryTarget: 'commonjs2',
     },
-    entry: ['./server.js'],
+    entry: ['./server'],
     externals: nodeModules,
-    context: path.join(__dirname, '../../../../lib/apps', app)
+    context: path.join(__dirname, '../../../../lib/apps', app),
   };
 };

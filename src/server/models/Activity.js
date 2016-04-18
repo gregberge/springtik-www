@@ -17,8 +17,8 @@ export default class Activity extends BaseModel {
       zipcode: {type: 'string', minLength: 1, maxLength: 5, pattern: /^\d+$/},
       city: {type: 'string', minLength: 1, maxLength: 50},
       text: {type: 'string'},
-      categoryId: {type: ['string', 'null']}
-    }
+      categoryId: {type: ['string', 'null']},
+    },
   };
 
   static get relationMappings() {
@@ -28,9 +28,9 @@ export default class Activity extends BaseModel {
         modelClass: Category,
         join: {
           from: 'activities.categoryId',
-          to: 'categories.id'
-        }
-      }
+          to: 'categories.id',
+        },
+      },
     };
   }
 }

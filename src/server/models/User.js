@@ -11,8 +11,8 @@ export default class User extends BaseModel {
     properties: {
       ...BaseModel.jsonSchema.properties,
       email: {type: 'string', minLength: 1, maxLength: 255},
-      password: {type: 'string', minLength: 1, maxLength: 255}
-    }
+      password: {type: 'string', minLength: 1, maxLength: 255},
+    },
   };
 
   validPassword(password) {
@@ -49,7 +49,7 @@ export default class User extends BaseModel {
   $formatJson(json) {
     const {
       password, // eslint-disable-line no-unused-vars
-      ...props
+      ...props,
     } = super.$formatJson(json);
     return props;
   }

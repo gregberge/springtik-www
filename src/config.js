@@ -6,31 +6,31 @@ const config = convict({
     doc: 'The application environment',
     format: ['production', 'development', 'test'],
     default: 'development',
-    env: 'NODE_ENV'
+    env: 'NODE_ENV',
   },
   session: {
     secret: {
       doc: 'The session secret',
       format: String,
-      default: 'secret'
+      default: 'secret',
     },
     redis: {
       url: {
         doc: 'Redis url',
         format: String,
         env: 'REDIS_URL',
-        default: 'redis://localhost:6379'
-      }
-    }
+        default: 'redis://localhost:6379',
+      },
+    },
   },
   server: {
     port: {
       doc: 'The server port number',
       format: 'port',
       default: 0,
-      env: 'PORT'
-    }
-  }
+      env: 'PORT',
+    },
+  },
 });
 
 const env = config.get('env');

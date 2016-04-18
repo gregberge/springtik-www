@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import styles from './styles/toolbar.scss';
-import connect from '~/modules/gravito/connect';
-import classnames from 'classnames';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import classNames from 'classnames';
 
-const Toolbar = ({className: propClassName, children, ...props}) => {
-  const className = classnames(styles.toolbar, propClassName);
+export const Toolbar = ({
+  className: propClassName,
+  children,
+  ...props,
+}) => {
+  const className = classNames(styles.toolbar, propClassName);
 
   return (
     <div {...{...props, className}}>
@@ -13,4 +17,9 @@ const Toolbar = ({className: propClassName, children, ...props}) => {
   );
 };
 
-export default connect({styles}, Toolbar);
+Toolbar.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};
+
+export default withStyles(styles)(Toolbar);

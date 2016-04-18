@@ -3,7 +3,7 @@ import Alert from './Alert';
 
 export default class Loader extends React.Component {
   static propTypes = {
-    delay: PropTypes.number
+    delay: PropTypes.number,
   };
 
   componentWillMount() {

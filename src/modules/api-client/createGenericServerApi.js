@@ -50,6 +50,6 @@ export default (name, {api}) => {
     },
     delete(id) {
       return observe(api[name].delete(id).then(() => id), deleted$);
-    }
+    },
   };
 };

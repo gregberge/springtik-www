@@ -7,5 +7,5 @@ export default ({http}) => ({
   },
 
   activities: createGenericBrowserApi('activities', {http}),
-  categories: createGenericBrowserApi('categories', {http})
+  categories: createGenericBrowserApi('categories', {http}),
 });

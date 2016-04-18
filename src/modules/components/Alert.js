@@ -1,11 +1,16 @@
 import React, {PropTypes} from 'react';
 import styles from './styles/alert.scss';
-import connect from '~/modules/gravito/connect';
-import classnames from 'classnames';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import classNames from 'classnames';
 
-const Alert = ({uiStyle, className: propClassName, children, ...props}) => {
+export const Alert = ({
+  uiStyle,
+  className: propClassName,
+  children,
+  ...props,
+}) => {
   const uiStyleClassName = uiStyle ? styles[`alert-${uiStyle}`] : null;
-  const className = classnames(styles.alert, uiStyleClassName, propClassName);
+  const className = classNames(styles.alert, uiStyleClassName, propClassName);
 
   return (
     <div {...{...props, className}}>
@@ -15,11 +20,13 @@ const Alert = ({uiStyle, className: propClassName, children, ...props}) => {
 };
 
 Alert.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
   uiStyle: PropTypes.oneOf([
     'info',
     'danger',
-    'warning'
-  ])
+    'warning',
+  ]),
 };
 
-export default connect({styles}, Alert);
+export default withStyles(styles)(Alert);

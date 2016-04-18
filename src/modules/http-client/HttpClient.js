@@ -6,8 +6,8 @@ const DEFAULT_FETCH_OPTIONS = {
   credentials: 'same-origin',
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json; charset=utf-8'
-  }
+    'Content-Type': 'application/json; charset=utf-8',
+  },
 };
 
 export default class HttpClient {
@@ -21,7 +21,7 @@ export default class HttpClient {
    */
   constructor({
     defaultFetchOptions = DEFAULT_FETCH_OPTIONS,
-    interceptors = []
+    interceptors = [],
   } = {}) {
     this.activeRequestCount = 0;
     this.defaultFetchOptions = defaultFetchOptions;
@@ -73,8 +73,8 @@ export default class HttpClient {
       ...request,
       headers: {
         ...this.defaultFetchOptions.headers,
-        ...request.headers
-      }
+        ...request.headers,
+      },
     };
   }
 
@@ -99,7 +99,7 @@ export default class HttpClient {
 
     request.url = formatUrl({
       pathname: request.pathname,
-      query: request.query
+      query: request.query,
     });
 
     const contentType = this.getContentType(request.headers);
@@ -127,7 +127,7 @@ export default class HttpClient {
           url,
           query,
           /* eslint-enable no-unused-vars */
-          ...fetchPayload
+          ...fetchPayload,
         } = request;
 
         if (request.method === 'get')

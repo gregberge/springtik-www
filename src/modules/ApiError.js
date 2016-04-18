@@ -9,7 +9,7 @@ export default class ApiError extends Error {
   toJSON() {
     return {
       message: this.message,
-      code: this.code
+      code: this.code,
     };
   }
 }

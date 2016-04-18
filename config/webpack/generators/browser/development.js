@@ -11,7 +11,7 @@ export default app => {
       ...developmentConfig.output,
       publicPath: 'http://localhost:8080/assets/',
       path: path.join(__dirname, '../../../../public', app, 'dist'),
-      filename: `${app}-bundle.js`
+      filename: `${app}-bundle.js`,
     },
     module: {
       ...developmentConfig.module,
@@ -23,21 +23,19 @@ export default app => {
               transforms: [{
                 transform: 'react-transform-hmr',
                 imports: ['react'],
-                locals: ['module']
-              }]
-            }]]
-          }
+                locals: ['module'],
+              }],
+            }]],
+          },
         },
-        ...developmentConfig.module.loaders.slice(1)
-      ]
+        ...developmentConfig.module.loaders.slice(1),
+      ],
     },
-    entry: [
-      './client'
-    ],
+    entry: ['./browser'],
     plugins: [
       new ForceCaseSensitivityPlugin(),
-      new webpack.NoErrorsPlugin()
+      new webpack.NoErrorsPlugin(),
     ],
-    context: path.join(__dirname, '../../../../src/apps', app)
+    context: path.join(__dirname, '../../../../src/apps', app),
   };
 };

@@ -1,58 +1,101 @@
 import React, {PropTypes} from 'react';
 import api from '~/apps/admin-private/api';
-import connect from '~/modules/gravito/connect';
 import Rx from 'rxjs/Rx';
 import '~/modules/rx-extended/watchTask';
+import compose from 'recompose/compose';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import provide from '~/modules/observo/provide';
+import connect from '~/modules/observo/connect';
+import subscribe from '~/modules/observo/subscribe';
 import CategoriesForm from './CategoriesForm';
-import styles from './categories.scss';
 import Banner from '~/modules/components/Banner';
+import styles from './categories.scss';
 
-export const store = () => () => {
+export const CategoriesNew = ({
+  onSubmit,
+  onDelete,
+  onCategoryChange,
+  result,
+  category,
+}) => (
+  <div className={styles.section}>
+    <Banner
+      show={result.error}
+      uiStyle="danger"
+    >
+      Une erreur est survenue, veuillez réessayer.
+    </Banner>
+    <CategoriesForm
+      {...{
+        onSubmit,
+        onDelete,
+        onCategoryChange,
+        result,
+        category,
+      }}
+    />
+  </div>
+);
+
+CategoriesNew.propTypes = {
+  result: PropTypes.shape({
+    error: PropTypes.bool,
+  }).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
+  onCategoryChange: PropTypes.func.isRequired,
+  category: PropTypes.object,
+};
+
+export const provideObservables = () => {
   const submit$ = new Rx.Subject();
-  const categoryChange$ = new Rx.Subject();
 
   const result$ = submit$
     .watchTask(model => api.categories.create(model))
-    .publish()
-    .refCount();
+    .share();
 
-  const category$ = Rx.Observable.from([{}])
-    .merge(categoryChange$);
+  const category$ = new Rx.Subject();
 
   return {
     submit$,
-    categoryChange$,
     result$,
-    category$
+    category$,
   };
 };
 
-
-export default connect(({styles, store: store()}),
-  class CategoriesNew extends React.Component {
-    static contextTypes = {
-      router: PropTypes.object
-    };
-
-    componentDidUpdate() {
-      const {result} = this.props;
-
-      if (result.success)
-        this.context.router.push(`/categories/edit/${result.output.id}`);
-    }
-
-    render() {
-      return (
-        <div className={styles.section}>
-          <Banner
-            show={this.props.result.error}
-            uiStyle="danger"
-          >
-            Une erreur est survenue, veuillez réessayer.
-          </Banner>
-          <CategoriesForm {...this.props} />
-        </div>
-      );
-    }
-  }
-);
+export default compose(
+  provide(provideObservables),
+  connect(({
+    submit$,
+    result$,
+    category$,
+  }) => ({
+    onSubmit: submit$,
+    result: result$,
+    category: category$,
+    onCategoryChange: category$,
+  })),
+  subscribe({
+    observo: PropTypes.shape({
+      observables: PropTypes.shape({
+        result$: PropTypes.object.isRequired,
+      }).isRequired,
+    }).isRequired,
+    router: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+  }, ({
+    observo,
+    router,
+  }) => observo.observables.result$
+    .filter(({success}) => success)
+    .subscribe(({
+      output: {
+        id,
+      },
+    }) => {
+      router.push(`/categories/edit/${id}`);
+    })
+  ),
+  withStyles(styles)
+)(CategoriesNew);

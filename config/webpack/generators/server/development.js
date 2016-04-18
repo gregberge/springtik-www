@@ -17,16 +17,14 @@ export default app => {
       path: path.join(__dirname, '../../../../public', app, 'dist'),
       publicPath: '/dist',
       filename: 'bundle.server.js',
-      libraryTarget: 'commonjs2'
+      libraryTarget: 'commonjs2',
     },
-    entry: [
-      './server'
-    ],
+    entry: ['./server'],
     externals: nodeModules,
     plugins: [
       new webpack.BannerPlugin('require("source-map-support").install();',
-        {raw: true, entryOnly: false})
+        {raw: true, entryOnly: false}),
     ],
-    context: path.join(__dirname, '../../../../src/apps', app)
+    context: path.join(__dirname, '../../../../src/apps', app),
   };
 };

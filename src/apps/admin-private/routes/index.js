@@ -1,29 +1,29 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 import Route from 'react-router/lib/Route';
-import connectRoute from '~/modules/gravito/connectRoute';
-import App, {routeStore as appStore} from './App';
-import Categories, {routeStore as categoriesStore} from './categories/Categories';
+import App from './App';
+import Categories from './categories/Categories';
 import CategoriesNew from './categories/CategoriesNew';
 import CategoriesEdit from './categories/CategoriesEdit';
-import Activities, {routeStore as activitiesStore} from './activities/Activities';
+import Activities from './activities/Activities';
 import ActivitiesNew from './activities/ActivitiesNew';
 import ActivitiesEdit from './activities/ActivitiesEdit';
 
 export default [
-  <Route path="/" component={connectRoute({store: appStore()}, App)}>
+  <Route path="/" component={App}>
     <Route
       path="categories"
-      component={connectRoute({store: categoriesStore()}, Categories)}
+      component={Categories}
     >
       <Route path="new" component={CategoriesNew} />
-      <Route path="edit/:id" component={CategoriesEdit} />
+      <Route path="edit/:categoryId" component={CategoriesEdit} />
     </Route>
     <Route
       path="activities"
-      component={connectRoute({store: activitiesStore()}, Activities)}
+      component={Activities}
     >
       <Route path="new" component={ActivitiesNew} />
-      <Route path="edit/:id" component={ActivitiesEdit} />
+      <Route path="edit/:activityId" component={ActivitiesEdit} />
     </Route>
-  </Route>
+  </Route>,
 ];

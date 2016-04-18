@@ -79,6 +79,6 @@ export default (name, {http}) => {
           .catch(handleHttpError),
         deleted$
       );
-    }
+    },
   };
 };

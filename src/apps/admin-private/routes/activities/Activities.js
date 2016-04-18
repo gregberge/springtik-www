@@ -1,98 +1,62 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
+import Link from 'react-router/lib/Link';
 import classNames from 'classnames';
 import Rx from 'rxjs/Rx';
-import styles from './activities.scss';
-import connect from '~/modules/gravito/connect';
+import compose from 'recompose/compose';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import provide from '~/modules/observo/provide';
+import connect from '~/modules/observo/connect';
 import api from '~/apps/admin-private/api';
 import Toolbar from '~/modules/components/Toolbar';
 import List from '~/modules/components/List';
 import Select from '~/modules/components/Select';
 import ListItem from '~/modules/components/ListItem';
-import Link from 'react-router/lib/Link';
-
-export const getActivities = obs$ => obs$
-  .map(({
-    location: {
-      query: {
-        status
-      }
-    }
-  }) => {
-    if (status)
-      return {status};
-
-    return undefined;
-  })
-  .switchMap(query =>
-    api.activities.$fetchAll(query)
-  );
-
-export const routeStore = () => props$ => ({
-  activities$: getActivities(props$),
-  categories$: api.categories.$fetchAll({level: 2})
-});
-
-export const store = () => (props$, routeStore$) => {
-  const activities$ = Rx.Observable.merge(
-      routeStore$.map(({activities}) => activities),
-      getActivities(
-        Rx.Observable.merge(
-          api.activities.created$,
-          api.activities.updated$,
-          api.activities.deleted$
-        )
-        .withLatestFrom(props$, (_, props) => props)
-      )
-    )
-    .filter(({success}) => success)
-    .map(({output}) => output)
-    .startWith([])
-    .publishReplay(1)
-    .refCount();
-
-  const categories$ = routeStore$.map(({categories}) => categories)
-    .filter(({success}) => success)
-    .map(({output}) => output)
-    .startWith([])
-    .publishReplay(1)
-    .refCount();
-
-  return {activities$, categories$};
-};
+import styles from './activities.scss';
 
 const statusOptions = [
   {value: 'review', label: 'À relire'},
-  {value: 'published', label: 'Publiée'}
+  {value: 'published', label: 'Publiée'},
 ];
 
-class Activities extends React.Component {
+export class Activities extends React.Component {
+  static propTypes = {
+    location: PropTypes.shape({
+      query: PropTypes.object.isRequired,
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+    activities: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ),
+    children: PropTypes.node,
+  };
+
   static contextTypes = {
-    router: React.PropTypes.object
+    router: React.PropTypes.object,
   };
 
   handleStatusChange = status => {
     this.context.router.push({
       pathname: this.props.location.pathname,
-      query: {status}
+      query: {status},
     });
   };
 
   render() {
     const {
       activities,
-      categories,
-      params: {id: urlId},
-      children
+      children,
     } = this.props;
 
-    const activity = activities.find(({id}) => urlId === id);
     return (
       <main>
         <Toolbar>
           <Link
             to={{
               pathname: '/activities/new',
-              query: this.props.location.query
+              query: this.props.location.query,
             }}
           >
             <i className="fa fa-plus-circle" />Créer une activité
@@ -118,7 +82,7 @@ class Activities extends React.Component {
                       activeClassName="active"
                       to={{
                         pathname: `/activities/edit/${id}`,
-                        query: this.props.location.query
+                        query: this.props.location.query,
                       }}
                     >
                       {`#${id} - ${name}`}
@@ -127,13 +91,66 @@ class Activities extends React.Component {
               )}
             </List>
           </div>
-          {React.Children.map(children, child =>
-            React.cloneElement(child, {activity, activities, categories})
-          )}
+          {children}
         </div>
       </main>
     );
   }
 }
 
-export default connect({styles, store: store()}, Activities);
+export const provideObservables = ({props$}) => {
+  const activities$ = Rx.Observable.merge(
+      props$,
+      Rx.Observable.merge(
+        api.activities.created$,
+        api.activities.updated$,
+        api.activities.deleted$
+      )
+      .takeUntil(props$.last())
+    )
+    .withLatestFrom(props$, (_, {
+      location: {
+        query: {
+          status,
+        },
+      },
+    }) => {
+      if (status)
+        return {status};
+
+      return undefined;
+    })
+    .switchMap(query =>
+      api.activities.$fetchAll(query)
+    )
+    .filter(({success}) => success)
+    .map(({output}) => output)
+    .startWith([])
+    .publishReplay(1)
+    .refCount();
+
+  const categories$ = props$
+    .take(1)
+    .switchMap(() => api.categories.$fetchAll({level: 2}))
+    .filter(({success}) => success)
+    .map(({output}) => output)
+    .startWith([])
+    .publishReplay(1)
+    .refCount();
+
+  return {activities$, categories$};
+};
+
+export default compose(
+  provide(provideObservables, {
+    resolveOnServer: [
+      'activities$',
+    ],
+  }),
+  connect(({
+    activities$,
+  }) => ({
+    activities: activities$,
+  })),
+  withStyles(styles)
+)(Activities);

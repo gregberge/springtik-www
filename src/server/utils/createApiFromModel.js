@@ -32,5 +32,5 @@ export default Model => ({
 
   delete(id) {
     return Model.query().delete().where({id});
-  }
+  },
 });

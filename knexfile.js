@@ -6,20 +6,20 @@ const config = {
     debug: true,
     client: 'postgresql',
     connection: {
-      database: 'springtik'
+      database: 'springtik',
     },
     pool: {
       min: 2,
-      max: 10
-    }
+      max: 10,
+    },
   },
   production: {
     client: 'postgresql',
     pool: {
       min: 2,
-      max: 10
-    }
-  }
+      max: 10,
+    },
+  },
 };
 
 if (process.env.DATABASE_URL) {
@@ -32,7 +32,7 @@ if (process.env.DATABASE_URL) {
     user: pgProd.auth.split(':')[0],
     password: pgProd.auth.split(':')[1],
     database: pgProd.path.substring(1),
-    ssl: true
+    ssl: true,
   };
 }
 

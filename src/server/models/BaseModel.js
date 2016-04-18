@@ -7,8 +7,8 @@ export default class BaseModel extends Model {
     properties: {
       id: {type: 'integer'},
       createdAt: {type: 'string'},
-      updatedAt: {type: 'string'}
-    }
+      updatedAt: {type: 'string'},
+    },
   };
 
   $beforeInsert() {

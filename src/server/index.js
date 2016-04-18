@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
 });
 app.use(errorHandler({
   exitOnUncaughtException: false,
-  formatters: ['json', 'text']
+  formatters: ['json', 'text'],
 }));
 
 const server = http.createServer(app);

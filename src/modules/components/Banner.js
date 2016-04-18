@@ -1,12 +1,20 @@
 import React, {PropTypes} from 'react';
 import styles from './styles/banner.scss';
-import connect from '~/modules/gravito/connect';
-import classnames from 'classnames';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import classNames from 'classnames/bind';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-const Banner = ({uiStyle, show, className: propClassName, children, ...props}) => {
-  const uiStyleClassName = uiStyle ? styles[`banner-${uiStyle}`] : null;
-  const className = classnames(styles.banner, uiStyleClassName, propClassName);
+const cx = classNames.bind(styles);
+
+const Banner = ({
+  uiStyle,
+  show,
+  className: propClassName,
+  children,
+  ...props,
+}) => {
+  const uiStyleClassName = uiStyle ? `banner-${uiStyle}` : null;
+  const className = cx('banner', 'foo', uiStyleClassName, propClassName);
 
   return (
     <ReactCSSTransitionGroup
@@ -24,12 +32,15 @@ const Banner = ({uiStyle, show, className: propClassName, children, ...props}) =
 };
 
 Banner.propTypes = {
+  show: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.node,
   uiStyle: PropTypes.oneOf([
     'info',
     'danger',
     'warning',
-    'success'
-  ])
+    'success',
+  ]),
 };
 
-export default connect({styles}, Banner);
+export default withStyles(styles)(Banner);
