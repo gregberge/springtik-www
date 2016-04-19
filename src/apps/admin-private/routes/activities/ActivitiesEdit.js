@@ -62,10 +62,15 @@ export const provideObservables = ({
   const submit$ = new Rx.Subject();
   const delete$ = new Rx.Subject();
   const activityChange$ = new Rx.Subject();
+  const activityId$ = props$
+    .map(({params: {activityId}}) => activityId)
+    .distinctUntilChanged();
 
   const activity$ = activities$
-    .combineLatest(props$.take(1), (categories, {params: {activityId}}) =>
-      categories.find(({id}) => activityId === id)
+    .combineLatest(
+      activityId$,
+      (categories, activityId) =>
+        categories.find(({id}) => activityId === id)
     )
     .merge(activityChange$)
     .publishReplay(1)
@@ -77,6 +82,8 @@ export const provideObservables = ({
       id,
     }))
     .watchTask(model => api.activities.update(model))
+    .resetTask({delay: 4000})
+    .merge(activityId$.mapTo({idle: true}))
     .publishReplay(1)
     .refCount();
 
@@ -87,12 +94,7 @@ export const provideObservables = ({
     .withLatestFrom(props$)
     .map(([, {params: {activityId}}]) => activityId)
     .watchTask(id => api.activities.delete(id))
-    .merge(
-      props$
-        .map(({params: {id}}) => id)
-        .distinctUntilChanged()
-        .mapTo({idle: true})
-    )
+    .merge(activityId$.mapTo({idle: true}))
     .publishReplay(1)
     .refCount();
 

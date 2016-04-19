@@ -36,3 +36,20 @@ Rx.Observable.watchTask = selectorOrPromise => {
   return Rx.Observable.from([undefined])
     .watchTask(selectorOrPromise);
 };
+
+Rx.Observable.prototype.resetTask = function resetTask({
+  delay = 0,
+  filter = () => true,
+} = {}) {
+  return this.switchMap(data =>
+    Rx.Observable
+      .from([data])
+      .merge(
+        Rx.Observable
+          .from([data])
+          .filter(filter)
+          .delay(delay)
+          .mapTo({idle: true})
+      )
+  );
+};

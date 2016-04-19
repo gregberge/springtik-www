@@ -62,6 +62,9 @@ export const provideObservables = ({
   const submit$ = new Rx.Subject();
   const delete$ = new Rx.Subject();
   const categoryChange$ = new Rx.Subject();
+  const categoryId$ = props$
+    .map(({params: {categoryId}}) => categoryId)
+    .distinctUntilChanged();
 
   const deleteResult$ = delete$
     .filter(() =>
@@ -70,12 +73,7 @@ export const provideObservables = ({
     .withLatestFrom(props$)
     .map(([, {params: {categoryId}}]) => categoryId)
     .watchTask(id => api.categories.delete(id))
-    .merge(
-      props$
-        .map(({params: {id}}) => id)
-        .distinctUntilChanged()
-        .mapTo({idle: true})
-    )
+    .merge(categoryId$.mapTo({idle: true}))
     .publishReplay(1)
     .refCount();
 
@@ -88,6 +86,8 @@ export const provideObservables = ({
       keywords: model.keywords || [],
     }))
     .watchTask(model => api.categories.update(model))
+    .resetTask({delay: 4000})
+    .merge(categoryId$.mapTo({idle: true}))
     .publishReplay(1)
     .refCount();
 
