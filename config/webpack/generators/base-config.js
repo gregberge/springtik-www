@@ -2,6 +2,10 @@ import path from 'path';
 import autoprefixer from 'autoprefixer';
 import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
 
+const minimize = process.env.NODE_ENV === 'production'
+  ? 'minimize&'
+  : '';
+
 export default {
   module: {
     loaders: [
@@ -14,7 +18,7 @@ export default {
         test: /\.scss$/,
         loaders: [
           'isomorphic-style',
-          'css?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          `css?${minimize}modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]`,
           'sass',
           'postcss',
         ],
