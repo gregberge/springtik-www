@@ -6,14 +6,20 @@ import classnames from 'classnames';
 export class Input extends Component {
   static propTypes = {
     onChange: PropTypes.func,
+    onAutoFillValue: PropTypes.func,
     icon: PropTypes.string,
     className: PropTypes.string,
     hasError: PropTypes.bool,
   };
 
   componentDidMount() {
-    if (this.refs.input.value && this.props.onChange)
-      this.props.onChange({target: this.refs.input});
+    const {value} = this.refs.input;
+    if (value) {
+      setTimeout(() => {
+        if (this.props.onAutoFillValue)
+          this.props.onAutoFillValue(value);
+      });
+    }
   }
 
   focus() {
@@ -31,7 +37,14 @@ export class Input extends Component {
     const className = classnames(styles.formControl, {
       [styles.withIcon]: icon,
     }, propClassName);
-    const inputElement = <input ref="input" {...{className}} {...props} />;
+
+    const inputElement = (
+      <input
+        ref="input"
+        className={className}
+        {...props}
+      />
+    );
     return (
       <span className={hasError ? styles.containerError : null}>
         {icon

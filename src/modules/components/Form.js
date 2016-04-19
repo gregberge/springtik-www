@@ -1,6 +1,5 @@
 /* eslint react/no-multi-comp: 0 */
 import React, {PropTypes} from 'react';
-import createElement from 'recompose/createElement';
 import BaseInput from './Input';
 import BaseTextarea from './Textarea';
 import BaseSelect from './Select';
@@ -34,12 +33,26 @@ function inForm(Control, {
       this.context.form.setValue(this.props.name, value);
     }
 
+    handleAutoFillValue = value => {
+      this.context.form.setValue(this.props.name, value);
+    };
+
     render() {
-      return createElement(Control, {
-        ...this.props,
-        onChange: this.handleChange,
-        value: this.context.form.getValue(this.props.name),
-      });
+      const {
+        /* eslint-disable no-unused-vars */
+        onChange,
+        /* eslint-enable no-unused-vars */
+        ...props,
+      } = this.props;
+
+      return (
+        <Control
+          onChange={this.handleChange}
+          onAutoFillValue={this.handleAutoFillValue}
+          value={this.context.form.getValue(this.props.name)}
+          {...props}
+        />
+      );
     }
   };
 }
