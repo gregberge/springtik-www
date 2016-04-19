@@ -1,3 +1,4 @@
+import '~/modules/bootstrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import match from 'react-router/lib/match';

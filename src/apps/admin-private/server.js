@@ -1,3 +1,4 @@
+import '~/modules/bootstrap';
 import routes from './routes';
 import api from './api';
 import ServerAdapter from '~/modules/api-client/ServerAdapter';
