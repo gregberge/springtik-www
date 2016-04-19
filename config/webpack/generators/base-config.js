@@ -1,5 +1,6 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
+import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
 
 export default {
   module: {
@@ -40,4 +41,7 @@ export default {
   resolve: {
     root: ['src'],
   },
+  plugins: [
+    new ForceCaseSensitivityPlugin(),
+  ],
 };

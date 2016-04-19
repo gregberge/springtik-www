@@ -1,5 +1,5 @@
+/* eslint-disable no-process-env */
 import productionConfig from '../production-config';
-import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 
@@ -13,7 +13,10 @@ export default app => {
       filename: 'bundle.js',
     },
     plugins: [
-      new ForceCaseSensitivityPlugin(),
+      ...productionConfig.plugins,
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      }),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}}),
     ],

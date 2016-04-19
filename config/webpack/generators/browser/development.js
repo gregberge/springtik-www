@@ -1,5 +1,4 @@
 import developmentConfig from '../development-config';
-import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 
@@ -33,7 +32,7 @@ export default app => {
     },
     entry: ['./browser'],
     plugins: [
-      new ForceCaseSensitivityPlugin(),
+      ...developmentConfig.plugins,
       new webpack.NoErrorsPlugin(),
     ],
     context: path.join(__dirname, '../../../../src/apps', app),
