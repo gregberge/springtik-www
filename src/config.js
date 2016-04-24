@@ -31,6 +31,23 @@ const config = convict({
       env: 'PORT',
     },
   },
+  amqp: {
+    url: {
+      doc: 'RabbitMQ url',
+      format: String,
+      default: 'amqp://localhost',
+      env: 'CLOUDAMQP_URL',
+    },
+  },
+  google: {
+    apiKeys: {
+      geocoding: {
+        doc: 'Google API key',
+        format: String,
+        default: 'AIzaSyDcuEw2FxINqJW32cO0A8Dd03-J1ZnVPZ0',
+      },
+    },
+  },
 });
 
 const env = config.get('env');

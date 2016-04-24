@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run dev:server & npm run dev:webpack:browser & npm run dev:webpack:server",
-    "dev:server": "BLUEBIRD_WARNINGS=0 nodemon src/server/index.js",
+    "dev:server": "nf -j Procfile.dev start",
     "dev:webpack:browser": "webpack-dev-server --no-info --inline --hot --config config/webpack/browser/development.babel.js",
     "dev:webpack:server": "webpack --watch --progress --config config/webpack/server/development.babel.js",
     "postinstall": "npm run build && npm run migrate",
@@ -26,6 +26,7 @@
   },
   "homepage": "http://www.springtik.fr/",
   "dependencies": {
+    "amqplib": "^0.4.1",
     "autoprefixer": "^6.3.6",
     "babel-cli": "^6.7.5",
     "babel-loader": "^6.2.3",
@@ -84,6 +85,7 @@
     "eslint": "^2.8.0",
     "eslint-config-springtik": "^1.3.0",
     "eslint-plugin-react": "^5.0.1",
+    "foreman": "^1.4.1",
     "minimist": "^1.2.0",
     "nodemon": "^1.9.1",
     "react-transform-hmr": "^1.0.2",

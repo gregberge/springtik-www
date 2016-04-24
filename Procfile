@@ -1,1 +1,2 @@
-web: node lib/server/index.js
+web: node lib/server/web.js
+hello: node lib/server/workers/hello.js
