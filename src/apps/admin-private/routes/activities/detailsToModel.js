@@ -4,7 +4,7 @@ const TYPES = [
   'administrative_area_level_2',
   'locality',
   'sublocality',
-  'zipcode',
+  'postal_code',
   'route',
   'street_number',
 ];
