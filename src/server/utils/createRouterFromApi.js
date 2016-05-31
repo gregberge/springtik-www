@@ -5,7 +5,15 @@ export default (name, {api}) => {
   const router = express.Router();
 
   router.get('/', errCheck(async function (req, res) {
-    res.send(await api[name].fetchAll(req.query));
+    const {
+      eager,
+      ...where,
+    } = req.query;
+
+    res.send(await api[name].fetchAll({
+      where,
+      eager,
+    }));
   }));
 
   router.post('/', errCheck(async function (req, res) {

@@ -1,13 +1,17 @@
 import ApiError from '~/modules/ApiError';
 import {FETCH_NOT_FOUND} from '~/modules/apiErrors';
 
-export default Model => ({
-  fetchAll(options) {
+export default (Model, {
+  allowEager = '',
+} = {}) => ({
+  fetchAll({where, eager} = {}) {
     const query = Model.query()
+      .allowEager(allowEager)
+      .eager(eager)
       .orderBy('id', 'desc');
 
-    if (options && Object.keys(options).length)
-      return query.where(options);
+    if (where && Object.keys(where).length)
+      return query.where(where);
 
     return query;
   },
@@ -23,7 +27,9 @@ export default Model => ({
   },
 
   create(model) {
-    return Model.fromJson(model).$query().insert();
+    return Model
+      .query()
+      .insertWithRelated(model);
   },
 
   update({id, ...data}) {

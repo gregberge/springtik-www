@@ -8,6 +8,7 @@ import Button from '~/modules/components/Button';
 import Toolbar from '~/modules/components/Toolbar';
 import styles from './activities.scss';
 import ActivitiesEditor from './ActivitiesEditor';
+import ActivitiesLocationControl from './ActivitiesLocationControl';
 
 const statusOptions = [
   {value: 'review', label: 'À relire'},
@@ -66,6 +67,12 @@ export const ActivitiesForm = ({
             ({value: id, label: name})
           )}
           disabled={disabled}
+          required
+        />
+      </FormGroup>
+      <FormGroup className={styles['form-group-small']}>
+        <ActivitiesLocationControl
+          name="location"
           required
         />
       </FormGroup>

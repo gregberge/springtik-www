@@ -121,7 +121,10 @@ export const provideObservables = ({props$}) => {
       return undefined;
     })
     .switchMap(query =>
-      api.activities.$fetchAll(query)
+      api.activities.$fetchAll({
+        ...query,
+        eager: 'location',
+      })
     )
     .filter(({success}) => success)
     .map(({output}) => output)

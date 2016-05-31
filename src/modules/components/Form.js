@@ -3,70 +3,79 @@ import React, {PropTypes} from 'react';
 import BaseInput from './Input';
 import BaseTextarea from './Textarea';
 import BaseSelect from './Select';
+import createHelper from 'recompose/createHelper';
 
-function inForm(Control, {
-  extractValueFromOnChange = event => event.target.value,
-} = {}) {
-  return class WrappedControl extends React.Component {
-    static propTypes = {
-      name: PropTypes.string.isRequired,
-      onChange: PropTypes.func,
-    };
+export const inForm = createHelper(
+  options => {
+    options = options || {};
 
-    static contextTypes = {
-      form: PropTypes.object.isRequired,
-    };
+    const {
+      extractValueFromOnChange = event => event.target.value,
+    } = options;
 
-    componentWillMount() {
-      this.context.form.addControl(this);
-    }
+    return Control => (
+      class WrappedControl extends React.Component {
+        static propTypes = {
+          name: PropTypes.string.isRequired,
+          onChange: PropTypes.func,
+        };
 
-    componentWillUnmount() {
-      this.context.form.removeControl(this);
-    }
+        static contextTypes = {
+          form: PropTypes.object.isRequired,
+        };
 
-    handleChange = (...args) => {
-      if (this.props.onChange)
-        this.props.onChange(...args);
+        componentWillMount() {
+          this.context.form.addControl(this);
+        }
 
-      const value = extractValueFromOnChange.apply(this, args);
-      this.context.form.setValue(this.props.name, value);
-    }
+        componentWillUnmount() {
+          this.context.form.removeControl(this);
+        }
 
-    handleAutoFillValue = value => {
-      this.context.form.setValue(this.props.name, value);
-    };
+        handleChange = (...args) => {
+          if (this.props.onChange)
+            this.props.onChange(...args);
 
-    render() {
-      const {
-        /* eslint-disable no-unused-vars */
-        onChange,
-        /* eslint-enable no-unused-vars */
-        ...props,
-      } = this.props;
+          const value = extractValueFromOnChange.apply(this, args);
+          this.context.form.setValue(this.props.name, value);
+        }
 
-      return (
-        <Control
-          onChange={this.handleChange}
-          onAutoFillValue={this.handleAutoFillValue}
-          value={this.context.form.getValue(this.props.name)}
-          {...props}
-        />
-      );
-    }
-  };
-}
+        handleAutoFillValue = value => {
+          this.context.form.setValue(this.props.name, value);
+        };
 
-export const Input = inForm(BaseInput);
-export const Select = inForm(BaseSelect, {
+        render() {
+          const {
+            /* eslint-disable no-unused-vars */
+            onChange,
+            /* eslint-enable no-unused-vars */
+            ...props,
+          } = this.props;
+
+          return (
+            <Control
+              onChange={this.handleChange}
+              onAutoFillValue={this.handleAutoFillValue}
+              value={this.context.form.getValue(this.props.name)}
+              {...props}
+            />
+          );
+        }
+      }
+    );
+  }
+, 'inForm');
+
+export const Input = inForm()(BaseInput);
+export const Select = inForm({
   extractValueFromOnChange(item) {
     if (this.props.multi)
       return item ? Array.from(new Set(item.toLowerCase().split(','))) : [];
 
     return item;
   },
-});
-export const Textarea = inForm(BaseTextarea);
+})(BaseSelect);
+export const Textarea = inForm()(BaseTextarea);
 
 export default class Form extends React.Component {
   static propTypes = {

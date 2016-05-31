@@ -1,5 +1,6 @@
 import BaseModel from './BaseModel';
 import Category from './Category';
+import Location from './Location';
 
 export default class Activity extends BaseModel {
   static tableName = 'activities';
@@ -18,17 +19,26 @@ export default class Activity extends BaseModel {
       city: {type: 'string', minLength: 1, maxLength: 50},
       text: {type: 'string'},
       categoryId: {type: ['string', 'null']},
+      locationId: {type: ['string', 'null']},
     },
   };
 
   static get relationMappings() {
     return {
-      parent: {
+      category: {
         relation: BaseModel.OneToOneRelation,
         modelClass: Category,
         join: {
           from: 'activities.categoryId',
           to: 'categories.id',
+        },
+      },
+      location: {
+        relation: BaseModel.OneToOneRelation,
+        modelClass: Location,
+        join: {
+          from: 'activities.locationId',
+          to: 'locations.id',
         },
       },
     };
