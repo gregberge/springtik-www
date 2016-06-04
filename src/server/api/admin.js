@@ -30,7 +30,7 @@ export default ({
         }
       }
 
-      await Activity
+      return await Activity
         .query()
         .patchAndFetchById(id, data);
     },

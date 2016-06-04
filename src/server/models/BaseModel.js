@@ -5,7 +5,7 @@ export default class BaseModel extends Model {
     type: 'object',
 
     properties: {
-      id: {type: 'integer'},
+      id: {type: ['integer', 'string']},
       createdAt: {type: 'string'},
       updatedAt: {type: 'string'},
     },

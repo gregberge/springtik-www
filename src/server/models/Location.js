@@ -51,7 +51,7 @@ export default class Location extends BaseModel {
       administrative_area_level_1: {type: 'string', minLength: 1, maxLength: 255},
       administrative_area_level_2: {type: 'string', minLength: 1, maxLength: 255},
       locality: {type: 'string', minLength: 1, maxLength: 255},
-      sublocality: {type: 'string', minLength: 1, maxLength: 255},
+      sublocality: {type: ['string', 'null'], minLength: 1, maxLength: 255},
       postal_code: {type: 'string', minLength: 1, maxLength: 255},
       route: {type: 'string', minLength: 1, maxLength: 255},
       street_number: {type: 'string', minLength: 1, maxLength: 255},
