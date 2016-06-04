@@ -15,7 +15,7 @@ export default class Activity extends BaseModel {
       status: {type: 'string', enum: ['review', 'published']},
       description: {type: 'string', maxLength: 180},
       address: {type: 'string', minLength: 1, maxLength: 255},
-      postal_code: {type: 'string', minLength: 1, maxLength: 5, pattern: /^\d+$/},
+      zipcode: {type: 'string', minLength: 1, maxLength: 5, pattern: /^\d+$/},
       city: {type: 'string', minLength: 1, maxLength: 50},
       text: {type: 'string'},
       categoryId: {type: ['string', 'null']},
