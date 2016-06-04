@@ -28,6 +28,10 @@ export default {
         loader: 'url?limit=5000&mimetype=image/svg+xml',
       },
       {
+        test: /\.jpg/,
+        loader: 'url?limit=5000',
+      },
+      {
         test: /\.json$/,
         loader: 'json',
       },

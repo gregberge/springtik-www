@@ -1,9 +1,20 @@
 import React, {PropTypes} from 'react';
 import Link from 'react-router/lib/Link';
-import Rx from 'rxjs/Rx';
 import classNames from 'classnames';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import {of} from 'rxjs/observable/of';
+import {mergeStatic} from 'rxjs/operator/merge';
+import {takeUntil} from 'rxjs/operator/takeUntil';
+import {last} from 'rxjs/operator/last';
+import {_do} from 'rxjs/operator/do';
+import {switchMap} from 'rxjs/operator/switchMap';
+import {filter} from 'rxjs/operator/filter';
+import {map} from 'rxjs/operator/map';
+import {startWith} from 'rxjs/operator/startWith';
+import {publishReplay} from 'rxjs/operator/publishReplay';
+import {combineLatest} from 'rxjs/operator/combineLatest';
+import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import provide from '~/modules/observo/provide';
 import connect from '~/modules/observo/connect';
 import api from '~/apps/admin-private/api';
@@ -93,37 +104,36 @@ Categories.propTypes = {
 };
 
 export const provideCategories = ({props$}) => ({
-  categories$: Rx.Observable.merge(
-      Rx.Observable.of([true]),
-      Rx.Observable.merge(
+  categories$: mergeStatic(
+      props$,
+      mergeStatic(
         api.categories.created$,
         api.categories.updated$,
         api.categories.deleted$
       )
-      .takeUntil(props$.last())
+        ::takeUntil(props$::last())
     )
-    .switchMap(() => api.categories.$fetchAll())
-    .filter(({success}) => success)
-    .map(({output}) => output)
-    .startWith([])
-    .publishReplay(1)
-    .refCount(),
+    ::switchMap(() => api.categories.$fetchAll())
+    ::filter(({success}) => success)
+    ::map(({output}) => output)
+    ::startWith([])
+    ::publishReplay(1).refCount(),
 });
 
 export const provideOthers = ({categories$, props$}) => {
   const keywords$ = categories$
-    .map(categories =>
+    ::map(categories =>
       Array.from(new Set(categories.reduce((all, {keywords}) =>
         all.concat(keywords), []
       )))
     )
-    .startWith([]);
+    ::startWith([]);
 
   const category$ = categories$
-    .combineLatest(
+    ::combineLatest(
       props$
-        .map(({params: {categoryId}}) => categoryId)
-        .distinctUntilChanged(),
+        ::map(({params: {categoryId}}) => categoryId)
+        ::distinctUntilChanged(),
       (categories, categoryId) =>
         categories.find(({id}) => categoryId === id)
     );

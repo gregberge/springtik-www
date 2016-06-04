@@ -1,20 +1,35 @@
-import React, {PropTypes} from 'react';
-import Rx from 'rxjs/Rx';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React, {
+  Component,
+  PropTypes,
+} from 'react';
 import compose from 'recompose/compose';
+import pure from 'recompose/pure';
+import Shield from '~/modules/ui-components/Shield';
+import TextBox from '~/modules/ui-components/TextBox';
+import Button from '~/modules/ui-components/Button';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import provide from '~/modules/observo/provide';
 import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribe';
-import '~/modules/rx-extended/watchTask';
-import httpClient from '~/apps/admin-public/httpClient';
-import {USERNAME_NOT_FOUND, INCORRECT_PASSWORD} from '~/modules/loginErrors';
-import styles from './login.scss';
-import Alert from '~/modules/components/Alert';
-import Button from '~/modules/components/Button';
-import FormGroup from '~/modules/components/FormGroup';
-import Form, {Input} from '~/modules/components/Form';
+import FaUser from 'react-icons/lib/fa/user';
+import FaLock from 'react-icons/lib/fa/lock';
+import {
+  USERNAME_NOT_FOUND,
+  INCORRECT_PASSWORD,
+} from '~/modules/loginErrors';
+import createProvider from './Login.obs';
+import styles from './Login.scss';
+import LoginRedirectionHandler from './LoginRedirectionHandler';
 
-export const getWordingFromMessage = message => {
+const getErrorMessage = ({
+  error,
+  output: {
+    message,
+  } = {},
+}) => {
+  if (error) {
+    return 'Désolé, une erreur est survenue.';
+  }
+
   switch (message) {
     case USERNAME_NOT_FOUND:
       return 'Aucun compte ne correspond à votre email.';
@@ -22,119 +37,115 @@ export const getWordingFromMessage = message => {
       return 'Mot de passe incorrect.';
   }
 
-  return 'Désolé, une erreur est survenue.';
+  return null;
 };
 
-export const getObservables = () => {
-  const model$ = new Rx.BehaviorSubject({
-    email: '',
-    password: '',
-  });
-  const submit$ = new Rx.Subject();
-  const result$ = submit$
-    .watchTask(body =>
-      httpClient.post('/api/login', {body})
-        .then(({bodyData}) => bodyData)
-    )
-    .publishReplay(1)
-    .refCount();
+export class Login extends Component {
+  handleChange = event => {
+    this.props.onChange({
+      ...this.props.model,
+      [event.target.name]: event.target.value,
+    });
+  }
 
-  return {model$, submit$, result$};
-};
+  handleSubmit = event => {
+    event.preventDefault();
+    this.props.onSubmit(this.props.model);
+  };
 
-export const Login = ({
-  model,
-  result: {
-    error,
-    progress,
-    output: {
-      message,
-    } = {},
-  },
-  onSubmit,
-  onModelChange,
-}) => (
-  <div className={styles.login}>
-    <div className={styles.logo} />
-    <div className={styles.panel}>
-      <h3 className={styles.title}>Connexion à l’admin</h3>
-      {error || message ? (
-        <Alert uiStyle="danger">
-          {getWordingFromMessage(message)}
-        </Alert>
-      ) : null}
-      <Form
-        className={styles.form}
-        {...{
-          model,
-          onModelChange,
-          onSubmit,
-        }}
-      >
-        <FormGroup>
-          <Input
-            autoFocus
-            icon="user"
-            id="email"
-            name="email"
-            placeholder="Adresse email"
-            type="email"
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            id="password"
-            icon="lock"
-            name="password"
-            placeholder="Mot de passe"
-            type="password"
-            required
-          />
-        </FormGroup>
-        <Button disabled={progress} block large>
-          Se connecter
-        </Button>
-      </Form>
-    </div>
-  </div>
-);
+  render() {
+    const {
+      model,
+      result = {},
+    } = this.props;
+
+    const errorMessage = getErrorMessage(result);
+
+    return (
+      <div className={styles.login}>
+        <LoginRedirectionHandler />
+        <div className={styles.shield}>
+          <Shield />
+        </div>
+        <div className={styles.panel}>
+          <div className={styles.title}>
+            Connexion à l'admin
+          </div>
+          {errorMessage ? (
+            <div className={styles.error}>
+              {errorMessage}
+            </div>
+          ) : null}
+          <form onSubmit={this.handleSubmit} className={styles.form}>
+            <TextBox
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={model.email}
+              onChange={this.handleChange}
+              autoFocus
+              required
+              icon={<FaUser size={20} className={styles.icon} />}
+              bordered
+              block
+              spaced
+            />
+            <TextBox
+              name="password"
+              type="password"
+              placeholder="Mot de passe"
+              value={model.password}
+              onChange={this.handleChange}
+              required
+              icon={<FaLock size={20} className={styles.icon} />}
+              bordered
+              block
+              spaced
+            />
+            <Button
+              type="submit"
+              theme="admin"
+              disabled={result.progress}
+              block
+            >
+              Se connecter
+            </Button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
 
 Login.propTypes = {
-  model: PropTypes.object.isRequired,
-  result: PropTypes.object.isRequired,
+  model: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  }).isRequired,
+  onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onModelChange: PropTypes.func.isRequired,
+  result: PropTypes.shape({
+    progress: PropTypes.bool,
+    error: PropTypes.bool,
+    success: PropTypes.bool,
+    output: PropTypes.shape({
+      message: PropTypes.string,
+    }),
+  }),
 };
 
 export default compose(
   withStyles(styles),
-  provide(getObservables),
-  subscribe({
-    observo: PropTypes.object.isRequired,
-    $window: PropTypes.object,
-  }, ({
-    observo: {
-      observables: {
-        result$,
-      },
-    },
-    $window,
-  }) => [
-    result$
-      .filter(({output: {success} = {}}) => success)
-      .subscribe(() => {
-        $window.location = '/';
-      }),
-  ]),
+  provide(createProvider()),
   connect(({
+    model$,
     submit$,
     result$,
-    model$,
   }) => ({
-    'onSubmit': submit$,
-    'onModelChange': model$,
-    'model': model$,
-    'result': result$,
-  }))
+    model: model$,
+    onChange: model$,
+    onSubmit: submit$,
+    result: result$,
+  })),
+  pure,
 )(Login);

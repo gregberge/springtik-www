@@ -15,7 +15,7 @@ export default app => {
     output: {
       ...developmentConfig.output,
       path: path.join(__dirname, '../../../../public', app, 'dist'),
-      publicPath: '/dist',
+      publicPath: '/dist/',
       filename: 'bundle.server.js',
       libraryTarget: 'commonjs2',
     },

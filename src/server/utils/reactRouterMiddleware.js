@@ -7,13 +7,22 @@ import withContext from 'recompose/withContext';
 import injectState from '~/modules/observo/server/injectState';
 import resolve from '~/modules/observo/server/resolve';
 
-export default ({routesPath, layout, name, dev}) => (req, res, next) => {
+export default ({
+  routesPath,
+  layout,
+  name,
+  dev,
+  ...options,
+}) => (req, res, next) => {
   const css = [];
 
   if (dev)
     delete require.cache[require.resolve(routesPath)];
 
-  const routes = require(routesPath).default({req});
+  const routes = require(routesPath).default({
+    req,
+    ...options,
+  });
 
   match({routes, location: req.url}, (error, redirectLocation, props) => {
     if (error) {

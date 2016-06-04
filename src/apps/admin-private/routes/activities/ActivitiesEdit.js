@@ -1,11 +1,20 @@
 import React, {PropTypes} from 'react';
-import Rx from 'rxjs/Rx';
-import '~/modules/rx-extended/watchTask';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import provide from '~/modules/observo/provide';
 import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribe';
+import subscribe from '~/modules/observo/subscribeDeprecated';
+import {Subject} from 'rxjs/Subject';
+import {map} from 'rxjs/operator/map';
+import {mapTo} from 'rxjs/operator/mapTo';
+import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
+import {combineLatest} from 'rxjs/operator/combineLatest';
+import {merge} from 'rxjs/operator/merge';
+import {publishReplay} from 'rxjs/operator/publishReplay';
+import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
+import {filter} from 'rxjs/operator/filter';
+import {watchTask} from '~/modules/observables/operator/watchTask';
+import {resetTask} from '~/modules/observables/operator/resetTask';
 import api from '~/apps/admin-private/api';
 import Banner from '~/modules/components/Banner';
 import ActivitiesForm from './ActivitiesForm';
@@ -16,8 +25,8 @@ export const CategoriesEdit = ({
   onActivityChange,
   onSubmit,
   onDelete,
-  result,
-  deleteResult,
+  result = {},
+  deleteResult = {},
 }) => (
   <div className={styles.section}>
     <Banner
@@ -59,44 +68,41 @@ export const provideObservables = ({
   props$,
   activities$,
 }) => {
-  const submit$ = new Rx.Subject();
-  const delete$ = new Rx.Subject();
-  const activityChange$ = new Rx.Subject();
+  const submit$ = new Subject();
+  const delete$ = new Subject();
+  const activityChange$ = new Subject();
   const activityId$ = props$
-    .map(({params: {activityId}}) => activityId)
-    .distinctUntilChanged();
+    ::map(({params: {activityId}}) => activityId)
+    ::distinctUntilChanged();
 
   const activity$ = activities$
-    .combineLatest(
+    ::combineLatest(
       activityId$,
       (categories, activityId) =>
         categories.find(({id}) => activityId === id)
     )
-    .merge(activityChange$)
-    .publishReplay(1)
-    .refCount();
+    ::merge(activityChange$)
+    ::publishReplay(1).refCount();
 
   const result$ = submit$
-    .withLatestFrom(activity$, (model, {id}) => ({
+    ::withLatestFrom(activity$, (model, {id}) => ({
       ...model,
       id,
     }))
-    .watchTask(model => api.activities.update(model))
-    .resetTask({delay: 4000})
-    .merge(activityId$.mapTo({idle: true}))
-    .publishReplay(1)
-    .refCount();
+    ::watchTask(model => api.activities.update(model))
+    ::resetTask({delay: 4000})
+    ::merge(activityId$::mapTo({idle: true}))
+    ::publishReplay(1).refCount();
 
   const deleteResult$ = delete$
-    .filter(() =>
+    ::filter(() =>
       window.confirm('Êtes vous sûr de vouloir supprimer l\'activité ?')
     )
-    .withLatestFrom(props$)
-    .map(([, {params: {activityId}}]) => activityId)
-    .watchTask(id => api.activities.delete(id))
-    .merge(activityId$.mapTo({idle: true}))
-    .publishReplay(1)
-    .refCount();
+    ::withLatestFrom(props$)
+    ::map(([, {params: {activityId}}]) => activityId)
+    ::watchTask(id => api.activities.delete(id))
+    ::merge(activityId$::mapTo({idle: true}))
+    ::publishReplay(1).refCount();
 
   return {
     submit$,
@@ -124,7 +130,7 @@ export default compose(
     observo,
     router,
   }) => observo.observables.deleteResult$
-    .filter(({success}) => success)
+    ::filter(({success}) => success)
     .subscribe(() => {
       router.push('/activities');
     })

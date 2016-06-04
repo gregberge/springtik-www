@@ -2,15 +2,19 @@ import developmentConfig from '../development-config';
 import path from 'path';
 import webpack from 'webpack';
 
-export default app => {
+export default (app, {
+  name = 'browser',
+  bundle = 'bundle.js',
+  entry = './browser',
+} = {}) => {
   return {
     ...developmentConfig,
-    name: 'browser',
+    name,
     output: {
       ...developmentConfig.output,
       publicPath: 'http://localhost:8080/assets/',
       path: path.join(__dirname, '../../../../public', app, 'dist'),
-      filename: `${app}-bundle.js`,
+      filename: `${app}-${bundle}`,
     },
     module: {
       ...developmentConfig.module,
@@ -30,7 +34,7 @@ export default app => {
         ...developmentConfig.module.loaders.slice(1),
       ],
     },
-    entry: ['./browser'],
+    entry: [entry],
     plugins: [
       ...developmentConfig.plugins,
       new webpack.NoErrorsPlugin(),

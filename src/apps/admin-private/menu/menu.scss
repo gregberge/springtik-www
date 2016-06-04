@@ -16,12 +16,12 @@
     line-height: 40px;
     font-size: 0.85em;
     padding: 0 $padding-unit / 2;
-    background-color: $white-color;
+    background-color: $white;
     transition: background-color 400ms, border-left 400ms;
     border-left: 2px solid rgba($primary-color, 0);
 
     &:hover, &.active {
-      background-color: $gray-lighter-color;
+      background-color: $gray-lighter;
       transition: background-color 200ms, border-left 200ms;
       text-decoration: none;
       border-left-color: $primary-color;

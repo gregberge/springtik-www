@@ -1,28 +1,26 @@
 import React from 'react';
-import createElement from 'recompose/createElement';
-import createHelper from 'recompose/createHelper';
 
-export default createHelper((contextTypes, subscribe) => Component => {
+export default (contextTypes, subscribe) => {
   return class ObservoSubscribe extends React.Component {
     static contextTypes = contextTypes;
 
     componentWillMount() {
-      this.subscriptions = subscribe(this.context);
+      const subscriptions = subscribe(this.context);
+      this.subscriptions = Array.isArray(subscriptions)
+        ? subscriptions : [subscriptions];
     }
 
     componentWillUnmount() {
-      if (this.subscriptions.unsubscribe) {
-        this.subscriptions.unsubscribe();
-        return;
-      }
+      this.subscriptions.forEach(subscription =>
+        (subscription.dispose || subscription.unsubscribe).call(subscription));
+    }
 
-      this.subscriptions.forEach(subscription => {
-        subscription.unsubscribe();
-      });
+    shouldComponentUpdate() {
+      return false;
     }
 
     render() {
-      return createElement(Component, this.props);
+      return null;
     }
   };
-}, 'observoProvide');
+};

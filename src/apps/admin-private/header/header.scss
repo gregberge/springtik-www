@@ -5,7 +5,7 @@
   background: $primary-color;
   height: $header-height;
   padding: 0 $padding-unit * 2;
-  color: $white-color;
+  color: $white;
   font-size: 0.85rem;
 }
 
@@ -37,16 +37,16 @@
   width: $header-height - $padding-unit;
   top: $padding-unit / 2;
   right: $padding-unit * 2;
-  border: 1px solid $white-color;
+  border: 1px solid $white;
   border-radius: 50%;
   background-color: grey;
   background-size: 100% 100%;
-  box-shadow: 0 0 4px 2px rgba($gray-color, 0.01);
+  box-shadow: 0 0 4px 2px rgba($gray, 0.01);
   transition: box-shadow 300ms;
 
   &:hover, &:focus {
     outline: none;
-    box-shadow: 0 0 4px 2px rgba($gray-color, 0.6);
+    box-shadow: 0 0 4px 2px rgba($gray, 0.6);
   }
 }
 
@@ -56,8 +56,8 @@
   top: $header-height;
   right: $padding-unit * 2;
   display: inline-block;
-  background: $white-color;
-  box-shadow: 0 0 5px 1px rgba($gray-color, 0.4);
+  background: $white;
+  box-shadow: 0 0 5px 1px rgba($gray, 0.4);
   border-radius: 0 0 4px 4px;
   overflow: hidden;
   padding: $padding-unit / 4 0;
@@ -72,7 +72,7 @@
       padding: $padding-unit / 2 $padding-unit;
 
       &:hover {
-        background-color: lighten($gray-light-color, 35);
+        background-color: lighten($gray-light, 35);
         text-decoration: none;
       }
 
