@@ -1,11 +1,19 @@
 import React, {PropTypes} from 'react';
-import Rx from 'rxjs/Rx';
-import '~/modules/rx-extended/watchTask';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import provide from '~/modules/observo/provide';
 import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribe';
+import subscribe from '~/modules/observo/subscribeDeprecated';
+import {Subject} from 'rxjs/Subject';
+import {map} from 'rxjs/operator/map';
+import {mapTo} from 'rxjs/operator/mapTo';
+import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
+import {filter} from 'rxjs/operator/filter';
+import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
+import {merge} from 'rxjs/operator/merge';
+import {publishReplay} from 'rxjs/operator/publishReplay';
+import {watchTask} from '~/modules/observables/operator/watchTask';
+import {resetTask} from '~/modules/observables/operator/resetTask';
 import Banner from '~/modules/components/Banner';
 import api from '~/apps/admin-private/api';
 import CategoriesForm from './CategoriesForm';
@@ -16,8 +24,8 @@ export const CategoriesEdit = ({
   onCategoryChange,
   onSubmit,
   onDelete,
-  result,
-  deleteResult,
+  result = {},
+  deleteResult = {},
 }) => (
   <div className={styles.section}>
     <Banner
@@ -59,37 +67,35 @@ export const provideObservables = ({
   category$,
   props$,
 }) => {
-  const submit$ = new Rx.Subject();
-  const delete$ = new Rx.Subject();
-  const categoryChange$ = new Rx.Subject();
+  const submit$ = new Subject();
+  const delete$ = new Subject();
+  const categoryChange$ = new Subject();
   const categoryId$ = props$
-    .map(({params: {categoryId}}) => categoryId)
-    .distinctUntilChanged();
+    ::map(({params: {categoryId}}) => categoryId)
+    ::distinctUntilChanged();
 
   const deleteResult$ = delete$
-    .filter(() =>
+    ::filter(() =>
       window.confirm('Êtes vous sûr de vouloir supprimer la catégorie ?')
     )
-    .withLatestFrom(props$)
-    .map(([, {params: {categoryId}}]) => categoryId)
-    .watchTask(id => api.categories.delete(id))
-    .merge(categoryId$.mapTo({idle: true}))
-    .publishReplay(1)
-    .refCount();
+    ::withLatestFrom(props$)
+    ::map(([, {params: {categoryId}}]) => categoryId)
+    ::watchTask(id => api.categories.delete(id))
+    ::merge(categoryId$::mapTo({idle: true}))
+    ::publishReplay(1).refCount();
 
-  category$ = category$.merge(categoryChange$);
+  category$ = category$::merge(categoryChange$);
 
   const result$ = submit$
-    .withLatestFrom(category$, (model, {id}) => ({
+    ::withLatestFrom(category$, (model, {id}) => ({
       ...model,
       id,
       keywords: model.keywords || [],
     }))
-    .watchTask(model => api.categories.update(model))
-    .resetTask({delay: 4000})
-    .merge(categoryId$.mapTo({idle: true}))
-    .publishReplay(1)
-    .refCount();
+    ::watchTask(model => api.categories.update(model))
+    ::resetTask({delay: 4000})
+    ::merge(categoryId$::mapTo({idle: true}))
+    ::publishReplay(1).refCount();
 
   return {
     submit$,
@@ -120,7 +126,7 @@ export default compose(
     },
     router,
   }) => deleteResult$
-    .filter(({success}) => success)
+    ::filter(({success}) => success)
     .subscribe(() => {
       router.push('/categories');
     })

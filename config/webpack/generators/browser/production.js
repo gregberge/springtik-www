@@ -3,14 +3,18 @@ import productionConfig from '../production-config';
 import path from 'path';
 import webpack from 'webpack';
 
-export default app => {
+export default (app, {
+  name = 'browser',
+  bundle = 'bundle.js',
+  entry = './browser',
+} = {}) => {
   return {
     ...productionConfig,
-    name: 'browser',
+    name,
     output: {
       path: path.join(__dirname, '../../../../public', app, 'dist'),
       publicPath: '/dist',
-      filename: 'bundle.js',
+      filename: bundle,
     },
     plugins: [
       ...productionConfig.plugins,
@@ -20,7 +24,7 @@ export default app => {
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}}),
     ],
-    entry: ['./browser'],
+    entry: [entry],
     context: path.join(__dirname, '../../../../lib/apps', app),
   };
 };

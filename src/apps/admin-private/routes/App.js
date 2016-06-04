@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import {take} from 'rxjs/operator/take';
+import {switchMap} from 'rxjs/operator/switchMap';
+import {publishReplay} from 'rxjs/operator/publishReplay';
 import api from '~/apps/admin-private/api';
 import provide from '~/modules/observo/provide';
 import styles from './app.scss';
@@ -27,10 +30,9 @@ App.propTypes = {
 
 export const getObservables = ({props$}) => ({
   me$: props$
-    .take(1)
-    .switchMap(() => api.me())
-    .publishReplay(1)
-    .refCount(),
+    ::take(1)
+    ::switchMap(() => api.me())
+    ::publishReplay(1).refCount(),
 });
 
 export default compose(

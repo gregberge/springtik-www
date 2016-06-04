@@ -1,7 +1,16 @@
 import React, {PropTypes} from 'react';
 import Link from 'react-router/lib/Link';
 import classNames from 'classnames';
-import Rx from 'rxjs/Rx';
+import {mergeStatic} from 'rxjs/operator/merge';
+import {takeUntil} from 'rxjs/operator/takeUntil';
+import {last} from 'rxjs/operator/last';
+import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
+import {switchMap} from 'rxjs/operator/switchMap';
+import {filter} from 'rxjs/operator/filter';
+import {map} from 'rxjs/operator/map';
+import {startWith} from 'rxjs/operator/startWith';
+import {publishReplay} from 'rxjs/operator/publishReplay';
+import {take} from 'rxjs/operator/take';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import provide from '~/modules/observo/provide';
@@ -99,16 +108,16 @@ export class Activities extends React.Component {
 }
 
 export const provideObservables = ({props$}) => {
-  const activities$ = Rx.Observable.merge(
+  const activities$ = mergeStatic(
       props$,
-      Rx.Observable.merge(
+      mergeStatic(
         api.activities.created$,
         api.activities.updated$,
         api.activities.deleted$
       )
-      .takeUntil(props$.last())
+        ::takeUntil(props$::last())
     )
-    .withLatestFrom(props$, (_, {
+    ::withLatestFrom(props$, (_, {
       location: {
         query: {
           status,
@@ -120,26 +129,24 @@ export const provideObservables = ({props$}) => {
 
       return undefined;
     })
-    .switchMap(query =>
+    ::switchMap(query =>
       api.activities.$fetchAll({
         ...query,
         eager: 'location',
       })
     )
-    .filter(({success}) => success)
-    .map(({output}) => output)
-    .startWith([])
-    .publishReplay(1)
-    .refCount();
+    ::filter(({success}) => success)
+    ::map(({output}) => output)
+    ::startWith([])
+    ::publishReplay(1).refCount();
 
   const categories$ = props$
-    .take(1)
-    .switchMap(() => api.categories.$fetchAll({level: 2}))
-    .filter(({success}) => success)
-    .map(({output}) => output)
-    .startWith([])
-    .publishReplay(1)
-    .refCount();
+    ::take(1)
+    ::switchMap(() => api.categories.$fetchAll({level: 2}))
+    ::filter(({success}) => success)
+    ::map(({output}) => output)
+    ::startWith([])
+    ::publishReplay(1).refCount();
 
   return {activities$, categories$};
 };

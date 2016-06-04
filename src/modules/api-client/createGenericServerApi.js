@@ -1,4 +1,5 @@
-import Rx from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
+import {watchTaskStatic} from '~/modules/observables/operator/watchTask';
 
 export function observe(promise, {next}) {
   return promise
@@ -9,20 +10,20 @@ export function observe(promise, {next}) {
 }
 
 export default (name, {api}) => {
-  const created$ = new Rx.Subject();
-  const updated$ = new Rx.Subject();
-  const deleted$ = new Rx.Subject();
+  const created$ = new Subject();
+  const updated$ = new Subject();
+  const deleted$ = new Subject();
 
   return {
     $fetchAll(...args) {
-      return Rx.Observable.watchTask(this.fetchAll(...args));
+      return watchTaskStatic(() => this.fetchAll(...args));
     },
     fetchAll(query) {
       return api[name].fetchAll(query);
     },
 
     $fetch(...args) {
-      return Rx.Observable.watchTask(this.fetch(...args));
+      return watchTaskStatic(() => this.fetch(...args));
     },
     fetch(id) {
       return api[name].fetch(id);
@@ -30,7 +31,7 @@ export default (name, {api}) => {
 
     created$,
     $create(...args) {
-      return Rx.Observable.watchTask(this.create(...args));
+      return watchTaskStatic(() => this.create(...args));
     },
     create(model) {
       return observe(api[name].create(model), created$);
@@ -38,7 +39,7 @@ export default (name, {api}) => {
 
     updated$,
     $update(...args) {
-      return Rx.Obserable.watchTask(this.update(...args));
+      return watchTaskStatic(() => this.update(...args));
     },
     update(model) {
       return observe(api[name].update(model), updated$);
@@ -46,7 +47,7 @@ export default (name, {api}) => {
 
     deleted$,
     $delete(...args) {
-      return Rx.Obserable.watchTask(this.delete(...args));
+      return watchTaskStatic(() => this.delete(...args));
     },
     delete(id) {
       return observe(api[name].delete(id).then(() => id), deleted$);

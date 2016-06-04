@@ -1,8 +1,8 @@
-@import "styles/variables";
+@import 'modules/variables';
 
 :global {
   html, body {
-    background-color: $white-color;
+    background-color: $green;
     font-family: 'Open Sans', sans-serif;
     font-size: 1em;
     height: 100%;

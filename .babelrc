@@ -2,7 +2,9 @@
   "presets": ["doctolib"],
   "plugins": [
     "syntax-async-functions",
-    "transform-regenerator"
+    "transform-regenerator",
+    "syntax-trailing-function-commas",
+    "transform-function-bind"
   ],
   "ignore": [
     "dist",

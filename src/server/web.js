@@ -11,6 +11,7 @@ import ejs from 'ejs';
 import config from '~/config';
 import admin from './admin';
 import www from './www';
+import wwwStatic from './wwwStatic';
 import configureDatabase from './configureDatabase';
 
 configureDatabase();
@@ -26,7 +27,8 @@ app.use(compress());
 app.use(express.static(path.join(__dirname, '../../public/common')));
 
 app.use(subdomain('admin', admin));
-app.use(subdomain('www', www));
+app.use(subdomain('beta', www));
+app.use(subdomain('www', wwwStatic));
 
 // Error handling.
 app.use((err, req, res, next) => {

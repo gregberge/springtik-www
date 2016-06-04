@@ -1,12 +1,14 @@
 import React, {PropTypes} from 'react';
 import api from '~/apps/admin-private/api';
-import Rx from 'rxjs/Rx';
-import '~/modules/rx-extended/watchTask';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import provide from '~/modules/observo/provide';
 import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribe';
+import subscribe from '~/modules/observo/subscribeDeprecated';
+import {Subject} from 'rxjs/Subject';
+import {share} from 'rxjs/operator/share';
+import {filter} from 'rxjs/operator/filter';
+import {watchTask} from '~/modules/observables/operator/watchTask';
 import Banner from '~/modules/components/Banner';
 import ActivitiesForm from './ActivitiesForm';
 import styles from './activities.scss';
@@ -15,7 +17,7 @@ export const ActivitiesNew = ({
   onSubmit,
   onDelete,
   onActivityChange,
-  result,
+  result = {},
   activity,
 }) => (
   <div className={styles.section}>
@@ -40,7 +42,7 @@ export const ActivitiesNew = ({
 ActivitiesNew.propTypes = {
   result: PropTypes.shape({
     error: PropTypes.bool,
-  }).isRequired,
+  }),
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func,
   onActivityChange: PropTypes.func.isRequired,
@@ -48,12 +50,12 @@ ActivitiesNew.propTypes = {
 };
 
 export const provideObservables = () => {
-  const submit$ = new Rx.Subject();
-  const activity$ = new Rx.Subject();
+  const submit$ = new Subject();
+  const activity$ = new Subject();
 
   const result$ = submit$
-    .watchTask(model => api.activities.create(model))
-    .share();
+    ::watchTask(model => api.activities.create(model))
+    ::share();
 
   return {
     submit$,
@@ -88,7 +90,7 @@ export default compose(
     observo,
     router,
   }) => observo.observables.result$
-    .filter(({success}) => success)
+    ::filter(({success}) => success)
     .subscribe(({
       output: {
         id,

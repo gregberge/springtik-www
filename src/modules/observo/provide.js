@@ -1,5 +1,9 @@
 import React, {PropTypes} from 'react';
-import Rx from 'rxjs/Rx';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {from} from 'rxjs/observable/from';
+import {concatStatic} from 'rxjs/operator/concat';
+import {skip} from 'rxjs/operator/skip';
+import {switchMapTo} from 'rxjs/operator/switchMapTo';
 import createElement from 'recompose/createElement';
 import createHelper from 'recompose/createHelper';
 import joinRoutesPath from './utils/joinRoutesPath';
@@ -24,7 +28,7 @@ export default createHelper((getObservables, options) => Component => {
     static getObservables = getObservables;
     static resolveOnServer = resolveOnServer;
 
-    props$ = new Rx.ReplaySubject(1);
+    props$ = new ReplaySubject(1);
 
     getChildContext() {
       return this.childContext;
@@ -80,9 +84,12 @@ export default createHelper((getObservables, options) => Component => {
 
           return resolveOnServer.reduce((serverObs, name) => ({
             ...serverObs,
-            [name]: Rx.Observable.concat(
-              Rx.Observable.from([state[name]]),
-              childObservables[name]
+            [name]: concatStatic(
+              from([state[name]]),
+              childObservables[name],
+              // this.props$
+              //   ::skip(1)
+              //   ::switchMapTo(childObservables[name])
             ),
           }), {});
         }
