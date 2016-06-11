@@ -12,7 +12,7 @@ export default app => {
     target: 'node',
     output: {
       path: path.join(__dirname, '../../../../public', app, 'dist'),
-      publicPath: '/dist',
+      publicPath: '/dist/',
       filename: 'bundle.server.js',
       libraryTarget: 'commonjs2',
     },

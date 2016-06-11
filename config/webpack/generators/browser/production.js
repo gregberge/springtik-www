@@ -13,7 +13,7 @@ export default (app, {
     name,
     output: {
       path: path.join(__dirname, '../../../../public', app, 'dist'),
-      publicPath: '/dist',
+      publicPath: '/dist/',
       filename: bundle,
     },
     plugins: [
