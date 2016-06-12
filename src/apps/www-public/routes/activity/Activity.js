@@ -14,9 +14,11 @@ export const Activity = ({
 }) => (
   <div>
     <ActivityCover />
-    <ActivityTitle>{activity.name}</ActivityTitle>
+    <ActivityTitle>
+      {activity.name}
+    </ActivityTitle>
     <ActivityIntro>
-      A Paris, le seul parcours aventure dans les arbres ! Au coeur du Parc Floral de Paris, Evasion Verte vous propose une activité de parcours dans les arbres.
+      {activity.description}
     </ActivityIntro>
     <ActivityH2>
       Un grand choix d’activités pour tous

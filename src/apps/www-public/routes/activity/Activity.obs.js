@@ -12,7 +12,8 @@ export default () => ({props$}) => {
         query: `
           {
             activity(id: "2") {
-              name
+              name,
+              description
             }
           }
         `,

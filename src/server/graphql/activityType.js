@@ -8,5 +8,6 @@ export default new GraphQLObjectType({
   fields: {
     id: {type: GraphQLString},
     name: {type: GraphQLString},
+    description: {type: GraphQLString},
   },
 });
