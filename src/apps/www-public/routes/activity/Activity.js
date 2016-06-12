@@ -6,7 +6,8 @@ import connect from '~/modules/observo/connect';
 import ActivityCover from './ActivityCover';
 import ActivityTitle from './ActivityTitle';
 import ActivityIntro from './ActivityIntro';
-import ActivityH2 from './ActivityH2';
+import ActivityText from './ActivityText';
+import ActivityMap from './ActivityMap';
 import createProvider from './Activity.obs';
 
 export const Activity = ({
@@ -20,9 +21,10 @@ export const Activity = ({
     <ActivityIntro>
       {activity.description}
     </ActivityIntro>
-    <ActivityH2>
-      Un grand choix d’activités pour tous
-    </ActivityH2>
+    <ActivityText>
+      {activity.text}
+    </ActivityText>
+    <ActivityMap position={activity.position} />
   </div>
 );
 

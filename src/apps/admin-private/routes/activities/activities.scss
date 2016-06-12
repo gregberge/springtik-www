@@ -1,3 +1,4 @@
+@import "modules/variables";
 @import "styles/variables";
 @import "apps/admin-private/routes/app";
 
@@ -18,8 +19,9 @@
   font-size: 0.65em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(black, 0.2);
+  color: rgba($gray, 0.5);
   pointer-events: none;
+  z-index: 2;
 }
 
 .editorInput, .editorPreview {
@@ -47,6 +49,7 @@
   height: 300px;
   font-size: 0.8em;
   z-index: 1;
+  background: $gray-lighter;
 }
 
 .statusSelect {

@@ -12,8 +12,13 @@ export default () => ({props$}) => {
         query: `
           {
             activity(id: "2") {
-              name,
+              name
               description
+              text
+              position {
+                lat
+                lng
+              }
             }
           }
         `,
