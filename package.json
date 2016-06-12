@@ -8,7 +8,7 @@
     "dev:server": "nf -j Procfile.dev start",
     "dev:webpack:browser": "webpack-dev-server --no-info --inline --hot --config config/webpack/browser/development.babel.js",
     "dev:webpack:server": "webpack --watch --progress --config config/webpack/server/development.babel.js",
-    "postinstall": "npm run build && npm run migrate",
+    "postinstall": "npm run build && npm run db:migrate",
     "db:migrate": "knex migrate:latest",
     "db:seed": "knex seed:run",
     "build:lib": "rm -rf lib/ && cp -R src/ lib/ && babel -d lib src --ignore src/modules/babelHelpers.js",
