@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+import autofill from 'react-autofill';
 import Shield from '~/modules/ui-components/Shield';
 import TextBox from '~/modules/ui-components/TextBox';
 import Button from '~/modules/ui-components/Button';
@@ -43,7 +44,6 @@ const getErrorMessage = ({
 export class Login extends Component {
   handleChange = event => {
     this.props.onChange({
-      ...this.props.model,
       [event.target.name]: event.target.value,
     });
   }
@@ -147,5 +147,6 @@ export default compose(
     onSubmit: submit$,
     result: result$,
   })),
+  autofill,
   pure,
 )(Login);
