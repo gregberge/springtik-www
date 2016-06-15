@@ -1,0 +1,18 @@
+@import 'apps/www-public/config/variables';
+
+.activitySidebar {
+  padding: 0 10px;
+}
+
+.sidebarBlock {
+  border-radius: 3px;
+  background-color: $white;
+  border: 1px solid #c4c4c4;
+}
+
+.sidebarTitle {
+  font-family: $special-font;
+  font-size: 16px;
+  line-height: 1.2;
+  color: $gray-dark;
+}

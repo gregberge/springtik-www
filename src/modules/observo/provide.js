@@ -86,10 +86,9 @@ export default createHelper((getObservables, options) => Component => {
             ...serverObs,
             [name]: concatStatic(
               from([state[name]]),
-              childObservables[name],
-              // this.props$
-              //   ::skip(1)
-              //   ::switchMapTo(childObservables[name])
+              this.props$
+                ::skip(1)
+                ::switchMapTo(childObservables[name]),
             ),
           }), {});
         }

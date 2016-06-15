@@ -1,0 +1,13 @@
+@import 'apps/www-public/config/variables';
+
+.activitySiblings {
+  margin-top: 30px;
+}
+
+.title {
+  composes: sidebarTitle from './ActivitySidebar.scss';
+}
+
+.activityBlock {
+
+}

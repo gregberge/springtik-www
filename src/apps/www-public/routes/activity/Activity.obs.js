@@ -18,6 +18,10 @@ export default () => ({props$}) => {
               position {
                 lat
                 lng
+              },
+              siblings {
+                id
+                name
               }
             }
           }

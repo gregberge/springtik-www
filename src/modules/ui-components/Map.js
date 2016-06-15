@@ -6,6 +6,8 @@ export const defaultOptions = {
   draggable: false,
   disableDefaultUI: true,
   disableDoubleClickZoom: true,
+  scrollwheel: false,
+  clickableIcons: false,
   styles: [{
     featureType: 'poi',
     elementType: 'labels',
