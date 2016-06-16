@@ -2,7 +2,7 @@ import '~/modules/bootstrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import GraphiQL from 'graphiql';
-import '!style!css!graphiql/graphiql.min.css';
+import 'style!css!graphiql/graphiql.css';
 import GraphQLClient from '~/modules/graphql-client/GraphQLClient';
 import GraphQLClientBrowserAdapter from '~/modules/graphql-client/GraphQLClientBrowserAdapter';
 
