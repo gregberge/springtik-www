@@ -2,8 +2,6 @@ import React, {PropTypes} from 'react';
 import Link from 'react-router/lib/Link';
 import classNames from 'classnames';
 import {mergeStatic} from 'rxjs/operator/merge';
-import {takeUntil} from 'rxjs/operator/takeUntil';
-import {last} from 'rxjs/operator/last';
 import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
 import {switchMap} from 'rxjs/operator/switchMap';
 import {filter} from 'rxjs/operator/filter';
@@ -14,6 +12,7 @@ import {take} from 'rxjs/operator/take';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import provide from '~/modules/observo/provide';
+import universalProvide from '~/modules/observo/universalProvide';
 import connect from '~/modules/observo/connect';
 import api from '~/apps/admin-private/api';
 import Toolbar from '~/modules/components/Toolbar';
@@ -107,17 +106,9 @@ export class Activities extends React.Component {
   }
 }
 
-export const provideObservables = ({props$}) => {
-  const activities$ = mergeStatic(
-      props$,
-      mergeStatic(
-        api.activities.created$,
-        api.activities.updated$,
-        api.activities.deleted$
-      )
-        ::takeUntil(props$::last())
-    )
-    ::withLatestFrom(props$, (_, {
+function queryActivities() {
+  return this
+    ::map(({
       location: {
         query: {
           status,
@@ -137,26 +128,39 @@ export const provideObservables = ({props$}) => {
     )
     ::filter(({success}) => success)
     ::map(({output}) => output)
-    ::startWith([])
     ::publishReplay(1).refCount();
+}
 
-  const categories$ = props$
+const provideUniversalObservables = ({props$}) => ({
+  activities$: props$::queryActivities(),
+});
+
+const provideObservables = ({
+  activities$,
+  props$,
+}) => ({
+  activities$: mergeStatic(
+    activities$,
+    mergeStatic(
+      api.activities.created$,
+      api.activities.updated$,
+      api.activities.deleted$,
+    )
+      ::withLatestFrom(props$, (_, props) => props)
+      ::queryActivities()
+  )::startWith([]),
+  categories$: props$
     ::take(1)
     ::switchMap(() => api.categories.$fetchAll({level: 2}))
     ::filter(({success}) => success)
     ::map(({output}) => output)
     ::startWith([])
-    ::publishReplay(1).refCount();
-
-  return {activities$, categories$};
-};
+    ::publishReplay(1).refCount(),
+});
 
 export default compose(
-  provide(provideObservables, {
-    resolveOnServer: [
-      'activities$',
-    ],
-  }),
+  universalProvide(provideUniversalObservables),
+  provide(provideObservables),
   connect(({
     activities$,
   }) => ({

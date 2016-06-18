@@ -16,6 +16,7 @@ import {publishReplay} from 'rxjs/operator/publishReplay';
 import {combineLatest} from 'rxjs/operator/combineLatest';
 import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import provide from '~/modules/observo/provide';
+import universalProvide from '~/modules/observo/universalProvide';
 import connect from '~/modules/observo/connect';
 import api from '~/apps/admin-private/api';
 import styles from './categories.scss';
@@ -103,24 +104,27 @@ Categories.propTypes = {
   children: PropTypes.node,
 };
 
-export const provideCategories = ({props$}) => ({
-  categories$: mergeStatic(
-      props$,
+function queryCategories() {
+  return this::switchMap(() => api.categories.$fetchAll())
+    ::filter(({success}) => success)
+    ::map(({output}) => output)
+    ::publishReplay(1).refCount();
+}
+
+const provideUniversalObservables = ({props$}) => ({
+  categories$: props$::queryCategories(),
+});
+
+const provideObservables = ({categories$, props$}) => {
+  categories$ = mergeStatic(
+      categories$,
       mergeStatic(
         api.categories.created$,
         api.categories.updated$,
-        api.categories.deleted$
-      )
-        ::takeUntil(props$::last())
-    )
-    ::switchMap(() => api.categories.$fetchAll())
-    ::filter(({success}) => success)
-    ::map(({output}) => output)
-    ::startWith([])
-    ::publishReplay(1).refCount(),
-});
+        api.categories.deleted$,
+      )::queryCategories()
+  )::startWith([]);
 
-export const provideOthers = ({categories$, props$}) => {
   const keywords$ = categories$
     ::map(categories =>
       Array.from(new Set(categories.reduce((all, {keywords}) =>
@@ -139,18 +143,15 @@ export const provideOthers = ({categories$, props$}) => {
     );
 
   return {
-    keywords$,
+    categories$,
     category$,
+    keywords$,
   };
 };
 
 export default compose(
-  provide(provideCategories, {
-    resolveOnServer: [
-      'categories$',
-    ],
-  }),
-  provide(provideOthers),
+  universalProvide(provideUniversalObservables),
+  provide(provideObservables),
   connect(({
     categories$,
     category$,

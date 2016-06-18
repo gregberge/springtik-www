@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import withContext from 'recompose/withContext';
 import match from 'react-router/lib/match';
 import ReactRouter from 'react-router/lib/Router';
+import applyRouterMiddleware from 'react-router/lib/applyRouterMiddleware';
+import useScroll from 'react-router-scroll';
 import browserHistory from 'react-router/lib/browserHistory';
 import GraphQLClientBrowserAdapter from '~/modules/graphql-client/GraphQLClientBrowserAdapter';
 import routes from './routes';
@@ -34,7 +36,10 @@ match(
   },
   (error, redirectLocation, props) => {
     ReactDOM.render(
-      <Router {...props} />,
+      <Router
+        {...props}
+        render={applyRouterMiddleware(useScroll())}
+      />,
       document.getElementById('main')
     );
   }

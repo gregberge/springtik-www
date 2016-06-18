@@ -21,6 +21,13 @@ const PositionType = new GraphQLObjectType({
   },
 });
 
+const PictureType = new GraphQLObjectType({
+  name: 'Picture',
+  fields: {
+    url: {type: GraphQLString},
+  },
+});
+
 const fieldsFromInfo = info =>
   info.fieldASTs[0].selectionSet.selections.map(({name: {value}}) => value);
 
@@ -28,6 +35,7 @@ const buildActivityQuery = fields => {
   return Activity.query()
     .select(
       fields
+        .concat(['id'])
         .map(field => field === 'position' ? 'locationId' : field)
         .filter(field => ACTIVITY_ATTRIBUTES.includes(field))
         .concat(['categoryId'])
@@ -38,6 +46,8 @@ const buildActivityQuery = fields => {
 };
 
 const formatActivity = activity => {
+  activity.link = `/activities/${activity.id}`;
+
   if (activity.location) {
     activity.position = activity.location.geometry.location;
   }
@@ -63,10 +73,19 @@ const ActivityType = new GraphQLObjectType({
     name: {type: GraphQLString},
     description: {type: GraphQLString},
     text: {type: GraphQLString},
+    link: {type: GraphQLString},
     position: {type: PositionType},
+    cover: {
+      type: PictureType,
+      resolve() {
+        return {
+          url: '/cover.jpg',
+        };
+      },
+    },
     siblings: {
       type: new GraphQLList(ActivityType),
-      resolve: (source, params, context, info) => {
+      resolve(source, params, context, info) {
         return buildActivityQuery(fieldsFromInfo(info))
           .where({categoryId: source.categoryId})
           .orderByRaw('random()')

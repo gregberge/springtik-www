@@ -9,6 +9,6 @@ import Activity from './activity/Activity';
 export default [
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
-    <Route path="/:slug" component={Activity} />
+    <Route path="/activities/:activityId" component={Activity} />
   </Route>,
 ];

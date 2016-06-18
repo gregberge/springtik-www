@@ -11,18 +11,17 @@ export default (props, callback) => {
       initialStates,
       {
         component: {
-          getObservables,
-          resolveOnServer,
+          getUniversalObservables,
         },
       },
       index
     ) => {
-      if (!resolveOnServer)
+      if (!getUniversalObservables)
         return initialStates;
 
       const path = joinRoutesPath(routes.slice(0, index + 1));
-      const observables = getObservables({props$});
-      const serverObservables = resolveOnServer
+      const observables = getUniversalObservables({props$});
+      const serverObservables = Object.keys(observables)
         .map(name =>
           observables[name]
             ::map(data => ({[name]: data}))

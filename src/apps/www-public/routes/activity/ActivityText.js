@@ -8,11 +8,13 @@ import styles from './ActivityText.scss';
 export const ActivityText = ({
   children,
 }) => (
-  <ReactMarkdown
-    tagName="section"
-    className={styles.activityText}
-    source={children}
-  />
+  children ? (
+    <ReactMarkdown
+      tagName="section"
+      className={styles.activityText}
+      source={children}
+    />
+  ) : null
 );
 
 ActivityText.propTypes = {

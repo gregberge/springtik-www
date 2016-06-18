@@ -21,6 +21,7 @@ export default createHelper(
       };
 
       mounted = false;
+      unmounted = false;
 
       state = {};
 
@@ -48,6 +49,9 @@ export default createHelper(
             } else {
               this.subscriptions.push(obsMap[prop].subscribe({
                 next: value => {
+                  if (this.unmounted)
+                    return;
+
                   if (this.mounted)
                     this.setState({[prop]: value});
                   else
@@ -67,6 +71,7 @@ export default createHelper(
       }
 
       componentWillUnmount() {
+        this.unmounted = true;
         this.unsubscribe();
       }
 

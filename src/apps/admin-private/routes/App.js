@@ -5,7 +5,7 @@ import {take} from 'rxjs/operator/take';
 import {switchMap} from 'rxjs/operator/switchMap';
 import {publishReplay} from 'rxjs/operator/publishReplay';
 import api from '~/apps/admin-private/api';
-import provide from '~/modules/observo/provide';
+import universalProvide from '~/modules/observo/universalProvide';
 import styles from './app.scss';
 import Header from '../header/Header';
 import Menu from '../menu/Menu';
@@ -36,6 +36,6 @@ export const getObservables = ({props$}) => ({
 });
 
 export default compose(
-  provide(getObservables, {resolveOnServer: ['me$']}),
+  universalProvide(getObservables),
   withStyles(styles)
 )(App);

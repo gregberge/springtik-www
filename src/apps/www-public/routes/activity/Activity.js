@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import provide from '~/modules/observo/provide';
+import universalProvide from '~/modules/observo/universalProvide';
 import connect from '~/modules/observo/connect';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import ActivityCover from './ActivityCover';
@@ -20,7 +20,7 @@ export const Activity = ({
   activity = {},
 }) => (
   <div className={styles.activity}>
-    <ActivityCover />
+    <ActivityCover picture={activity.cover} />
     <ActivityMain>
       <ActivityTitle>
         {activity.name}
@@ -47,11 +47,7 @@ Activity.propTypes = {
 };
 
 export default compose(
-  provide(createProvider(), {
-    resolveOnServer: [
-      'activity$',
-    ],
-  }),
+  universalProvide(createProvider()),
   connect(({
     activity$,
   }) => ({
