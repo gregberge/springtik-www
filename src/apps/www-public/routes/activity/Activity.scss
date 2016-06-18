@@ -3,3 +3,10 @@
 .activity {
   margin-bottom: 30px;
 }
+
+.wrapper {
+  @media (min-width: $screen-lg-min) {
+    width: 1024px;
+    margin: 0 auto;
+  }
+}

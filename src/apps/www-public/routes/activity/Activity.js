@@ -21,22 +21,24 @@ export const Activity = ({
 }) => (
   <div className={styles.activity}>
     <ActivityCover picture={activity.cover} />
-    <ActivityMain>
-      <ActivityTitle>
-        {activity.name}
-      </ActivityTitle>
-      <ActivityIntro>
-        {activity.description}
-      </ActivityIntro>
-      <ActivityText>
-        {activity.text}
-      </ActivityText>
-      <ActivityMap position={activity.position} />
-    </ActivityMain>
-    <ActivitySidebar>
-      <ActivityBooking activity={activity} />
-      <ActivitySiblings activities={activity.siblings} />
-    </ActivitySidebar>
+    <div className={styles.wrapper}>
+      <ActivityMain>
+        <ActivityTitle>
+          {activity.name}
+        </ActivityTitle>
+        <ActivityIntro>
+          {activity.description}
+        </ActivityIntro>
+        <ActivityText>
+          {activity.text}
+        </ActivityText>
+        <ActivityMap position={activity.position} />
+      </ActivityMain>
+      <ActivitySidebar>
+        <ActivityBooking activity={activity} />
+        <ActivitySiblings activities={activity.siblings} />
+      </ActivitySidebar>
+    </div>
   </div>
 );
 

@@ -2,6 +2,14 @@
 
 .activitySidebar {
   padding: 0 10px;
+
+  @media (min-width: $screen-lg-min) {
+    margin-top: 20px;
+    padding: 0;
+    width: 320px;
+    display: inline-block;
+    vertical-align: top;
+  }
 }
 
 .sidebarBlock {
