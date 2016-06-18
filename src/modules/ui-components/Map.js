@@ -87,10 +87,6 @@ export class Map extends React.Component {
       ...props,
     } = this.props;
 
-    if (typeof google !== 'object') {
-      return null;
-    }
-
     return (
       <GoogleMap
         {...props}

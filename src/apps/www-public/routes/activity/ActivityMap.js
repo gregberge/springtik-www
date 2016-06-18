@@ -22,7 +22,7 @@ export const ActivityMap = ({
         loadingElement={<ActivityMapLoader />}
         containerElement={<div className={styles.map} />}
         googleMapElement={
-          <Map defaultCenter={position}>
+          <Map center={position}>
             <Marker position={position} />
           </Map>
         }
