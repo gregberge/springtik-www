@@ -41,6 +41,7 @@
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.0",
     "classnames": "^2.2.3",
+    "cloudinary-core": "^2.0.9",
     "compression": "^1.6.1",
     "connect-redis": "^3.0.2",
     "convict": "^1.3.0",

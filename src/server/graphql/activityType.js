@@ -24,7 +24,7 @@ const PositionType = new GraphQLObjectType({
 const PictureType = new GraphQLObjectType({
   name: 'Picture',
   fields: {
-    url: {type: GraphQLString},
+    publicId: {type: GraphQLString},
   },
 });
 
@@ -32,6 +32,16 @@ const fieldsFromInfo = info =>
   info.fieldASTs[0].selectionSet.selections.map(({name: {value}}) => value);
 
 const buildActivityQuery = fields => {
+  const eagerFields = [];
+
+  if (fields.includes('position')) {
+    eagerFields.push('location');
+  }
+
+  if (fields.includes('cover')) {
+    eagerFields.push('pictures');
+  }
+
   return Activity.query()
     .select(
       fields
@@ -40,9 +50,7 @@ const buildActivityQuery = fields => {
         .filter(field => ACTIVITY_ATTRIBUTES.includes(field))
         .concat(['categoryId'])
     )
-    .eager(
-      fields.includes('position') ? 'location' : null
-    );
+    .eager(`[${eagerFields.join(',')}]`);
 };
 
 const formatActivity = activity => {
@@ -77,9 +85,9 @@ const ActivityType = new GraphQLObjectType({
     position: {type: PositionType},
     cover: {
       type: PictureType,
-      resolve() {
+      resolve(source) {
         return {
-          url: '/cover.jpg',
+          publicId: source.pictures[0] ? source.pictures[0].publicId : 't9h6sfa4etmzrklrt296',
         };
       },
     },

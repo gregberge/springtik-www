@@ -8,4 +8,5 @@ export default ({req}) => ({
 
   activities: createGenericServerApi('activities', {api}),
   categories: createGenericServerApi('categories', {api}),
+  pictures: createGenericServerApi('pictures', {api}),
 });

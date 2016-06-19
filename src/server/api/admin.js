@@ -3,6 +3,7 @@ import createApiFromModel from '~/server/utils/createApiFromModel';
 import Activity from '~/server/models/Activity';
 import Category from '~/server/models/Category';
 import Location from '~/server/models/Location';
+import Picture from '~/server/models/Picture';
 
 export default ({
   me({req}) {
@@ -11,6 +12,8 @@ export default ({
       avatar200x200: gravatar.url(req.user.email, {s: '200', d: 'retro'}),
     });
   },
+
+  pictures: createApiFromModel(Picture),
 
   activities: {
     ...createApiFromModel(Activity),

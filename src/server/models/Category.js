@@ -1,5 +1,6 @@
 import BaseModel from './BaseModel';
 import Activity from './Activity';
+import Picture from './Picture';
 
 export default class Category extends BaseModel {
   static tableName = 'categories';
@@ -48,6 +49,15 @@ export default class Category extends BaseModel {
         join: {
           from: 'categories.parentId',
           to: 'categories.id',
+        },
+      },
+
+      pictures: {
+        relation: BaseModel.OneToManyRelation,
+        modelClass: Picture,
+        join: {
+          from: 'categories.id',
+          to: 'pictures.activityId',
         },
       },
     };

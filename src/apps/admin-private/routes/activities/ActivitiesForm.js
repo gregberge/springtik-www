@@ -9,6 +9,7 @@ import Toolbar from '~/modules/components/Toolbar';
 import styles from './activities.scss';
 import ActivitiesEditor from './ActivitiesEditor';
 import ActivitiesLocationControl from './ActivitiesLocationControl';
+import ActivitiesPhotos from './ActivitiesPhotos';
 
 const statusOptions = [
   {value: 'review', label: 'À relire'},
@@ -107,6 +108,11 @@ export const ActivitiesForm = ({
       <FormGroup>
         <ActivitiesEditor text={activity.text} {...{disabled}} />
       </FormGroup>
+      {activity.id ? (
+        <FormGroup>
+          <ActivitiesPhotos pictures={activity.pictures || []} activityId={activity.id} />
+        </FormGroup>
+      ) : null}
     </div>
     <Toolbar className={styles['form-section-toolbar']}>
       <Button

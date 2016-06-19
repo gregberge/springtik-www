@@ -8,4 +8,5 @@ export default ({http}) => ({
 
   activities: createGenericBrowserApi('activities', {http}),
   categories: createGenericBrowserApi('categories', {http}),
+  pictures: createGenericBrowserApi('pictures', {http}),
 });

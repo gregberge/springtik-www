@@ -21,7 +21,7 @@ export default () => ({props$}) => {
               description
               text
               cover {
-                url
+                publicId
               }
               position {
                 lat
@@ -32,7 +32,7 @@ export default () => ({props$}) => {
                 name
                 link
                 cover {
-                  url
+                  publicId
                 }
               }
             }

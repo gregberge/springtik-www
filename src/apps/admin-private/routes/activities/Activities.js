@@ -123,7 +123,7 @@ function queryActivities() {
     ::switchMap(query =>
       api.activities.$fetchAll({
         ...query,
-        eager: 'location',
+        eager: '[location, pictures]',
       })
     )
     ::filter(({success}) => success)
@@ -145,6 +145,8 @@ const provideObservables = ({
       api.activities.created$,
       api.activities.updated$,
       api.activities.deleted$,
+      api.pictures.created$,
+      api.pictures.updated$,
     )
       ::withLatestFrom(props$, (_, props) => props)
       ::queryActivities()

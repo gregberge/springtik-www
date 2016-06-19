@@ -12,5 +12,6 @@ router.get('/me', errCheck(async function (req, res) {
 
 router.use('/activities', createRouterFromApi('activities', {api}));
 router.use('/categories', createRouterFromApi('categories', {api}));
+router.use('/pictures', createRouterFromApi('pictures', {api}));
 
 export default router;
