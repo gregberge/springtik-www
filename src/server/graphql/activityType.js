@@ -87,7 +87,7 @@ const ActivityType = new GraphQLObjectType({
       type: PictureType,
       resolve(source) {
         return {
-          publicId: source.pictures[0] ? source.pictures[0].publicId : 't9h6sfa4etmzrklrt296',
+          publicId: source.pictures[0] ? source.pictures[0].publicId : 'default-activity-cover',
         };
       },
     },
