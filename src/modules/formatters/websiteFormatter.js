@@ -1,3 +1,3 @@
 export const formatWebsite = website => {
-  return website.replace(/^http:\/\//, '').replace(/\/$/, '');
+  return website.replace(/^https?:\/\//, '').replace(/\/$/, '');
 };
