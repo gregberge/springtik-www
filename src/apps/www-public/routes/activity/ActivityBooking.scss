@@ -9,7 +9,7 @@
   margin: 15px;
 }
 
-.phoneSection {
+.phoneSection, .websiteSection {
   margin: 15px;
   font-family: $special-font;
   font-size: 14px;
@@ -21,6 +21,6 @@
   }
 }
 
-.phoneSectionIcon {
+.phoneSectionIcon, .websiteSectionIcon {
   margin-right: 10px;
 }

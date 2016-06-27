@@ -105,6 +105,23 @@ export const ActivitiesForm = ({
           required
         />
       </FormGroup>
+      <FormGroup className={styles['form-group-small']}>
+        <Input
+          name="phoneNumber"
+          maxLength={255}
+          pattern="[0-9]{10}"
+          placeholder="Numéro de téléphone"
+          disabled={disabled}
+        />
+      </FormGroup>
+      <FormGroup className={styles['form-group-small']}>
+        <Input
+          name="website"
+          maxLength={255}
+          placeholder="Site internet"
+          disabled={disabled}
+        />
+      </FormGroup>
       <FormGroup>
         <ActivitiesEditor text={activity.text} {...{disabled}} />
       </FormGroup>
@@ -161,6 +178,8 @@ ActivitiesForm.defaultProps = {
     status: '',
     text: '',
     zipcode: '',
+    website: '',
+    phoneNumber: '',
   },
   deleteResult: {},
 };

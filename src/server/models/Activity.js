@@ -19,6 +19,8 @@ export default class Activity extends BaseModel {
       zipcode: {type: 'string', minLength: 1, maxLength: 5, pattern: /^\d+$/},
       city: {type: 'string', minLength: 1, maxLength: 50},
       text: {type: 'string'},
+      phoneNumber: {type: ['string', 'null'], maxLength: 255},
+      website: {type: ['string', 'null'], maxLength: 255},
       categoryId: {type: ['string', 'null']},
       locationId: {type: ['string', 'null']},
     },

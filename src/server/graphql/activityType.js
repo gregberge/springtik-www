@@ -80,6 +80,8 @@ const ActivityType = new GraphQLObjectType({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
     description: {type: GraphQLString},
+    website: {type: GraphQLString},
+    phoneNumber: {type: GraphQLString},
     text: {type: GraphQLString},
     link: {type: GraphQLString},
     position: {type: PositionType},

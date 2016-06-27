@@ -20,6 +20,8 @@ export default () => ({props$}) => {
               name
               description
               text
+              website
+              phoneNumber
               cover {
                 publicId
               }

@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import ReactMarkdown from 'react-markdown';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import {Textarea} from '~/modules/components/Form';
 import ActivityText from '~/apps/www-public/routes/activity/ActivityText';
