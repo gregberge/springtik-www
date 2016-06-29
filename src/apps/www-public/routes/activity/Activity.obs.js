@@ -17,8 +17,8 @@ export default () => ({props$}) => {
     ::distinctUntilChanged();
 
   const result$ = pathname$
-    ::map(activityPath => {
-      const parts = parseLink(activityPath);
+    ::map(pathname => {
+      const parts = parseLink(pathname);
       return parts ? parts.id : null;
     })
     ::distinctUntilChanged()
@@ -70,8 +70,7 @@ export default () => ({props$}) => {
       if (!linkParts || linkParts.id !== activity.id)
         return null;
       return activity.link !== pathname ? activity.link : null;
-    })
-    ::filter(link => link);
+    });
 
   return {
     activity$,

@@ -14,7 +14,7 @@ export default subscribe({
 }) =>
   observo.observables.redirect$
     .subscribe(url => {
-      console.log('will redirect', url);
-      redirect(301, url);
+      if (url)
+        redirect(301, url);
     })
 );
