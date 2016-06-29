@@ -1,6 +1,6 @@
 import slugify from 'underscore.string/slugify';
 
-const PATH_REGEXP = /^\/activities\/(\w+)-(\w+)-(\w+)-(\d+)$/;
+const PATH_REGEXP = /^\/activities\/[\w-]*(\d+)$/;
 
 export const formatLink = ({
   id,
@@ -16,9 +16,6 @@ export const parseLink = path => {
     return null;
 
   return {
-    id: matches[4],
-    category: matches[2],
-    city: matches[1],
-    slug: matches[3],
+    id: matches[1],
   };
 };
