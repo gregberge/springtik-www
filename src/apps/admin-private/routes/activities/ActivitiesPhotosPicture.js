@@ -6,11 +6,7 @@ import CloudinaryImage from '~/modules/ui-components/CloudinaryImage';
 import FaTrash from 'react-icons/lib/fa/trash';
 import styles from './ActivitiesPhotosPicture.scss';
 
-const OPTIONS = {
-  width: 200,
-  crop: 'fit',
-  dpr: 'auto',
-};
+const OPTIONS = 'dpr_auto,q_auto,f_auto,w_200,c_fit';
 
 export class ActivitiesPhotosPicture extends Component {
   handleTrash = () => {

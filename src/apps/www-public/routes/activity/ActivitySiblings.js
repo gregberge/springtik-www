@@ -3,8 +3,10 @@ import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import Link from 'react-router/lib/Link';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import cl from '~/modules/cloudinary';
+import {clUrl} from '~/modules/cloudinary';
 import styles from './ActivitySiblings.scss';
+
+const CL_OPTIONS = 'w_320,h_140,c_fit,dpr_auto,q_auto,f_auto';
 
 export const ActivitySiblings = ({
   activities,
@@ -23,7 +25,7 @@ export const ActivitySiblings = ({
         <Link key={id} to={link}>
           <div
             className={styles.activityBlock}
-            style={{backgroundImage: `url(${cl.url(cover.publicId)})`}}
+            style={{backgroundImage: `url(${clUrl(cover.publicId, CL_OPTIONS)})`}}
           >
             <div className={styles.activityTitle}>
               {name}

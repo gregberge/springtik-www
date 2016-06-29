@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import pure from 'recompose/pure';
-import cl from '~/modules/cloudinary';
+import {clUrl} from '~/modules/cloudinary';
 
 export class CloudinaryImage extends Component {
   static propTypes = {
     publicId: PropTypes.string.isRequired,
-    options: PropTypes.object,
+    options: PropTypes.string,
   }
 
   render() {
@@ -16,7 +16,7 @@ export class CloudinaryImage extends Component {
     } = this.props;
 
     return (
-      <img {...other} src={cl.url(publicId, options)} />
+      <img {...other} src={clUrl(publicId, options)} />
     );
   }
 }
