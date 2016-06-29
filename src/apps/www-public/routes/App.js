@@ -1,8 +1,10 @@
 import React, {PropTypes} from 'react';
 import theme from './App.scss';
+import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
+import browserRedirect from '../browserRedirect';
 
 export const App = ({
   children,
@@ -26,4 +28,7 @@ App.contextTypes = {
   }).isRequired,
 };
 
-export default withStyles(theme)(App);
+export default compose(
+  browserRedirect,
+  withStyles(theme)
+)(App);
