@@ -5,20 +5,20 @@ import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import {publishReplay} from 'rxjs/operator/publishReplay';
 import {map} from 'rxjs/operator/map';
 import gql from '~/apps/www-public/graphQLClient';
-import {formatPath, parsePath} from '~/modules/activity/path';
+import {parseLink} from '~/modules/activity/link';
 
 export default () => ({props$}) => {
-  const path$ = props$
+  const pathname$ = props$
     ::map(({
-      params: {
-        activityPath,
+      location: {
+        pathname,
       },
-    }) => activityPath)
+    }) => pathname)
     ::distinctUntilChanged();
 
-  const result$ = path$
+  const result$ = pathname$
     ::map(activityPath => {
-      const parts = parsePath(activityPath);
+      const parts = parseLink(activityPath);
       return parts ? parts.id : null;
     })
     ::distinctUntilChanged()
@@ -34,7 +34,7 @@ export default () => ({props$}) => {
               text
               website
               phoneNumber
-              slug
+              link
               cover {
                 publicId
               }
@@ -64,16 +64,14 @@ export default () => ({props$}) => {
   const pending$ = result$
     ::map(({progress}) => !!progress);
 
-  const redirect$ = path$
-    ::combineLatest(activity$, (path, activity) => {
-      const parts = parsePath(path);
-      if (!parts || parts.id !== activity.id)
+  const redirect$ = pathname$
+    ::combineLatest(activity$, (pathname, activity) => {
+      const linkParts = parseLink(pathname);
+      if (!linkParts || linkParts.id !== activity.id)
         return null;
-
-      const validPath = formatPath(activity);
-      return validPath !== path ? `/activities/${validPath}` : null;
+      return activity.link !== pathname ? activity.link : null;
     })
-    ::filter(url => url);
+    ::filter(link => link);
 
   return {
     activity$,

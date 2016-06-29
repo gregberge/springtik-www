@@ -10,7 +10,7 @@ import styles from './activities.scss';
 import ActivitiesEditor from './ActivitiesEditor';
 import ActivitiesLocationControl from './ActivitiesLocationControl';
 import ActivitiesPhotos from './ActivitiesPhotos';
-import {formatPath} from '~/modules/activity/path';
+import {formatLink} from '~/modules/activity/link';
 
 const statusOptions = [
   {value: 'review', label: 'À relire'},
@@ -51,10 +51,16 @@ export const ActivitiesForm = ({
           placeholder="Slug"
         />
         <span className={styles.slugPreview}>
-          springtik.fr/activities/{
-            formatPath({
+          springtik.fr
+          {
+            formatLink({
+              id: activity.id || '???',
+              city: activity.city || '???',
+              category: (
+                categories
+                  .find(({id}) => activity.categoryId === id) || {}
+              ).name || '???',
               slug: activity.slug || '???',
-              id: activity.id || '*',
             })
           }
         </span>

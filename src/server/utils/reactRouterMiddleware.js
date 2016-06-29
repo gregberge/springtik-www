@@ -15,6 +15,7 @@ export default ({
   ...options,
 }) => (req, res, next) => {
   const css = [];
+  let redirect = false;
 
   if (dev)
     delete require.cache[require.resolve(routesPath)];
@@ -57,7 +58,10 @@ export default ({
                   insertCss(styles) {
                     css.push(styles._getCss());
                   },
-                  redirect: res.redirect.bind(res),
+                  redirect(status, url) {
+                    redirect = true;
+                    res.redirect(status, url);
+                  },
                 })
               ),
               injectState(initialState)
@@ -65,6 +69,9 @@ export default ({
             , props
           )
         );
+
+        if (redirect)
+          return;
 
         res.render(layout, {
           content,

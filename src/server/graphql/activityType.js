@@ -10,7 +10,7 @@ import ApiError from '~/modules/ApiError';
 import {
   FETCH_NOT_FOUND,
 } from '~/modules/apiErrors';
-import {formatPath} from '~/modules/activity/path';
+import {formatLink} from '~/modules/activity/link';
 
 const ACTIVITY_ATTRIBUTES = Object.keys(Activity.jsonSchema.properties);
 
@@ -33,7 +33,7 @@ const fieldsFromInfo = info =>
   info.fieldASTs[0].selectionSet.selections.map(({name: {value}}) => value);
 
 const buildActivityQuery = fields => {
-  const eagerFields = [];
+  const eagerFields = ['category'];
 
   if (fields.includes('position')) {
     eagerFields.push('location');
@@ -46,7 +46,7 @@ const buildActivityQuery = fields => {
   return Activity.query()
     .select(
       fields
-        .concat(['id', 'slug'])
+        .concat(['id', 'slug', 'city'])
         .map(field => field === 'position' ? 'locationId' : field)
         .filter(field => ACTIVITY_ATTRIBUTES.includes(field))
         .concat(['categoryId'])
@@ -55,7 +55,12 @@ const buildActivityQuery = fields => {
 };
 
 const formatActivity = activity => {
-  activity.link = `/activities/${formatPath(activity)}`;
+  activity.link = formatLink({
+    id: activity.id,
+    category: activity.category.name,
+    city: activity.city,
+    slug: activity.slug,
+  });
 
   if (activity.location) {
     activity.position = activity.location.geometry.location;
@@ -80,7 +85,6 @@ const ActivityType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
-    slug: {type: GraphQLString},
     description: {type: GraphQLString},
     website: {type: GraphQLString},
     phoneNumber: {type: GraphQLString},
