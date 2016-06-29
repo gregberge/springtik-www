@@ -23,6 +23,7 @@ export default class Activity extends BaseModel {
       website: {type: ['string', 'null'], maxLength: 255},
       categoryId: {type: ['string', 'null']},
       locationId: {type: ['string', 'null']},
+      slug: {type: 'string', minLength: 1, maxLength: 255},
     },
   };
 

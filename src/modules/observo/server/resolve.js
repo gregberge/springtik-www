@@ -1,4 +1,4 @@
-import {combineLatestStatic} from 'rxjs/operator/combineLatest';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 import {map} from 'rxjs/operator/map';
 import {from} from 'rxjs/observable/from';
 import joinRoutesPath from '../utils/joinRoutesPath';
@@ -27,7 +27,7 @@ export default (props, callback) => {
             ::map(data => ({[name]: data}))
         );
 
-      const initialState$ = combineLatestStatic(serverObservables, (...chunks) =>
+      const initialState$ = combineLatest(serverObservables, (...chunks) =>
         chunks.reduce((data, chunk) => ({...data, ...chunk}), {})
       );
 
@@ -39,7 +39,7 @@ export default (props, callback) => {
 
   let lastValue;
 
-  combineLatestStatic(initialStates, (...chunks) =>
+  combineLatest(initialStates, (...chunks) =>
     chunks.reduce((data, chunk) => ({...data, ...chunk}), {})
   ).subscribe({
     next(value) {

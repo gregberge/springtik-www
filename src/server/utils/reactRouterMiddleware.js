@@ -51,11 +51,13 @@ export default ({
               withContext(
                 {
                   insertCss: React.PropTypes.func.isRequired,
+                  redirect: React.PropTypes.func.isRequired,
                 },
                 () => ({
                   insertCss(styles) {
                     css.push(styles._getCss());
                   },
+                  redirect: res.redirect.bind(res),
                 })
               ),
               injectState(initialState)

@@ -10,6 +10,7 @@ import ApiError from '~/modules/ApiError';
 import {
   FETCH_NOT_FOUND,
 } from '~/modules/apiErrors';
+import {formatPath} from '~/modules/activity/path';
 
 const ACTIVITY_ATTRIBUTES = Object.keys(Activity.jsonSchema.properties);
 
@@ -45,7 +46,7 @@ const buildActivityQuery = fields => {
   return Activity.query()
     .select(
       fields
-        .concat(['id'])
+        .concat(['id', 'slug'])
         .map(field => field === 'position' ? 'locationId' : field)
         .filter(field => ACTIVITY_ATTRIBUTES.includes(field))
         .concat(['categoryId'])
@@ -54,7 +55,7 @@ const buildActivityQuery = fields => {
 };
 
 const formatActivity = activity => {
-  activity.link = `/activities/${activity.id}`;
+  activity.link = `/activities/${formatPath(activity)}`;
 
   if (activity.location) {
     activity.position = activity.location.geometry.location;
@@ -79,6 +80,7 @@ const ActivityType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
+    slug: {type: GraphQLString},
     description: {type: GraphQLString},
     website: {type: GraphQLString},
     phoneNumber: {type: GraphQLString},

@@ -10,6 +10,7 @@ import styles from './activities.scss';
 import ActivitiesEditor from './ActivitiesEditor';
 import ActivitiesLocationControl from './ActivitiesLocationControl';
 import ActivitiesPhotos from './ActivitiesPhotos';
+import {formatPath} from '~/modules/activity/path';
 
 const statusOptions = [
   {value: 'review', label: 'À relire'},
@@ -40,6 +41,23 @@ export const ActivitiesForm = ({
           disabled={disabled}
           required
         />
+      </FormGroup>
+      <FormGroup className={styles['form-group-small']}>
+        <Input
+          name="slug"
+          maxLength={255}
+          pattern="[a-z0-9-]+"
+          disabled={disabled}
+          placeholder="Slug"
+        />
+        <span className={styles.slugPreview}>
+          springtik.fr/activities/{
+            formatPath({
+              slug: activity.slug || '???',
+              id: activity.id || '*',
+            })
+          }
+        </span>
       </FormGroup>
       <FormGroup className={styles['form-group-small']}>
         <Select
@@ -171,6 +189,7 @@ ActivitiesForm.propTypes = {
 ActivitiesForm.defaultProps = {
   activity: {
     address: '',
+    slug: '',
     categoryId: null,
     city: '',
     description: '',

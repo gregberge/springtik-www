@@ -10,11 +10,13 @@ import {mapTo} from 'rxjs/operator/mapTo';
 import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import {combineLatest} from 'rxjs/operator/combineLatest';
 import {merge} from 'rxjs/operator/merge';
+import {scan} from 'rxjs/operator/scan';
 import {publishReplay} from 'rxjs/operator/publishReplay';
 import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
 import {filter} from 'rxjs/operator/filter';
 import {watchTask} from '~/modules/observables/operator/watchTask';
 import {resetTask} from '~/modules/observables/operator/resetTask';
+import slugify from 'underscore.string/slugify';
 import api from '~/apps/admin-private/api';
 import Banner from '~/modules/components/Banner';
 import ActivitiesForm from './ActivitiesForm';
@@ -71,6 +73,7 @@ export const provideObservables = ({
   const submit$ = new Subject();
   const delete$ = new Subject();
   const activityChange$ = new Subject();
+
   const activityId$ = props$
     ::map(({params: {activityId}}) => activityId)
     ::distinctUntilChanged();
@@ -81,7 +84,27 @@ export const provideObservables = ({
       (categories, activityId) =>
         categories.find(({id}) => activityId === id)
     )
+    ::map(activity => {
+      if (!activity.slug) {
+        return {
+          ...activity,
+          slug: slugify(activity.name),
+        };
+      }
+
+      return activity;
+    })
     ::merge(activityChange$)
+    ::scan((previous, next) => {
+      if (previous.id === next.id && previous.name !== next.name) {
+        return {
+          ...next,
+          slug: slugify(next.name),
+        };
+      }
+
+      return next;
+    })
     ::publishReplay(1).refCount();
 
   const result$ = submit$

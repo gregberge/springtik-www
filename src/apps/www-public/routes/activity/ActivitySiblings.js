@@ -41,7 +41,7 @@ ActivitySiblings.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       cover: PropTypes.shape({
-        url: PropTypes.string.isRequired,
+        publicId: PropTypes.string.isRequired,
       }).isRequired,
     }),
   ),

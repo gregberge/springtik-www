@@ -16,7 +16,7 @@ export const ActivityCover = ({
 
 ActivityCover.propTypes = {
   picture: PropTypes.shape({
-    url: PropTypes.string.isRequired,
+    publicId: PropTypes.string.isRequired,
   }),
 };
 

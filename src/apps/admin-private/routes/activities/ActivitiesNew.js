@@ -8,7 +8,9 @@ import subscribe from '~/modules/observo/subscribeDeprecated';
 import {Subject} from 'rxjs/Subject';
 import {share} from 'rxjs/operator/share';
 import {filter} from 'rxjs/operator/filter';
+import {scan} from 'rxjs/operator/scan';
 import {watchTask} from '~/modules/observables/operator/watchTask';
+import slugify from 'underscore.string/slugify';
 import Banner from '~/modules/components/Banner';
 import ActivitiesForm from './ActivitiesForm';
 import styles from './activities.scss';
@@ -51,7 +53,18 @@ ActivitiesNew.propTypes = {
 
 export const provideObservables = () => {
   const submit$ = new Subject();
-  const activity$ = new Subject();
+  const activityChange$ = new Subject();
+  const activity$ = activityChange$
+    ::scan((previous, next) => {
+      if (previous.name !== next.name) {
+        return {
+          ...next,
+          slug: slugify(next.name),
+        };
+      }
+
+      return next;
+    });
 
   const result$ = submit$
     ::watchTask(model => api.activities.create(model))
@@ -60,6 +73,7 @@ export const provideObservables = () => {
   return {
     submit$,
     activity$,
+    activityChange$,
     result$,
   };
 };
@@ -71,11 +85,12 @@ export default compose(
     submit$,
     result$,
     activity$,
+    activityChange$,
   }) => ({
     onSubmit: submit$,
     result: result$,
     activity: activity$,
-    onActivityChange: activity$,
+    onActivityChange: activityChange$,
   })),
   subscribe({
     observo: PropTypes.shape({
