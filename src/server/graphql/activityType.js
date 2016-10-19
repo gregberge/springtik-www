@@ -5,12 +5,12 @@ import {
   GraphQLID,
   GraphQLList,
 } from 'graphql';
-import Activity from '~/server/models/Activity';
-import ApiError from '~/modules/ApiError';
+import Activity from 'server/models/Activity';
+import ApiError from 'modules/ApiError';
 import {
   FETCH_NOT_FOUND,
-} from '~/modules/apiErrors';
-import {formatLink} from '~/modules/activity/link';
+} from 'modules/apiErrors';
+import {formatLink} from 'modules/activity/link';
 
 const ACTIVITY_ATTRIBUTES = Object.keys(Activity.jsonSchema.properties);
 

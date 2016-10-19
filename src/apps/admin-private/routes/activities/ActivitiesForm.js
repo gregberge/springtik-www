@@ -1,16 +1,16 @@
 import React, {PropTypes} from 'react';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import connect from '~/modules/observo/connect';
-import FormGroup from '~/modules/components/FormGroup';
-import Form, {Input, Textarea, Select} from '~/modules/components/Form';
-import Button from '~/modules/components/Button';
-import Toolbar from '~/modules/components/Toolbar';
+import connect from 'modules/observo/connect';
+import FormGroup from 'modules/components/FormGroup';
+import Form, {Input, Textarea, Select} from 'modules/components/Form';
+import Button from 'modules/components/Button';
+import Toolbar from 'modules/components/Toolbar';
 import styles from './activities.scss';
 import ActivitiesEditor from './ActivitiesEditor';
 import ActivitiesLocationControl from './ActivitiesLocationControl';
 import ActivitiesPhotos from './ActivitiesPhotos';
-import {formatLink} from '~/modules/activity/link';
+import {formatLink} from 'modules/activity/link';
 
 const statusOptions = [
   {value: 'review', label: 'À relire'},

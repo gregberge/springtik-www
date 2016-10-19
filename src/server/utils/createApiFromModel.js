@@ -1,5 +1,5 @@
-import ApiError from '~/modules/ApiError';
-import {FETCH_NOT_FOUND} from '~/modules/apiErrors';
+import ApiError from 'modules/ApiError';
+import {FETCH_NOT_FOUND} from 'modules/apiErrors';
 
 export default (Model, {
   allowEager = '',

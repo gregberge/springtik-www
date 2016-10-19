@@ -1,6 +1,6 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
-import ForceCaseSensitivityPlugin from 'force-case-sensitivity-webpack-plugin';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 
 const minimize = process.env.NODE_ENV === 'production'
   ? 'minimize&'
@@ -20,6 +20,14 @@ export default {
           'isomorphic-style',
           `css?${minimize}modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]`,
           'sass',
+          'postcss',
+        ],
+      },
+      {
+        test: /\.css/,
+        loaders: [
+          'isomorphic-style',
+          `css?${minimize}modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]`,
           'postcss',
         ],
       },
@@ -50,6 +58,6 @@ export default {
     root: ['src'],
   },
   plugins: [
-    new ForceCaseSensitivityPlugin(),
+    new CaseSensitivePathsPlugin(),
   ],
 };

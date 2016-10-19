@@ -1,4 +1,4 @@
-import '~/modules/bootstrap';
+import 'modules/bootstrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import match from 'react-router/lib/match';
@@ -6,7 +6,7 @@ import ReactRouter from 'react-router/lib/Router';
 import browserHistory from 'react-router/lib/browserHistory';
 import withContext from 'recompose/withContext';
 import routes from './routes';
-import BrowserAdapter from '~/modules/api-client/BrowserAdapter';
+import BrowserAdapter from 'modules/api-client/BrowserAdapter';
 import http from './http';
 import api from './api';
 

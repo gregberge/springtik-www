@@ -13,14 +13,15 @@
   ],
   "env": {
     "development": {
-      "plugins": [["babel-plugin-module-alias", [
-        {"src": "./src", "expose": "~"}
-      ]]]
+      "plugins": [["module-resolver", {
+        "root": ["./src"],
+      }]]
     },
     "production": {
-      "plugins": [["babel-plugin-module-alias", [
-        {"src": "./lib", "expose": "~"}
-      ]]]
+      "plugins": [["module-resolver", {
+        "root": ["./lib"],
+      },
+      ]]
     }
   }
 }

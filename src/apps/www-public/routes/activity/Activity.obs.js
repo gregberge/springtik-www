@@ -1,11 +1,11 @@
-import {watchTask} from '~/modules/observables/operator/watchTask';
+import {watchTask} from 'modules/observables/operator/watchTask';
 import {filter} from 'rxjs/operator/filter';
 import {combineLatest} from 'rxjs/operator/combineLatest';
 import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
 import {publishReplay} from 'rxjs/operator/publishReplay';
 import {map} from 'rxjs/operator/map';
-import gql from '~/apps/www-public/graphQLClient';
-import {parseLink} from '~/modules/activity/link';
+import gql from 'apps/www-public/graphQLClient';
+import {parseLink} from 'modules/activity/link';
 
 export default () => ({props$}) => {
   const pathname$ = props$
@@ -67,8 +67,9 @@ export default () => ({props$}) => {
   const redirect$ = pathname$
     ::combineLatest(activity$, (pathname, activity) => {
       const linkParts = parseLink(pathname);
-      if (!linkParts || linkParts.id !== activity.id)
+      if (!linkParts || linkParts.id !== activity.id) {
         return null;
+      }
       return activity.link !== pathname ? activity.link : null;
     });
 

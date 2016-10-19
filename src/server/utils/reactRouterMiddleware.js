@@ -4,8 +4,8 @@ import match from 'react-router/lib/match';
 import RouterContext from 'react-router/lib/RouterContext';
 import compose from 'recompose/compose';
 import withContext from 'recompose/withContext';
-import injectState from '~/modules/observo/server/injectState';
-import resolve from '~/modules/observo/server/resolve';
+import injectState from 'modules/observo/server/injectState';
+import resolve from 'modules/observo/server/resolve';
 
 export default ({
   routesPath,

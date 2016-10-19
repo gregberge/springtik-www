@@ -1,6 +1,6 @@
 import {Strategy} from 'passport-local';
-import User from '~/server/models/User';
-import * as loginErrors from '~/modules/loginErrors';
+import User from 'server/models/User';
+import * as loginErrors from 'modules/loginErrors';
 
 export default passport => {
   passport.use(new Strategy({

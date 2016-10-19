@@ -11,14 +11,14 @@ import {publishReplay} from 'rxjs/operator/publishReplay';
 import {take} from 'rxjs/operator/take';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import provide from '~/modules/observo/provide';
-import universalProvide from '~/modules/observo/universalProvide';
-import connect from '~/modules/observo/connect';
-import api from '~/apps/admin-private/api';
-import Toolbar from '~/modules/components/Toolbar';
-import List from '~/modules/components/List';
-import Select from '~/modules/components/Select';
-import ListItem from '~/modules/components/ListItem';
+import provide from 'modules/observo/provide';
+import universalProvide from 'modules/observo/universalProvide';
+import connect from 'modules/observo/connect';
+import api from 'apps/admin-private/api';
+import Toolbar from 'modules/components/Toolbar';
+import List from 'modules/components/List';
+import Select from 'modules/components/Select';
+import ListItem from 'modules/components/ListItem';
 import styles from './activities.scss';
 
 const statusOptions = [

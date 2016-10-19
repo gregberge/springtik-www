@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs/Subject';
-import {watchTaskStatic} from '~/modules/observables/operator/watchTask';
-import ApiError from '~/modules/ApiError';
+import {watchTaskStatic} from 'modules/observables/operator/watchTask';
+import ApiError from 'modules/ApiError';
 
 export function observe(promise, observer) {
   return promise

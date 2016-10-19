@@ -1,4 +1,4 @@
-import '~/modules/bootstrap';
+import 'modules/bootstrap';
 import routes from './routes';
 import graphQLClient from './graphQLClient';
 

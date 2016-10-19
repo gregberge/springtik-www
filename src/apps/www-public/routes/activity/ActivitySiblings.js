@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import Link from 'react-router/lib/Link';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import {clUrl} from '~/modules/cloudinary';
+import {clUrl} from 'modules/cloudinary';
 import styles from './ActivitySiblings.scss';
 
 const CL_OPTIONS = 'w_320,h_140,c_fit,dpr_auto,q_auto,f_auto';

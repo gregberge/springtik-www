@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import provide from '~/modules/observo/provide';
-import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribeDeprecated';
+import provide from 'modules/observo/provide';
+import connect from 'modules/observo/connect';
+import subscribe from 'modules/observo/subscribeDeprecated';
 import {Subject} from 'rxjs/Subject';
 import {map} from 'rxjs/operator/map';
 import {mapTo} from 'rxjs/operator/mapTo';
@@ -12,10 +12,10 @@ import {filter} from 'rxjs/operator/filter';
 import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
 import {merge} from 'rxjs/operator/merge';
 import {publishReplay} from 'rxjs/operator/publishReplay';
-import {watchTask} from '~/modules/observables/operator/watchTask';
-import {resetTask} from '~/modules/observables/operator/resetTask';
-import Banner from '~/modules/components/Banner';
-import api from '~/apps/admin-private/api';
+import {watchTask} from 'modules/observables/operator/watchTask';
+import {resetTask} from 'modules/observables/operator/resetTask';
+import Banner from 'modules/components/Banner';
+import api from 'apps/admin-private/api';
 import CategoriesForm from './CategoriesForm';
 import styles from './categories.scss';
 

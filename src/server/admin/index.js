@@ -6,7 +6,7 @@ import connectRedis from 'connect-redis';
 import configurePassport from './configurePassport';
 import admPublic from './public';
 import admPrivate from './private';
-import config from '~/config';
+import config from 'config';
 
 const router = express.Router();
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Springtik error</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+    <style type="text/css">
+      html, body {
+        font-family: system,-apple-system,San Francisco,Helvetica Neue,helvetica,Lucida Grande,arial,sans-serif;
+      }
+
+      h1, h2 {
+        font-weight: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><%- status %> <%- statusMessage %></h1>
+    <h2><%- error %></h2>
+    <pre><code><%- error.stack %></code></pre>
+  </body>
+</html>

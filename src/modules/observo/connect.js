@@ -1,6 +1,6 @@
 /* eslint-disable react/no-direct-mutation-state */
 import React from 'react';
-import createElement from 'recompose/createElement';
+import createEagerElement from 'recompose/createEagerElement';
 import createHelper from 'recompose/createHelper';
 
 const defaultHandleError = error => {
@@ -82,7 +82,7 @@ export default createHelper(
       }
 
       render() {
-        return createElement(Component, {
+        return createEagerElement(Component, {
           ...this.props,
           ...this.state,
         });

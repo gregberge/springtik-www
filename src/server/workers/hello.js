@@ -1,4 +1,4 @@
-import '~/modules/bootstrap';
+import 'modules/bootstrap';
 import {worker} from '../jobs/hello';
 
 worker()

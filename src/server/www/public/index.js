@@ -1,10 +1,10 @@
 import express from 'express';
-import config from '~/config';
-import reactRouterMiddleware from '~/server/utils/reactRouterMiddleware';
+import config from 'config';
+import reactRouterMiddleware from 'server/utils/reactRouterMiddleware';
 import path from 'path';
-import graphQLMiddleware from '~/server/graphql/middleware';
-import graphQLSchema from '~/server/graphql/schema';
-import GraphQLClientServerAdapter from '~/modules/graphql-client/GraphQLClientServerAdapter';
+import graphQLMiddleware from 'server/graphql/middleware';
+import graphQLSchema from 'server/graphql/schema';
+import GraphQLClientServerAdapter from 'modules/graphql-client/GraphQLClientServerAdapter';
 
 const router = express.Router();
 

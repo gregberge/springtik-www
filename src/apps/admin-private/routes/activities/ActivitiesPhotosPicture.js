@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import CloudinaryImage from '~/modules/ui-components/CloudinaryImage';
+import CloudinaryImage from 'modules/ui-components/CloudinaryImage';
 import FaTrash from 'react-icons/lib/fa/trash';
 import styles from './ActivitiesPhotosPicture.scss';
 

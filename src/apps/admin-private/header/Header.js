@@ -1,7 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import compose from 'recompose/compose';
-import connect from '~/modules/observo/connect';
+import connect from 'modules/observo/connect';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from 'react-router/lib/Link';
 import styles from './header.scss';

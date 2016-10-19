@@ -1,7 +1,7 @@
-import '~/modules/bootstrap';
+import 'modules/bootstrap';
 import React, {PropTypes} from 'react';
 import createHelper from 'recompose/createHelper';
-import createElement from 'recompose/createElement';
+import createEagerElement from 'recompose/createEagerElement';
 
 export default createHelper(Component => (
   class BrowserRedirect extends React.Component {
@@ -25,7 +25,7 @@ export default createHelper(Component => (
     }
 
     render() {
-      return createElement(Component, this.props);
+      return createEagerElement(Component, this.props);
     }
   }
 ), 'redirectWrapper', true, true);

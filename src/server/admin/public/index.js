@@ -1,6 +1,6 @@
 import express from 'express';
-import config from '~/config';
-import reactRouterMiddleware from '~/server/utils/reactRouterMiddleware';
+import config from 'config';
+import reactRouterMiddleware from 'server/utils/reactRouterMiddleware';
 import path from 'path';
 import api from './api';
 

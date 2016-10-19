@@ -1,4 +1,14 @@
-@import 'modules/variables.scss';
+:import('modules/variables.css') {
+  green: green;
+  orange: orange;
+  gray: gray;
+}
+
+:root {
+  --green: green;
+  --orange: orange;
+  --gray: gray;
+}
 
 .textBox {
   position: relative;
@@ -7,44 +17,44 @@
   display: inline-block;
   vertical-align: middle;
 
-  .input {
+  & .input {
     border: none;
     height: 50px;
-    background-color: $white;
+    background-color: var(--white);
     border-radius: 3px;
     padding: 0 10px;
     font-size: 18px;
     vertical-align: middle;
-    color: $text-color;
+    color: var(--text-color);
     display: block;
     width: 100%;
 
     &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-      color: $gray;
+      color: var(--gray);
     }
     &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-      color: $gray;
+      color: var(--gray);
       opacity: 1;
     }
     &::-moz-placeholder { /* Mozilla Firefox 19+ */
-      color: $gray;
+      color: var(--gray);
       opacity: 1;
     }
     &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-      color: $gray;
+      color: var(--gray);
     }
 
     &:focus {
       outline: none;
-      box-shadow: inset 0px 0px 1px 0px rgba($gray, 0.75);
+      box-shadow: inset 0px 0px 1px 0px color(var(--orange) a(75%));
     }
   }
 
   &.bordered .input {
-    border: 1px solid rgba($gray, 0.4);
+    border: 1px solid color(var(--gray) a(40%));
   }
 
-  &.xl-size {
+  &.xlSize {
     width: 320px;
   }
 
@@ -57,7 +67,7 @@
     width: 100%;
   }
 
-  @media (max-width: $screen-sm-min) {
+  @media (max-width: --screen-sm-min) {
     &.sm-block {
       display: block;
       width: 100%;
@@ -68,7 +78,7 @@
     }
   }
 
-  @media (min-width: $screen-sm-min) {
+  @media (min-width: --screen-sm-min) {
     &.lg-groupedLeft .input {
       border-radius: 3px 0 0 3px;
     }
@@ -78,7 +88,7 @@
     padding-left: 50px;
   }
 
-  .icon {
+  & .icon {
     position: absolute;
     left: 2px;
     top: 8px;
@@ -87,7 +97,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: 1px solid rgba($gray, 0.2);
+    border-right: 1px solid color(var(--gray) a(20%));
     pointer-events: none;
   }
 }

@@ -40,10 +40,6 @@ export const inForm = createHelper(
           this.context.form.setValue(this.props.name, value);
         }
 
-        handleAutoFillValue = value => {
-          this.context.form.setValue(this.props.name, value);
-        };
-
         render() {
           const {
             /* eslint-disable no-unused-vars */
@@ -55,7 +51,6 @@ export const inForm = createHelper(
           return (
             <Control
               onChange={this.handleChange}
-              onAutoFillValue={this.handleAutoFillValue}
               value={this.context.form.getValue(this.props.name)}
               {...props}
             />
@@ -137,6 +132,7 @@ export default class Form extends React.Component {
       /* eslint-disable no-unused-vars */
       model,
       onSubmit,
+      onModelChange,
       /* eslint-enable no-unused-vars */
       ...props,
     } = this.props;

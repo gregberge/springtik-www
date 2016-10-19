@@ -1,5 +1,5 @@
 import React from 'react';
-import createElement from 'recompose/createElement';
+import createEagerElement from 'recompose/createEagerElement';
 import createHelper from 'recompose/createHelper';
 
 export default createHelper(initialState => Component => (
@@ -18,7 +18,7 @@ export default createHelper(initialState => Component => (
     }
 
     render() {
-      return createElement(Component, this.props);
+      return createEagerElement(Component, this.props);
     }
   }
 ), 'observoServerInjectState');

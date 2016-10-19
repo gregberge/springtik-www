@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import {Textarea} from '~/modules/components/Form';
-import ActivityText from '~/apps/www-public/routes/activity/ActivityText';
+import {Textarea} from 'modules/components/Form';
+import ActivityText from 'apps/www-public/routes/activity/ActivityText';
 import styles from './activities.scss';
 
 export const ActivitiesEditor = ({

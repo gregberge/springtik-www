@@ -1,5 +1,5 @@
 import express from 'express';
-import errCheck from '~/server/utils/expressErrorChecking';
+import errCheck from 'server/utils/expressErrorChecking';
 
 export default (name, {api}) => {
   const router = express.Router();

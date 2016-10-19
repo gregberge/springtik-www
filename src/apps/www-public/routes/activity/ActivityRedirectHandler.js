@@ -1,5 +1,5 @@
 import {PropTypes} from 'react';
-import subscribe from '~/modules/observo/subscribe';
+import subscribe from 'modules/observo/subscribe';
 
 export default subscribe({
   observo: PropTypes.shape({

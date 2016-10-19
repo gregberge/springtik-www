@@ -15,14 +15,14 @@ import {startWith} from 'rxjs/operator/startWith';
 import {publishReplay} from 'rxjs/operator/publishReplay';
 import {combineLatest} from 'rxjs/operator/combineLatest';
 import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
-import provide from '~/modules/observo/provide';
-import universalProvide from '~/modules/observo/universalProvide';
-import connect from '~/modules/observo/connect';
-import api from '~/apps/admin-private/api';
+import provide from 'modules/observo/provide';
+import universalProvide from 'modules/observo/universalProvide';
+import connect from 'modules/observo/connect';
+import api from 'apps/admin-private/api';
 import styles from './categories.scss';
-import Toolbar from '~/modules/components/Toolbar';
-import List from '~/modules/components/List';
-import ListItem from '~/modules/components/ListItem';
+import Toolbar from 'modules/components/Toolbar';
+import List from 'modules/components/List';
+import ListItem from 'modules/components/ListItem';
 
 export const Categories = ({
   categories,

@@ -1,5 +1,5 @@
 import {Component, PropTypes} from 'react';
-import createElement from 'recompose/createElement';
+import createEagerElement from 'recompose/createEagerElement';
 import createHelper from 'recompose/createHelper';
 
 const defaultSelector = ({theme}) => theme;
@@ -25,7 +25,7 @@ export default createHelper((selector = defaultSelector) => WrappedComponent => 
     }
 
     render() {
-      return createElement(WrappedComponent, this.props);
+      return createEagerElement(WrappedComponent, this.props);
     }
   }
 ), 'withTheme');

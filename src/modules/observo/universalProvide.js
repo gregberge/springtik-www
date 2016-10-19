@@ -4,7 +4,7 @@ import {of} from 'rxjs/observable/of';
 import {concatStatic} from 'rxjs/operator/concat';
 import {skip} from 'rxjs/operator/skip';
 import {switchMapTo} from 'rxjs/operator/switchMapTo';
-import createElement from 'recompose/createElement';
+import createEagerElement from 'recompose/createEagerElement';
 import createHelper from 'recompose/createHelper';
 import joinRoutesPath from './utils/joinRoutesPath';
 
@@ -87,7 +87,7 @@ export default createHelper(getUniversalObservables => Component => {
     }
 
     render() {
-      return createElement(Component, this.props);
+      return createEagerElement(Component, this.props);
     }
   };
 }, 'observoUniversalProvide');

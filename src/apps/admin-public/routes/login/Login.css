@@ -1,4 +1,4 @@
-@import 'modules/variables.scss';
+@value --special-font, --white, --green, --danger-light-color from 'modules/variables.css';
 
 .login {
   height: 100%;
@@ -29,7 +29,7 @@
 }
 
 .panel {
-  background: $white;
+  background: --white;
   border-radius: 4px;
   width: 430px;
   margin: 0 auto;
@@ -39,16 +39,16 @@
 
 .title {
   margin: 10px 0 30px;
-  color: $green;
+  color: --green;
   text-align: center;
   font-size: 24px;
   line-height: 1.2;
-  font-family: $special-font;
+  font-family: --special-font;
   user-select: none;
 }
 
 .icon {
-  fill: $green;
+  fill: --green;
 }
 
 .form {
@@ -59,8 +59,8 @@
   margin: 10px 0;
   padding: 10px;
   border-radius: 4px;
-  color: $white;
+  color: --white;
   font-size: 12px;
   text-align: center;
-  background-color: lighten($danger-color, 15);
+  background-color: --danger-light-color;
 }

@@ -1,9 +1,9 @@
 import gravatar from 'gravatar';
-import createApiFromModel from '~/server/utils/createApiFromModel';
-import Activity from '~/server/models/Activity';
-import Category from '~/server/models/Category';
-import Location from '~/server/models/Location';
-import Picture from '~/server/models/Picture';
+import createApiFromModel from 'server/utils/createApiFromModel';
+import Activity from 'server/models/Activity';
+import Category from 'server/models/Category';
+import Location from 'server/models/Location';
+import Picture from 'server/models/Picture';
 
 export default ({
   me({req}) {

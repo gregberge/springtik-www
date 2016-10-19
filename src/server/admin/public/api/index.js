@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import {BAD_CREDENTIALS} from '~/modules/loginErrors';
+import {BAD_CREDENTIALS} from 'modules/loginErrors';
 
 const router = express.Router();
 

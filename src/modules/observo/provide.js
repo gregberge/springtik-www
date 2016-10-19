@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import createElement from 'recompose/createElement';
+import createEagerElement from 'recompose/createEagerElement';
 import createHelper from 'recompose/createHelper';
 
 export default createHelper(getObservables => Component => {
@@ -50,7 +50,7 @@ export default createHelper(getObservables => Component => {
     }
 
     render() {
-      return createElement(Component, this.props);
+      return createEagerElement(Component, this.props);
     }
   };
 }, 'observoProvide');

@@ -1,16 +1,16 @@
 import React, {PropTypes} from 'react';
-import api from '~/apps/admin-private/api';
+import api from 'apps/admin-private/api';
 import {Subject} from 'rxjs/Subject';
 import {share} from 'rxjs/operator/share';
 import {filter} from 'rxjs/operator/filter';
-import {watchTask} from '~/modules/observables/operator/watchTask';
+import {watchTask} from 'modules/observables/operator/watchTask';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import provide from '~/modules/observo/provide';
-import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribeDeprecated';
+import provide from 'modules/observo/provide';
+import connect from 'modules/observo/connect';
+import subscribe from 'modules/observo/subscribeDeprecated';
 import CategoriesForm from './CategoriesForm';
-import Banner from '~/modules/components/Banner';
+import Banner from 'modules/components/Banner';
 import styles from './categories.scss';
 
 export const CategoriesNew = ({

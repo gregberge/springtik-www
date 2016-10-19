@@ -4,7 +4,7 @@ import pure from 'recompose/pure';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import ScriptjsLoader from 'react-google-maps/lib/async/ScriptjsLoader';
 import Marker from 'react-google-maps/lib/Marker';
-import Map from '~/modules/ui-components/Map';
+import Map from 'modules/ui-components/Map';
 import ActivityMapLoader from './ActivityMapLoader';
 import styles from './ActivityMap.scss';
 

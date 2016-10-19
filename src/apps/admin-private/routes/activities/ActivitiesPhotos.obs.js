@@ -1,8 +1,8 @@
 import {Subject} from 'rxjs/Subject';
 import {map} from 'rxjs/operator/map';
 import {withLatestFrom} from 'rxjs/operator/withLatestFrom';
-import {watchTask} from '~/modules/observables/operator/watchTask';
-import api from '~/apps/admin-private/api';
+import {watchTask} from 'modules/observables/operator/watchTask';
+import api from 'apps/admin-private/api';
 
 export default () => ({props$}) => {
   const activityId$ = props$

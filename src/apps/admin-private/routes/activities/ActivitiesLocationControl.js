@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import compose from 'recompose/compose';
-import placesApi from '~/apps/admin-private/placesApi';
-import {inForm} from '~/modules/components/Form';
-import Select from '~/modules/components/Select';
-import Input from '~/modules/components/Input';
+import placesApi from 'apps/admin-private/placesApi';
+import {inForm} from 'modules/components/Form';
+import Select from 'modules/components/Select';
+import Input from 'modules/components/Input';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from './ActivitiesLocationControl.scss';
 import detailsToModel from './detailsToModel';

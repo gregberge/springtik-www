@@ -1,5 +1,6 @@
 import {PropTypes} from 'react';
-import subscribe from '~/modules/observo/subscribe';
+import {filter} from 'rxjs/operator/filter';
+import subscribe from 'modules/observo/subscribe';
 
 export default subscribe({
   observo: PropTypes.shape({
@@ -15,11 +16,8 @@ export default subscribe({
   $window,
 }) =>
   observo.observables.result$
-    .subscribe(({
-      success,
-    }) => {
-      if (success) {
-        $window.open('/', '_self');
-      }
+    ::filter(({success, output}) => success && output && output.success)
+    .subscribe(() => {
+      $window.open('/', '_self');
     })
 );

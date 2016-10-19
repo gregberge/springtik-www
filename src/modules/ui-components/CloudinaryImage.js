@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import pure from 'recompose/pure';
-import {clUrl} from '~/modules/cloudinary';
+import {clUrl} from 'modules/cloudinary';
 
 export class CloudinaryImage extends Component {
   static propTypes = {

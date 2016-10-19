@@ -4,8 +4,8 @@ import pure from 'recompose/pure';
 import FaPhone from 'react-icons/lib/fa/phone';
 import FaGlobe from 'react-icons/lib/fa/globe';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import {formatPhoneNumber} from '~/modules/formatters/phoneNumberFormatter';
-import {formatWebsite} from '~/modules/formatters/websiteFormatter';
+import {formatPhoneNumber} from 'modules/formatters/phoneNumberFormatter';
+import {formatWebsite} from 'modules/formatters/websiteFormatter';
 import styles from './ActivityBooking.scss';
 
 export const ActivityBooking = ({

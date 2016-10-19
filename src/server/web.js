@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
-import '~/modules/bootstrap';
+import 'modules/bootstrap';
+import 'source-map-support/register';
 import express from 'express';
 import http from 'http';
 import path from 'path';
@@ -8,7 +9,7 @@ import compress from 'compression';
 import morgan from 'morgan';
 import errorHandler from 'express-err';
 import ejs from 'ejs';
-import config from '~/config';
+import config from 'config';
 import admin from './admin';
 import www from './www';
 import wwwStatic from './wwwStatic';
@@ -36,8 +37,9 @@ app.use((err, req, res, next) => {
   next(err);
 });
 app.use(errorHandler({
+  view: 'error.html',
   exitOnUncaughtException: false,
-  formatters: ['json', 'text'],
+  formatters: ['html', 'json', 'text'],
 }));
 
 const server = http.createServer(app);

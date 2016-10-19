@@ -1,17 +1,17 @@
 import React, {PropTypes} from 'react';
-import api from '~/apps/admin-private/api';
+import api from 'apps/admin-private/api';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import provide from '~/modules/observo/provide';
-import connect from '~/modules/observo/connect';
-import subscribe from '~/modules/observo/subscribeDeprecated';
+import provide from 'modules/observo/provide';
+import connect from 'modules/observo/connect';
+import subscribe from 'modules/observo/subscribeDeprecated';
 import {Subject} from 'rxjs/Subject';
 import {share} from 'rxjs/operator/share';
 import {filter} from 'rxjs/operator/filter';
 import {scan} from 'rxjs/operator/scan';
-import {watchTask} from '~/modules/observables/operator/watchTask';
+import {watchTask} from 'modules/observables/operator/watchTask';
 import slugify from 'underscore.string/slugify';
-import Banner from '~/modules/components/Banner';
+import Banner from 'modules/components/Banner';
 import ActivitiesForm from './ActivitiesForm';
 import styles from './activities.scss';
 

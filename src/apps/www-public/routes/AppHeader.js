@@ -5,7 +5,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classNames from 'classnames';
 import Link from 'react-router/lib/Link';
 import styles from './AppHeader.scss';
-import Logo from '~/modules/ui-components/Logo';
+import Logo from 'modules/ui-components/Logo';
 
 export const AppHeader = ({
   background,

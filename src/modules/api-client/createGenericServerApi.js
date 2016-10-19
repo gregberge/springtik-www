@@ -1,5 +1,5 @@
 import {Subject} from 'rxjs/Subject';
-import {watchTaskStatic} from '~/modules/observables/operator/watchTask';
+import {watchTaskStatic} from 'modules/observables/operator/watchTask';
 
 export function observe(promise, {next}) {
   return promise

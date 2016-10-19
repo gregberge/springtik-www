@@ -1,9 +1,9 @@
 import express from 'express';
-import config from '~/config';
-import reactRouterMiddleware from '~/server/utils/reactRouterMiddleware';
+import config from 'config';
+import reactRouterMiddleware from 'server/utils/reactRouterMiddleware';
 import path from 'path';
 import api from './api';
-import graphqlMiddleware from '~/server/graphql/middleware';
+import graphqlMiddleware from 'server/graphql/middleware';
 
 const router = express.Router();
 
