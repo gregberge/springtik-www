@@ -1,8 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import compose from 'recompose/compose';
-import connect from 'modules/observo/connect';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import Rx from 'modules/rxjs';
+import Rc from 'modules/recompose';
 import Link from 'react-router/lib/Link';
 import styles from './header.scss';
 
@@ -64,9 +63,24 @@ Header.propTypes = {
   }),
 };
 
-export default compose(
-  withStyles(styles),
-  connect(({me$}) => ({
-    me: me$,
-  }))
+export default Rc.compose(
+  Rc.withStyles(styles),
+  Rc.provide(({me$}) => {
+    const navDisplayed$ = new Rx.BehaviorSubject(false);
+    const onBlur = () => navDisplayed$.next(false);
+    const onFocus = () => navDisplayed$.next(true);
+
+    return {
+      props$: Rx.Observable.combineLatest(
+        me$,
+        navDisplayed$,
+        (me, navDisplayed) => ({
+          onBlur,
+          onFocus,
+          me,
+          navDisplayed,
+        }),
+      ),
+    };
+  }),
 )(Header);

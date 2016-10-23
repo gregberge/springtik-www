@@ -1,21 +1,15 @@
 import React, {PropTypes} from 'react';
 import fetch from 'isomorphic-fetch';
-import {Subject} from 'rxjs/Subject';
-import {publishReplay} from 'rxjs/operator/publishReplay';
-import {combineLatest} from 'rxjs/operator/combineLatest';
-import {startWith} from 'rxjs/operator/startWith';
-import {watchTask} from 'modules/observables/operator/watchTask';
-import compose from 'recompose/compose';
+import Rx from 'modules/rxjs';
+import Rc from 'modules/recompose';
+import Fp from 'modules/lodash-fp';
 import Shield from 'modules/ui-components/Shield';
 import TextBox from 'modules/ui-components/TextBox';
 import Button from 'modules/ui-components/Button';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import konect from 'modules/observo/konect';
 import FaUser from 'react-icons/lib/fa/user';
 import FaLock from 'react-icons/lib/fa/lock';
 import {INCORRECT_PASSWORD, USERNAME_NOT_FOUND} from 'modules/loginErrors';
 import styles from './Login.scss';
-import LoginRedirectionHandler from './LoginRedirectionHandler';
 
 const getErrorMessage = ({
   error,
@@ -44,7 +38,6 @@ const Login = ({
   const errorMessage = getErrorMessage(result);
   return (
     <div className={styles.login}>
-      <LoginRedirectionHandler />
       <div className={styles.shield}>
         <Shield />
       </div>
@@ -105,12 +98,13 @@ Login.propTypes = {
   }),
 };
 
-export default compose(
-  withStyles(styles),
-  konect(({props$}) => {
-    const submit$ = new Subject();
+export default Rc.compose(
+  Rc.withStyles(styles),
+  Rc.onlyClientSide,
+  Rc.provide(() => {
+    const submit$ = new Rx.Subject();
     const result$ = submit$
-      ::watchTask(model => {
+      .watchTask(model => {
         return fetch('/api/login', {
           body: JSON.stringify(model),
           credentials: 'same-origin',
@@ -119,7 +113,7 @@ export default compose(
         })
         .then(response => response.json());
       })
-      ::publishReplay(1).refCount();
+      .shareReplay();
 
     const onSubmit = event => {
       event.preventDefault();
@@ -132,12 +126,27 @@ export default compose(
     };
 
     return {
-      props$: props$
-        ::combineLatest(result$::startWith(undefined), (_, result) => ({
+      props$: result$
+        .startWith(undefined)
+        .map(result => ({
           onSubmit,
           result,
         })),
       result$,
     };
   }),
+  Rc.getContext({
+    $window: PropTypes.shape({
+      open: PropTypes.func.isRequired,
+    }).isRequired,
+  }),
+  Rc.handle(({props$, result$}) => [
+    result$
+      .filter(({success, output}) => success && output && output.success)
+      .switchMapTo(props$.pluck('$window'))
+      .filter(Fp.identity)
+      .subscribe($window => {
+        $window.open('/', '_self');
+      }),
+  ]),
 )(Login);

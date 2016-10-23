@@ -1,0 +1,36 @@
+@import 'modules/variables.scss';
+
+.select {
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+  vertical-align: middle;
+
+  > select {
+    border: none;
+    height: 50px;
+    background-color: $white;
+    border-radius: 3px;
+    padding: 0 10px;
+    font-size: 18px;
+    vertical-align: middle;
+    color: $text-color;
+    display: block;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      box-shadow: inset 0px 0px 1px 0px rgba($gray, 0.75);
+    }
+  }
+
+  &.placeholder > select {
+    color: $gray;
+  }
+
+  &.block {
+    display: block;
+    width: 100%;
+  }
+}

@@ -3,15 +3,24 @@ import ReactSelect from 'react-select';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from './styles/select.scss';
 
-export const Select = ({
-  addLabelText = 'Ajouter "{label}" ?',
+const Select = ({
+  allowCreate,
+  promptTextCreator = label => `Ajouter "${label}" ?`,
   ...props,
-}) => (
-  <ReactSelect {...{addLabelText, ...props}} />
-);
+}) => {
+  const Component = allowCreate ? ReactSelect.Creatable : ReactSelect;
+  return (
+    <Component
+      simpleValue
+      promptTextCreator={promptTextCreator}
+      {...props}
+    />
+  );
+};
 
 Select.propTypes = {
-  addLabelText: PropTypes.string,
+  allowCreate: PropTypes.bool,
+  promptTextCreator: PropTypes.func,
 };
 
 export default withStyles(styles)(Select);

@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import compose from 'recompose/compose';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import pure from 'recompose/pure';
-import lifecycle from 'recompose/lifecycle';
 import classNames from 'classnames';
 import styles from './TextBox.scss';
 

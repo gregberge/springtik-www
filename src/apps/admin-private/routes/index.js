@@ -5,9 +5,9 @@ import App from './App';
 import Categories from './categories/Categories';
 import CategoriesNew from './categories/CategoriesNew';
 import CategoriesEdit from './categories/CategoriesEdit';
-import Activities from './activities/Activities';
-import ActivitiesNew from './activities/ActivitiesNew';
-import ActivitiesEdit from './activities/ActivitiesEdit';
+// import Activities from './activities/Activities';
+// import ActivitiesNew from './activities/ActivitiesNew';
+// import ActivitiesEdit from './activities/ActivitiesEdit';
 
 export default [
   <Route path="/" component={App}>
@@ -18,12 +18,12 @@ export default [
       <Route path="new" component={CategoriesNew} />
       <Route path="edit/:categoryId" component={CategoriesEdit} />
     </Route>
-    <Route
+    {/* <Route
       path="activities"
       component={Activities}
     >
       <Route path="new" component={ActivitiesNew} />
       <Route path="edit/:activityId" component={ActivitiesEdit} />
-    </Route>
+    </Route> */}
   </Route>,
 ];

@@ -1,23 +1,8 @@
 import React, {PropTypes} from 'react';
-import Link from 'react-router/lib/Link';
 import classNames from 'classnames';
-import compose from 'recompose/compose';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import {of} from 'rxjs/observable/of';
-import {mergeStatic} from 'rxjs/operator/merge';
-import {takeUntil} from 'rxjs/operator/takeUntil';
-import {last} from 'rxjs/operator/last';
-import {_do} from 'rxjs/operator/do';
-import {switchMap} from 'rxjs/operator/switchMap';
-import {filter} from 'rxjs/operator/filter';
-import {map} from 'rxjs/operator/map';
-import {startWith} from 'rxjs/operator/startWith';
-import {publishReplay} from 'rxjs/operator/publishReplay';
-import {combineLatest} from 'rxjs/operator/combineLatest';
-import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
-import provide from 'modules/observo/provide';
-import universalProvide from 'modules/observo/universalProvide';
-import connect from 'modules/observo/connect';
+import Rc from 'modules/recompose';
+import Rx from 'modules/rxjs';
+import Link from 'react-router/lib/Link';
 import api from 'apps/admin-private/api';
 import styles from './categories.scss';
 import Toolbar from 'modules/components/Toolbar';
@@ -105,59 +90,46 @@ Categories.propTypes = {
 };
 
 function queryCategories() {
-  return this::switchMap(() => api.categories.$fetchAll())
-    ::filter(({success}) => success)
-    ::map(({output}) => output)
-    ::publishReplay(1).refCount();
+  return this
+    .switchMap(() => api.categories.$fetchAll())
+    .filter(({success}) => success)
+    .map(({output}) => output);
 }
 
-const provideUniversalObservables = ({props$}) => ({
-  categories$: props$::queryCategories(),
-});
-
-const provideObservables = ({categories$, props$}) => {
-  categories$ = mergeStatic(
-      categories$,
-      mergeStatic(
-        api.categories.created$,
-        api.categories.updated$,
-        api.categories.deleted$,
-      )::queryCategories()
-  )::startWith([]);
-
-  const keywords$ = categories$
-    ::map(categories =>
-      Array.from(new Set(categories.reduce((all, {keywords}) =>
-        all.concat(keywords), []
-      )))
+export default Rc.compose(
+  Rc.universalProvide(({props$}) => ({
+    categories$: props$::queryCategories(),
+  })),
+  Rc.provide(({categories$, props$}) => {
+    categories$ = Rx.Observable.merge(
+        categories$,
+        Rx.Observable.merge(
+          api.categories.created$,
+          api.categories.updated$,
+          api.categories.deleted$,
+        )::queryCategories()
     )
-    ::startWith([]);
+    .startWith([])
+    .shareReplay();
 
-  const category$ = categories$
-    ::combineLatest(
-      props$
-        ::map(({params: {categoryId}}) => categoryId)
-        ::distinctUntilChanged(),
-      (categories, categoryId) =>
-        categories.find(({id}) => categoryId === id)
+    const category$ = Rx.Observable.combineLatest(
+      categories$,
+      props$.pluck('params', 'categoryId').distinctUntilChanged(),
+      (categories, categoryId) => categories.find(({id}) => categoryId === id)
     );
 
-  return {
-    categories$,
-    category$,
-    keywords$,
-  };
-};
-
-export default compose(
-  universalProvide(provideUniversalObservables),
-  provide(provideObservables),
-  connect(({
-    categories$,
-    category$,
-  }) => ({
-    categories: categories$,
-    category: category$,
-  })),
-  withStyles(styles)
+    return {
+      props$: Rx.Observable.combineLatest(
+        props$,
+        categories$,
+        category$,
+        (props, categories, category) => ({
+          ...props,
+          categories,
+          category,
+        }),
+      ),
+    };
+  }),
+  Rc.withStyles(styles)
 )(Categories);

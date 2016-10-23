@@ -5,14 +5,12 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from './Logo.scss';
 import Shield from './Shield';
 
-export const Logo = () => (
+export default compose(
+  withStyles(styles),
+  pure
+)(() => (
   <div className={styles.logo}>
     <Shield />
     <span className={styles.text}>Springtik</span>
   </div>
-);
-
-export default compose(
-  withStyles(styles),
-  pure
-)(Logo);
+));
